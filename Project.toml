@@ -1,0 +1,4 @@
+name = "VLDataScienceMachineLearningPackage"
+uuid = "24b76065-2c22-4f73-af85-7cb67476fb03"
+authors = ["Jeffrey Varner <jdv27@cornell.edu>"]
+version = "0.1.0"
