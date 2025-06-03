@@ -5,7 +5,7 @@ push!(LOAD_PATH,"../src/")
 makedocs(
     sitename="VLDataScienceMachineLearningPackage",
     format = Documenter.HTML(; prettyurls = get(ENV, "CI", nothing) == "true"),
-    modules = [VLQuantitativeFinancePackage],
+    modules = [VLDataScienceMachineLearningPackage],
     pages = [
         "Home" => "index.md",
     ]
