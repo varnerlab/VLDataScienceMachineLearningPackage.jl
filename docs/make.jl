@@ -8,7 +8,8 @@ makedocs(
     modules = [VLDataScienceMachineLearningPackage],
     pages = [
         "Home" => "index.md",
-    ]
+        "Data" => "data.md",
+    ], 
 )
 
 deploydocs(
