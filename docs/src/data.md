@@ -3,4 +3,5 @@ We've included several datasets in the package that we use for examples, activit
 
 ```@docs
 VLDataScienceMachineLearningPackage.MyKaggleCustomerSpendingDataset
+VLDataScienceMachineLearningPackage.MyStringDecodeChallengeDataset
 ```
