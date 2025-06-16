@@ -50,3 +50,21 @@ function MyStringDecodeChallengeDataset()::NamedTuple
 
     return data_tuple;
 end
+
+"""
+    MyCommonSurnameDataset() -> DataFrame
+Load the common surnames dataset by country as a DataFrame.
+The original dataset can be found at: [Common Surnames by Country](https://github.com/sigpwned/popular-names-by-country-dataset).
+"""
+function MyCommonSurnameDataset()::DataFrame
+    return CSV.read(joinpath(_PATH_TO_DATA, "common-surnames-by-country.csv"), DataFrame)
+end
+
+"""
+    MyCommonForenameDataset() -> DataFrame
+Load the common forenames dataset by country as a DataFrame.
+The original dataset can be found at: [Common Forenames by Country](https://github.com/sigpwned/popular-names-by-country-dataset).
+"""
+function MyCommonForenameDataset()::DataFrame
+    return CSV.read(joinpath(_PATH_TO_DATA, "common-forenames-by-country.csv"), DataFrame)
+end
