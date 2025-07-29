@@ -8,6 +8,7 @@ export MyKaggleCustomerSpendingDataset;
 export MyStringDecodeChallengeDataset;
 export MyCommonSurnameDataset;
 export MyCommonForenameDataset;
+export MySarcasmCorpus;
 
 # types -
 export AbstractTextRecordModel;
