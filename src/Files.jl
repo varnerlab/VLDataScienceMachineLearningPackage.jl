@@ -70,7 +70,7 @@ function MyCommonForenameDataset()::DataFrame
 end
 
 """
-    function MySarcasmRecordCorpus() -> MySarcasmRecordCorpusModel
+    function MySarcasmCorpus() -> MySarcasmRecordCorpusModel
 
 The function `corpus` reads a file composed of JSON records and returns the data as a `MySarcasmRecordCorpusModel` instance.
 Each record in the file is expected to have the following fields:
