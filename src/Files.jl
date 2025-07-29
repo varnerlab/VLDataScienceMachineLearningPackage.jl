@@ -127,9 +127,12 @@ function MySarcasmCorpus()::MySarcasmRecordCorpusModel
         end 
     end
 
-    # add <OOV> token -
-    push!(tokenarray, "<OOV>");
-    push!(tokenarray, "<PAD>");
+    # add control tokens -
+    push!(tokenarray, "<bos>");
+    push!(tokenarray, "<eos>");
+    push!(tokenarray, "<mask>");
+    push!(tokenarray, "<pad>");
+    push!(tokenarray, "<unk>"); # out of vocabulary
 
     tokenarray |> sort!
     for i ∈ eachindex(tokenarray)

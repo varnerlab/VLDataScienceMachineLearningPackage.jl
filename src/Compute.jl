@@ -19,13 +19,21 @@ function tokenize(s::String, tokens::Dict{String, Int64};
     # initialize -
     tokenarray = Array{Int64,1}();
 
+    # control tokens -
+    # push!(tokenarray, "<bos>");
+    # push!(tokenarray, "<eos>");
+    # push!(tokenarray, "<mask>");
+    # push!(tokenarray, "<pad>");
+    # push!(tokenarray, "<unk>"); # out of vocabulary
+
     # split the string -
+    push!(tokenarray, tokens["<bos>"]); # beginning of sequence
     fields = split(s, delim) .|> String;
     for field ∈ fields
         if haskey(tokens, field)
             push!(tokenarray, tokens[field]);
         else
-            push!(tokenarray, tokens["<OOV>"]);
+            push!(tokenarray, tokens["<unk>"]);
         end
     end
 
@@ -33,12 +41,13 @@ function tokenize(s::String, tokens::Dict{String, Int64};
     # do we need to pad?
     if (padleft == false && pad > 0)
         N = length(tokenarray);
-        foreach(i->push!(tokenarray, tokens["<PAD>"]), (N+1):pad); # pad right
+        foreach(i->push!(tokenarray, tokens["<pad>"]), (N+1):pad); # pad right
     elseif (padleft == true && pad > 0)
         N = length(tokenarray);
-        foreach(i->pushfirst!(tokenarray, tokens["<PAD>"]), (N+1):pad); # pad left
+        foreach(i->pushfirst!(tokenarray, tokens["<pad>"]), (N+1):pad); # pad left
     end
     # ----------------------------------------------------------------------- #
+    push!(tokenarray, tokens["<eos>"]); # end of sequence
 
     # return -
     return tokenarray;
