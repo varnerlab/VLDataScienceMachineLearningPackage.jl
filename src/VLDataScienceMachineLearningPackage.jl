@@ -16,5 +16,8 @@ export AbstractTextDocumentCorpusModel;
 export MySarcasmRecordModel;
 export MySarcasmRecordCorpusModel;
 
+# methods -
+export tokenize;
+
 
 end # module VLDataScienceMachineLearningPackage
