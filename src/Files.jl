@@ -127,18 +127,23 @@ function MySarcasmCorpus()::MySarcasmRecordCorpusModel
         end 
     end
 
-    # add control tokens -
-    push!(tokenarray, "<bos>");
-    push!(tokenarray, "<eos>");
-    push!(tokenarray, "<mask>");
-    push!(tokenarray, "<pad>");
-    push!(tokenarray, "<unk>"); # out of vocabulary
-
+    # build the token dictionary -
     tokenarray |> sort!
     for i ∈ eachindex(tokenarray)
         key = tokenarray[i]
         tokendictionary[key] = i - 1; 
         inverse[i - 1] = key;
+    end
+
+    # ok, so we need to update with the control tokens -
+    controltokens = ["<bos>", "<eos>", "<mask>", "<pad>", "<unk>"];
+    j = length(tokendictionary);
+    for token ∈ controltokens
+        if !(token in keys(tokendictionary))
+            j += 1;
+            tokendictionary[token] = j;
+            inverse[j] = token;
+        end
     end
 
     # set the data on the model -
