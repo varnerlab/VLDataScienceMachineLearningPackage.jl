@@ -6,6 +6,7 @@ const _PATH_TO_DATA = joinpath(_PATH_TO_SRC, "data");
 using CSV
 using DataFrames
 using FileIO
+using JSON
 
 # load my codes -
 include(joinpath(_PATH_TO_SRC, "Types.jl"));

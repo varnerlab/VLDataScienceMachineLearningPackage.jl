@@ -9,5 +9,11 @@ export MyStringDecodeChallengeDataset;
 export MyCommonSurnameDataset;
 export MyCommonForenameDataset;
 
+# types -
+export AbstractTextRecordModel;
+export AbstractTextDocumentCorpusModel;
+export MySarcasmRecordModel;
+export MySarcasmRecordCorpusModel;
+
 
 end # module VLDataScienceMachineLearningPackage
