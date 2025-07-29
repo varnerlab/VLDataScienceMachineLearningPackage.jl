@@ -141,8 +141,8 @@ function MySarcasmCorpus()::MySarcasmRecordCorpusModel
     for token ∈ controltokens
         if !(token in keys(tokendictionary))
             j += 1;
-            tokendictionary[token] = j;
-            inverse[j] = token;
+            tokendictionary[token] = j-1;
+            inverse[j-1] = token;
         end
     end
 
