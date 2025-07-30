@@ -9,6 +9,7 @@ export MyStringDecodeChallengeDataset;
 export MyCommonSurnameDataset;
 export MyCommonForenameDataset;
 export MySarcasmCorpus;
+export UnsignedFeatureHasing, SignedFeatureHasing;
 
 # types -
 export AbstractTextRecordModel;
@@ -18,6 +19,7 @@ export MySarcasmRecordCorpusModel;
 
 # methods -
 export tokenize;
+export featurehashing;
 
 
 end # module VLDataScienceMachineLearningPackage
