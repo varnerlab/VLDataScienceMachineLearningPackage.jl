@@ -3,4 +3,5 @@ We'll work with text data in many applications. We've included a few methods to 
 
 ```@docs
 VLDataScienceMachineLearningPackage.tokenize
+VLDataScienceMachineLearningPackage.featurehashing
 ```
