@@ -106,7 +106,7 @@ end
 
 """
     function featurehashing(text::Array{String,1}; d::Int64 = 100, 
-        algorithm::AbstractFeatureHasingAlgorithm = UnsignedFeatureHasing()) -> Array{Int64,1}
+        algorithm::AbstractFeatureHashingAlgorithm = UnsignedFeatureHasing()) -> Array{Int64,1}
 
 Computes the feature hashing of the input text using the specified algorithm.
 
@@ -120,7 +120,7 @@ Computes the feature hashing of the input text using the specified algorithm.
 
 """
 function featurehashing(text::Array{String,1}; d::Int64 = 100, 
-    algorithm::AbstractFeatureHasingAlgorithm = UnsignedFeatureHashing())::Array{Int64,1}
+    algorithm::AbstractFeatureHashingAlgorithm = UnsignedFeatureHashing())::Array{Int64,1}
     return _featurehashing(algorithm, text, d); # this will call the appropriate method based on the algorithm type
 end
 
