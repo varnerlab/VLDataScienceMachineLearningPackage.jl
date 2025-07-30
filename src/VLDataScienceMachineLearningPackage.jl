@@ -9,7 +9,7 @@ export MyStringDecodeChallengeDataset;
 export MyCommonSurnameDataset;
 export MyCommonForenameDataset;
 export MySarcasmCorpus;
-export UnsignedFeatureHasing, SignedFeatureHasing;
+export UnsignedFeatureHashing, SignedFeatureHashing;
 
 # types -
 export AbstractTextRecordModel;
