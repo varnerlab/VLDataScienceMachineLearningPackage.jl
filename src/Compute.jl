@@ -1,5 +1,5 @@
 # -- PRIVATE METHODS BELOW HERE ------------------------------------------------------------------- #
-function _featurehashing(algorithm::UnsignedFeatureHasing, text::Array{String,1}, d::Int64)::Array{Int64,1}
+function _featurehashing(algorithm::UnsignedFeatureHashing, text::Array{String,1}, d::Int64)::Array{Int64,1}
 
     # initialize -
     x = Dict{Int,Int}();
@@ -21,7 +21,7 @@ function _featurehashing(algorithm::UnsignedFeatureHasing, text::Array{String,1}
     return result
 end
 
-function _featurehashing(algorithm::SignedFeatureHasing, text::Array{String,1}, d::Int64)::Array{Int64,1}
+function _featurehashing(algorithm::SignedFeatureHashing, text::Array{String,1}, d::Int64)::Array{Int64,1}
 
     # initialize -
     x = Dict{Int,Int}();
@@ -120,7 +120,7 @@ Computes the feature hashing of the input text using the specified algorithm.
 
 """
 function featurehashing(text::Array{String,1}; d::Int64 = 100, 
-    algorithm::AbstractFeatureHasingAlgorithm = UnsignedFeatureHasing())::Array{Int64,1}
+    algorithm::AbstractFeatureHasingAlgorithm = UnsignedFeatureHashing())::Array{Int64,1}
     return _featurehashing(algorithm, text, d); # this will call the appropriate method based on the algorithm type
 end
 

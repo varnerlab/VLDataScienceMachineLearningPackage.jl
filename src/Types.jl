@@ -1,6 +1,6 @@
 abstract type AbstractTextRecordModel end
 abstract type AbstractTextDocumentCorpusModel end
-abstract type AbstractFeatureHasingAlgorithm end
+abstract type AbstractFeatureHashingAlgorithm end
 
 
 """
@@ -39,6 +39,6 @@ mutable struct MySarcasmRecordCorpusModel <: AbstractTextDocumentCorpusModel
     MySarcasmRecordCorpusModel() = new(); # empty
 end
 
-struct UnsignedFeatureHasing <: AbstractFeatureHasingAlgorithm end
-struct SignedFeatureHasing <: AbstractFeatureHasingAlgorithm end
+struct UnsignedFeatureHashing <: AbstractFeatureHashingAlgorithm end
+struct SignedFeatureHashing <: AbstractFeatureHashingAlgorithm end
 
