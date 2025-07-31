@@ -9,6 +9,7 @@ export MyStringDecodeChallengeDataset;
 export MyCommonSurnameDataset;
 export MyCommonForenameDataset;
 export MySarcasmCorpus;
+export MySMSSpamHamCorpus;
 
 
 # types -
