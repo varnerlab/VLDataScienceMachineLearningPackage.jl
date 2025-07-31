@@ -171,7 +171,7 @@ function MySMSSpamHamCorpus()::MySMSSpamHamRecordCorpusModel
     counter = 1;
 
     # hard the path to the SMS Spam Ham dataset -
-    path = joinpath(_PATH_TO_DATA, "sms-spam-ham-kaggle.csv");
+    path = joinpath(_PATH_TO_DATA, "sms-spam-ham-kaggle-cleaned.csv");
 
     # open the file, process each line -
     open(path, "r") do io # open a stream to the file
