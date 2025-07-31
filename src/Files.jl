@@ -155,3 +155,89 @@ function MySarcasmCorpus()::MySarcasmRecordCorpusModel
     # return -
     return document;
 end
+
+"""
+    function MySMSSpamHamCorpus() -> MySMSSpamHamRecordCorpusModel
+
+The function `MySMSSpamHamCorpus` reads the SMS Spam Ham dataset and returns the data as a `MySMSSpamHamRecordCorpusModel` instance.
+
+"""
+function MySMSSpamHamCorpus()::MySMSSpamHamRecordCorpusModel
+
+    # initialize the data -
+    records = Dict{Int, MySMSSpamHamRecordModel}();
+    tokendictionary = Dict{String, Int64}();
+    inverse = Dict{Int64, String}();
+    counter = 1;
+
+    # hard the path to the SMS Spam Ham dataset -
+    path = joinpath(_PATH_TO_DATA, "sms-spam-ham-kaggle.csv");
+
+    # open the file, process each line -
+    open(path, "r") do io # open a stream to the file
+        for line ∈ eachline(io)
+            d = split(line, ",") .|> String;
+
+            # grab the label and message -
+            label = d[1];
+            message = d[2];
+
+            # convert from spam/ham to boolean -
+            isspam = (label == "spam") ? true : false;
+
+            # build the record -
+            records[counter] = _build(MySMSSpamHamRecordModel, (
+                isspam = isspam, message = message,
+            ));
+            counter += 1;
+        end
+    end
+
+    # build the token dictionary -
+    tokenarray = Array{String,1}();
+    for (k,v) ∈ records
+
+        # process message data -
+        message = v.message;
+        tokens = split(message, " ") .|> String;
+
+        # process -
+        for token ∈ tokens
+
+            # strip any leading or trailing spaces -
+            token = strip(token, ' ');
+        
+            if (in(token, tokenarray) == false && isempty(token) == false)
+                push!(tokenarray, token);
+            end
+        end 
+    end
+
+    # build the token dictionary -
+    tokenarray |> sort!
+    for i ∈ eachindex(tokenarray)
+        key = tokenarray[i]
+        tokendictionary[key] = i - 1; 
+        inverse[i - 1] = key;
+    end
+
+    # ok, so we need to update with the control tokens -
+    controltokens = ["<bos>", "<eos>", "<mask>", "<pad>", "<unk>"];
+    j = length(tokendictionary);
+    for token ∈ controltokens
+        if !(token in keys(tokendictionary))
+            j += 1;
+            tokendictionary[token] = j-1;
+            inverse[j-1] = token;
+        end
+    end
+
+    # set the data on the model -
+    document = MySMSSpamHamRecordCorpusModel();
+    document.records = records;
+    document.tokens = tokendictionary;
+    document.inverse = inverse;
+
+    # return -
+    return document;
+end

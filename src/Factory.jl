@@ -1,3 +1,77 @@
+function _build(recordtype::Type{MySMSSpamHamRecordModel}, data::NamedTuple)::MySMSSpamHamRecordModel
+    
+    # get data from the NamedTuple -
+    isspam = data.isspam;
+    message = data.message;
+
+    # clean the data - do NOT include puncuation in the headline -
+    puncuation_skip_set = Set{Char}();
+    push!(puncuation_skip_set, ',');
+    push!(puncuation_skip_set, '.');
+    push!(puncuation_skip_set, '!');
+    push!(puncuation_skip_set, '?');
+    push!(puncuation_skip_set, ';');
+    push!(puncuation_skip_set, ':');
+    push!(puncuation_skip_set, ')');
+    push!(puncuation_skip_set, '(');
+    push!(puncuation_skip_set, '\"');
+    push!(puncuation_skip_set, '/');
+    push!(puncuation_skip_set, '\\');
+    push!(puncuation_skip_set, '-');
+    push!(puncuation_skip_set, '_');
+    push!(puncuation_skip_set, '`');
+    push!(puncuation_skip_set, ''');
+    push!(puncuation_skip_set, '*');
+    push!(puncuation_skip_set, '+');
+    push!(puncuation_skip_set, '=');
+    push!(puncuation_skip_set, '@');
+    push!(puncuation_skip_set, '%');
+    push!(puncuation_skip_set, '|');
+    push!(puncuation_skip_set, '{');
+    push!(puncuation_skip_set, '}');
+    push!(puncuation_skip_set, '[');
+    push!(puncuation_skip_set, ']');
+    push!(puncuation_skip_set, '<');
+    push!(puncuation_skip_set, '>');
+    push!(puncuation_skip_set, '~');
+    push!(puncuation_skip_set, '^');
+    push!(puncuation_skip_set, '&');
+    push!(puncuation_skip_set, '$');
+    push!(puncuation_skip_set, '¿');
+    push!(puncuation_skip_set, '¡');
+    push!(puncuation_skip_set, '£');
+    push!(puncuation_skip_set, '€');
+    push!(puncuation_skip_set, '¥');
+    push!(puncuation_skip_set, '₹');   
+    push!(puncuation_skip_set, '©'); 
+    push!(puncuation_skip_set, '®');
+    push!(puncuation_skip_set, '™');
+    push!(puncuation_skip_set, '¯');
+    push!(puncuation_skip_set, '\u00a0');
+
+    # ok, so field is a string, and we are checking if it contains any of the puncuation characters
+    chararray =  message |> collect;
+
+    # let's use the filter function to remove any puncuation characters from the field -
+    message = filter(c -> (c |> Int ) ≤ 255 && !(c ∈ puncuation_skip_set),
+            chararray) |> String |> string-> strip(string, ' ') |> String;
+
+    # checks?
+    # if we split the message, we should have a list of words, with no field being empty
+    fields = split(message, ' ') .|> String
+    fields = filter(x -> x != "", fields)
+    message = join(fields, ' ')
+
+    # create the an empty instance of the modeltype, and then add data to it
+    record = recordtype();
+    record.isspam = isspam;
+    record.message = message;
+    
+    # return the populated model -
+    return record;
+end
+
+
 function _build(recordtype::Type{MySarcasmRecordModel}, data::NamedTuple)::MySarcasmRecordModel
     
     # get data from the NamedTuple -
@@ -49,7 +123,6 @@ function _build(recordtype::Type{MySarcasmRecordModel}, data::NamedTuple)::MySar
     push!(puncuation_skip_set, '™');
     push!(puncuation_skip_set, '¯');
     push!(puncuation_skip_set, '\u00a0');
-
 
     # ok, so field is a string, and we are checking if it contains any of the puncuation characters
     chararray =  headlinerecord |> collect;

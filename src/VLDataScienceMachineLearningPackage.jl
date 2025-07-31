@@ -9,13 +9,15 @@ export MyStringDecodeChallengeDataset;
 export MyCommonSurnameDataset;
 export MyCommonForenameDataset;
 export MySarcasmCorpus;
-export UnsignedFeatureHashing, SignedFeatureHashing;
+
 
 # types -
 export AbstractTextRecordModel;
 export AbstractTextDocumentCorpusModel;
 export MySarcasmRecordModel;
 export MySarcasmRecordCorpusModel;
+export UnsignedFeatureHashing, SignedFeatureHashing;
+export MySMSSpamHamRecordModel, MySMSSpamHamRecordCorpusModel;
 
 # methods -
 export tokenize;

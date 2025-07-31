@@ -4,4 +4,6 @@ We'll work with may types in this package, including some abstract types that wi
 ```@docs
 VLDataScienceMachineLearningPackage.MySarcasmRecordModel
 VLDataScienceMachineLearningPackage.MySarcasmRecordCorpusModel
+VLDataScienceMachineLearningPackage.MySMSSpamHamRecordModel
+VLDataScienceMachineLearningPackage.MySMSSpamHamRecordCorpusModel
 ```

@@ -2,9 +2,49 @@ abstract type AbstractTextRecordModel end
 abstract type AbstractTextDocumentCorpusModel end
 abstract type AbstractFeatureHashingAlgorithm end
 
+"""
+    MySMSSpamHamRecordModel <: AbstractTextRecordModel
+
+Model for a record in the SMS Spam Ham dataset.
+
+### Fields
+- `isspam::Bool` - a boolean value indicating if the message is spam.
+- `message::String` - the content of the SMS message.
+"""
+mutable struct MySMSSpamHamRecordModel <: AbstractTextRecordModel
+    
+    # data -
+    isspam::Bool
+    message::String
+    
+    # constructor -
+    MySMSSpamHamRecordModel() = new(); # empty
+end
+
+"""
+    MySMSSpamHamRecordCorpusModel <: AbstractTextDocumentCorpusModel
+
+Model for a collection of records in the SMS Spam Ham dataset.
+
+### Fields
+- `records::Dict{Int, MySMSSpamHamRecordModel}`: The records in the document (collection of records)
+- `tokens::Dict{String, Int64}`: A dictionary of tokens in alphabetical order (key: token, value: position) for the entire document
+"""
+mutable struct MySMSSpamHamRecordCorpusModel <: AbstractTextDocumentCorpusModel
+    
+    # data -
+    records::Dict{Int, MySMSSpamHamRecordModel}
+    tokens::Dict{String, Int64}
+    inverse::Dict{Int64, String}
+    
+    # constructor -
+    MySMSSpamHamRecordCorpusModel() = new(); # empty
+end
 
 """
     MySarcasmRecordModel <: AbstractTextRecordModel
+
+Model for a record in the Sarcasm dataset.
 
 ### Fields 
 - `data::Array{String, Any}`: The data found in the record in the order they were found
@@ -23,6 +63,8 @@ end
 
 """
     MySarcasmRecordCorpusModel <: AbstractTextDocumentCorpusModel
+
+Model for a collection of records in the Sarcasm dataset.
 
 ### Fields
 - `records::Dict{Int, MySarcasmRecordModel}`: The records in the document (collection of records)
