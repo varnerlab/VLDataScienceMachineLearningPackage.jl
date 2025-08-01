@@ -10,6 +10,7 @@ export MyCommonSurnameDataset;
 export MyCommonForenameDataset;
 export MySarcasmCorpus;
 export MySMSSpamHamCorpus;
+export MyTrainingMarketDataSet;
 
 
 # types -
