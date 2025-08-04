@@ -47,6 +47,54 @@ function _featurehashing(algorithm::SignedFeatureHashing, text::Array{String,1},
     return result
 end
 
+function _featurehashing(algorithm::UnsignedFeatureHashing, text::Array{Int64,1}, d::Int64)::Array{Int64,1}
+
+    # initialize -
+    x = Dict{Int,Int}();
+    size = d; # size of the hash table
+    foreach(i-> x[i] = 0, range(0,step=1,length=size) |> collect)
+
+    for s ∈ text
+        h = hash(s);
+        i = mod(h,size);
+        x[i] += 1
+    end
+
+    # convert back to one-based array -
+    result = zeros(size);
+    for (k,v) ∈ x
+        result[k+1] = v;
+    end
+
+    return result
+end
+
+function _featurehashing(algorithm::SignedFeatureHashing, text::Array{Int64,1}, d::Int64)::Array{Int64,1}
+
+    # initialize -
+    x = Dict{Int,Int}();
+    size = d; # size of the hash table
+    foreach(i-> x[i] = 0, range(0,step=1,length=size) |> collect)
+
+    for s ∈ text
+        h = hash(s);
+        i = mod(h,size);
+        if (h & 1 == 0)
+            x[i] += 1;
+        else
+            x[i] -= 1;
+        end
+    end
+
+    # convert back to one-based array -
+    result = zeros(size);
+    for (k,v) ∈ x
+        result[k+1] = v;
+    end
+
+    return result
+end
+
 # -- PRIVATE METHODS ABOVE HERE ------------------------------------------------------------------- #
 
 # -- PUBLIC METHODS BELOW HERE -------------------------------------------------------------------- #
@@ -122,6 +170,26 @@ Computes the feature hashing of the input text using the specified algorithm.
 function featurehashing(text::Array{String,1}; d::Int64 = 100, 
     algorithm::AbstractFeatureHashingAlgorithm = UnsignedFeatureHashing())::Array{Int64,1}
     return _featurehashing(algorithm, text, d); # this will call the appropriate method based on the algorithm type
+end
+
+"""
+    function featurehashing(text::Array{Int,1}; d::Int64 = 100, 
+        algorithm::AbstractFeatureHashingAlgorithm = UnsignedFeatureHasing()) -> Array{Int64,1}
+
+Computes the feature hashing of the input text using the specified algorithm.
+
+### Arguments
+- `text::Array{Int,1}` - an array of integers to be hashed (e.g., tokenized text).
+- `d::Int64` - (optional) the size of the hash table. Default is `100`.
+- `algorithm::AbstractFeatureHasingAlgorithm` - (optional) the hashing algorithm to use. Default is `UnsignedFeatureHasing`.
+
+### Returns
+- `Array{Int64,1}` - an array of integers representing the hashed features.
+
+"""
+function featurehashing(text::Array{Int,1}; d::Int64 = 100, 
+    algorithm::AbstractFeatureHashingAlgorithm = UnsignedFeatureHashing())::Array{Int64,1}
+    return _featurehashing(algorithm, text, d); # convert to array of strings
 end
 
 # -- PUBLIC METHODS ABOVE HERE -------------------------------------------------------------------- #
