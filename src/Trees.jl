@@ -88,7 +88,8 @@ This method updates the model in place.
 - `Δ::Array{Float64,1}`: The array of price change factors for each level of the tree.
 
 """
-function populate!(model::MyAdjacencyRecombiningCommodityPriceTree, price::Float64, Δ::Array{Float64,1})
+function populate!(model::MyAdjacencyRecombiningCommodityPriceTree, 
+    price::Float64, Δ::Array{Float64,1})::MyAdjacencyRecombiningCommodityPriceTree
 
     # initialize -
     P = Dict{Int64,NamedTuple}() 
@@ -97,7 +98,8 @@ function populate!(model::MyAdjacencyRecombiningCommodityPriceTree, price::Float
     Nₕ = binomial(h + n, h) # number of nodes in the tree
 
     # compute the commodity price -
-    P[0] = (price = price, path = 0) # set root price
+    (_, k) = index_counts(0, n) # up, down, ....
+    P[0] = (price = price, path = k) # set root price
     number_of_moves = length(Δ);
     for i ∈ 0:(Nₕ - 1)
         (_, k) = index_counts(i, n) # up, down, ....
@@ -111,5 +113,8 @@ function populate!(model::MyAdjacencyRecombiningCommodityPriceTree, price::Float
 
     # update the model -
     model.data = P;
+
+    # return the updated model -
+    return model;
 end
 # -- PACKAGE API ABOVE ───────────────────────────────────────────────────────────────────--------- #
