@@ -10,6 +10,7 @@ makedocs(
         "Home" => "index.md",
         "Data" => "data.md",
         "Types" => "types.md",
+        "Factory" => "factory.md",
         "Text" => "text.md",
     ], 
 )

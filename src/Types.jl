@@ -1,6 +1,7 @@
 abstract type AbstractTextRecordModel end
 abstract type AbstractTextDocumentCorpusModel end
 abstract type AbstractFeatureHashingAlgorithm end
+abstract type AbstractPriceTreeModel end
 
 """
     MySMSSpamHamRecordModel <: AbstractTextRecordModel
@@ -83,4 +84,26 @@ end
 
 struct UnsignedFeatureHashing <: AbstractFeatureHashingAlgorithm end
 struct SignedFeatureHashing <: AbstractFeatureHashingAlgorithm end
+
+"""
+    mutable struct  MyAdjacencyRecombiningCommodityPriceTree <: AbstractPriceTreeModel
+
+The `MyAdjacencyRecombiningCommodityPriceTree` type is a model of a commodity price tree that uses an dictionary to store the price data.
+This model stores the connectivity information between nodes.
+
+### Fields
+- `data::Dict{Int64,Float64}`: A dictionary that stores the price data for the tree.
+- `connectivity::Dict{Int64,Array{Int64,1}}`: A dictionary that stores the connectivity information between nodes.
+"""
+mutable struct MyAdjacencyRecombiningCommodityPriceTree <: AbstractPriceTreeModel
+
+    # data -
+    data::Dict{Int64,Float64}
+    connectivity::Dict{Int64,Array{Int64,1}}
+    h::Int64 # height of the tree
+    n::Int64 # branching factor
+
+    # constructor 
+    MyAdjacencyRecombiningCommodityPriceTree() = new()
+end
 

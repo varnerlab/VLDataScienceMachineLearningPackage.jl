@@ -151,3 +151,53 @@ end
 function build(record::Type{T}, data::NamedTuple)::T where T <: AbstractTextRecordModel 
     return _build(record, data);
 end
+
+"""
+    function build(type::Type{MyAdjacencyRecombiningCommodityPriceTree}, data::NamedTuple) -> MyAdjacencyRecombiningCommodityPriceTree
+
+Builds an `MyAdjacencyRecombiningCommodityPriceTree` model given the data in the `NamedTuple`. 
+This method builds the connectivity of the tree. To compute the price at each node, use the `populate!` method.
+
+### Arguments
+- `type::Type{MyAdjacencyRecombiningCommodityPriceTree}`: The type of the model to build.
+- `data::NamedTuple`: The data to use to build the model.
+
+The `data` `NamedTuple` must contain the following fields:
+- `h::Int64`: The height of the tree.
+- `price::Float64`: The price at the root node.
+- `u::Float64`: The price increase factor.
+- `d::Float64`: The price decrease factor.
+
+### Returns
+- `MyAdjacencyRecombiningCommodityPriceTree`: the price tree model holding the computed price data.
+"""
+function build(modeltype::Type{MyAdjacencyRecombiningCommodityPriceTree}, 
+    data::NamedTuple)::MyAdjacencyRecombiningCommodityPriceTree
+
+    # get data -
+    n = data.n; # branching factor
+    h = data.h; # height of the tree
+    model = modeltype(); # create an empty model
+    
+    # initialize -
+    P = Dict{Int64,Float64}() 
+    connectivity = Dict{Int64, Array{Int64,1}}()
+    Nₕ = binomial(h + n, h) # number of nodes in the tree
+
+    # main loop -
+    for i ∈ 0:(Nₕ - 1)
+        connectivity[i] = children_indices(i, n; base=0)
+        (_, k) = index_counts(i, n)
+        P[i] = 0.0; # default
+    end
+
+    
+    # set the data, and connectivity for the model -
+    model.data = P;
+    model.connectivity = connectivity;
+    model.h = h; # height of the tree
+    model.n = n; # branching factor
+
+    # return -
+    return model;
+end
