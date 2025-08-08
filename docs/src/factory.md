@@ -3,4 +3,5 @@ We use a particular pattern to build and configure the various composite types i
 
 ```@docs
 VLDataScienceMachineLearningPackage.build
+VLDataScienceMachineLearningPackage.populate!
 ```
