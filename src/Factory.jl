@@ -180,20 +180,17 @@ function build(modeltype::Type{MyAdjacencyRecombiningCommodityPriceTree},
     model = modeltype(); # create an empty model
     
     # initialize -
-    P = Dict{Int64,Float64}() 
     connectivity = Dict{Int64, Array{Int64,1}}()
     Nₕ = binomial(h + n, h) # number of nodes in the tree
 
     # main loop -
     for i ∈ 0:(Nₕ - 1)
         connectivity[i] = children_indices(i, n; base=0)
-        (_, k) = index_counts(i, n)
-        P[i] = 0.0; # default
     end
 
     
     # set the data, and connectivity for the model -
-    model.data = P;
+    model.data = nothing; # we don't have any data yet, set as nothing
     model.connectivity = connectivity;
     model.h = h; # height of the tree
     model.n = n; # branching factor

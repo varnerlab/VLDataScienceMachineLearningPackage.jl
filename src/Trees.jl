@@ -91,7 +91,7 @@ This method updates the model in place.
 function populate!(model::MyAdjacencyRecombiningCommodityPriceTree, price::Float64, Δ::Array{Float64,1})
 
     # initialize -
-    P = Dict{Int64,Float64}() 
+    P = Dict{Int64,NamedTuple}() 
     n = model.n; # branching factor
     h = model.h; # height of the tree
     Nₕ = binomial(h + n, h) # number of nodes in the tree
@@ -106,7 +106,7 @@ function populate!(model::MyAdjacencyRecombiningCommodityPriceTree, price::Float
         for j ∈ 1:number_of_moves
             tmp *= Δ[j]^(k[j]) # accumulate the price factor for each move
         end
-        P[i] = price * tmp; # price at node i
+        P[i] = (price = price * tmp, path = k);
     end
 
     # update the model -

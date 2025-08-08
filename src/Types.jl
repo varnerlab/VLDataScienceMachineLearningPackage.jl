@@ -92,13 +92,13 @@ The `MyAdjacencyRecombiningCommodityPriceTree` type is a model of a commodity pr
 This model stores the connectivity information between nodes.
 
 ### Fields
-- `data::Dict{Int64,Float64}`: A dictionary that stores the price data for the tree.
+- `data::Union{Nothing, Dict{Int64,NamedTuple}}`: A dictionary that stores the price data and path informationfor the tree.
 - `connectivity::Dict{Int64,Array{Int64,1}}`: A dictionary that stores the connectivity information between nodes.
 """
 mutable struct MyAdjacencyRecombiningCommodityPriceTree <: AbstractPriceTreeModel
 
     # data -
-    data::Dict{Int64,Float64}
+    data::Union{Nothing, Dict{Int64,NamedTuple}}
     connectivity::Dict{Int64,Array{Int64,1}}
     h::Int64 # height of the tree
     n::Int64 # branching factor
