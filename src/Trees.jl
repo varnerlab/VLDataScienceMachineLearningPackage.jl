@@ -97,7 +97,7 @@ function populate!(model::MyAdjacencyRecombiningCommodityPriceTree, price::Float
     Nₕ = binomial(h + n, h) # number of nodes in the tree
 
     # compute the commodity price -
-    P[0] = price # set root price
+    P[0] = (price = price, path = 0) # set root price
     number_of_moves = length(Δ);
     for i ∈ 0:(Nₕ - 1)
         (_, k) = index_counts(i, n) # up, down, ....
