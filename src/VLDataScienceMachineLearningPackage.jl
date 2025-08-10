@@ -22,12 +22,15 @@ export MySarcasmRecordCorpusModel;
 export UnsignedFeatureHashing, SignedFeatureHashing;
 export MySMSSpamHamRecordModel, MySMSSpamHamRecordCorpusModel;
 export MyAdjacencyRecombiningCommodityPriceTree;
+export MyOneDimensionalElementaryWolframRuleModel;
+export WolframDeterministicSimulation, WolframStochasticSimulation;
 
 # methods -
 export tokenize;
 export featurehashing;
 export build;
 export populate!;
+export simulate;
 
 
 end # module VLDataScienceMachineLearningPackage
