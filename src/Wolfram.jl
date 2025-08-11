@@ -1,11 +1,17 @@
 # -- PRIVATE API BELOW HERE ------------------------------------------------------------------------ #
 function _simulate(algorithm::WolframDeterministicSimulation, rulemodel::MyOneDimensionalElementaryWolframRuleModel, initial::Array{Int64,1}; 
-    steps::Int64 = 240, maxnumberofmoves::Union{Int64, Nothing} = nothing)::Dict{Int64, Array{Int64,2}}
+    steps::Int64 = 240, maxnumberofmoves::Union{Int64, Nothing} = nothing, 
+    parameters::Union{Nothing, Dict{Int, Float64}} = nothing,
+    cooldownlength::Int64 = 0)::Dict{Int64, Array{Int64,2}}
     
     # get stuff from model -
     radius = rulemodel.radius; # how many cells am I looking at?
     number_of_colors = rulemodel.number_of_colors; # how many colors (states) can each cell have?
     width = length(initial); # how many cells are there?
+
+    # cooldown -
+    cooldown = Dict{Int64, Int64}(); # cooldown for each cell
+    foreach(i -> cooldown[i] = 0, 1:width); # initialize cooldown for each cell
 
     # initialize -
     frames = Dict{Int64, Array{Int64,2}}();
@@ -63,24 +69,28 @@ function _simulate(algorithm::WolframDeterministicSimulation, rulemodel::MyOneDi
 end
 
 function _simulate(algorithm::WolframStochasticSimulation, rulemodel::MyOneDimensionalElementaryWolframRuleModel, initial::Array{Int64,1}; 
-    steps::Int64 = 240, maxnumberofmoves::Union{Int64, Nothing} = nothing)::Dict{Int64, Array{Int64,2}}
-    
+    steps::Int64 = 240, maxnumberofmoves::Union{Int64, Nothing} = nothing, 
+    parameters::Union{Nothing, Dict{Int, Float64}} = nothing,
+    cooldownlength::Int64 = 0)::Dict{Int64, Array{Int64,2}}
+
     # get stuff from model
     radius = rulemodel.radius; # how many cells am I looking at?
     number_of_colors = rulemodel.number_of_colors; # how many colors (states) can each cell have?
     width = length(initial); # how many cells are there?
-    pq = PriorityQueue{Int64, Int64}(); # will hold who will move first
-    λ = round(Int, width/2); # center of the grid
-    d = Poisson(λ); # priority of movement
+    q = Queue{Int64}(); # which cells will update?
 
     # initialize -
     frames = Dict{Int64, Array{Int64,2}}();
     frame = Array{Int64,2}(undef, steps, width) |> X -> fill!(X, 0);
 
+    # cooldown -
+    cooldown = Dict{Int64, Int64}(); # cooldown for each cell
+    foreach(i -> cooldown[i] = 0, 1:width); # initialize cooldown for each cell
+
     # set the initial state -
     foreach(i -> frame[1,i] = initial[i], 1:width);    
-    frames[1] = frame; # set the initial frame -
-    
+    frames[1] = frame; # set the initial frame
+
     # main loop -
     for time ∈ 2:steps
 
@@ -90,13 +100,21 @@ function _simulate(algorithm::WolframStochasticSimulation, rulemodel::MyOneDimen
 
         # generate priority of movement -
         for i ∈ 1:width
-            enqueue!(pq, i, rand(d));
+            pᵢ = parameters === nothing ? 1.0 : parameters[i]; # probability of movement of cell i
+            if (cooldown[i] == 0 && rand() < pᵢ && i ∉ collect(q)) # if the cell is not cooling down
+                enqueue!(q, i); # add to queue
+            end
         end
       
         # which cell moves first?
         movecount = 0;
-        while (isempty(pq) == false && (maxnumberofmoves === nothing || movecount ≤ maxnumberofmoves))
-            i = dequeue!(pq); # a random cell goes -   
+        while (isempty(q) == false && (maxnumberofmoves === nothing || movecount ≤ maxnumberofmoves))
+            i = dequeue!(q); # a random cell goes -
+
+            # ok, index i is going to make a move -
+            if (cooldownlength > 0)
+                cooldown[i] = cooldownlength; # set cooldown
+            end
 
             index = nothing;
             if (i == 1)
@@ -132,7 +150,10 @@ function _simulate(algorithm::WolframStochasticSimulation, rulemodel::MyOneDimen
             movecount += 1;
         end
 
-        empty!(pq); # clear the queue
+        empty!(q); # clear the queue
+
+        # tick cooldown
+        foreach(i -> cooldown[i] = max(0, cooldown[i] - 1), 1:width);
 
         # set the frame -
         frames[time] = frame;
@@ -164,8 +185,10 @@ The simulate function runs a Wolfram simulation based on the provided rule model
 """
 function simulate(rulemodel::MyOneDimensionalElementaryWolframRuleModel, initial::Array{Int64,1}; 
     steps::Int64 = 24, maxnumberofmoves::Union{Int64, Nothing} = nothing, 
+    cooldownlength::Int64 = 0, parameters::Union{Nothing, Dict{Int, Float64}} = nothing,
     algorithm::AbstractWolframSimulationAlgorithm)::Dict{Int64, Array{Int64,2}}
 
-    return _simulate(algorithm, rulemodel, initial; steps=steps, maxnumberofmoves=maxnumberofmoves);
+    return _simulate(algorithm, rulemodel, initial; steps=steps, 
+        maxnumberofmoves=maxnumberofmoves, cooldownlength=cooldownlength, parameters=parameters);
 end
 # -- PUBLIC API ABOVE HERE ------------------------------------------------------------------------ #
