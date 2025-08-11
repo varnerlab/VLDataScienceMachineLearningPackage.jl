@@ -117,4 +117,39 @@ function populate!(model::MyAdjacencyRecombiningCommodityPriceTree,
     # return the updated model -
     return model;
 end
+
+"""
+    function populate!(model::MyFullGeneralAdjacencyTree, configuration::Function)::MyFullGeneralAdjacencyTree
+
+Populates the data for the tree model using the provided configuration function. 
+
+### Arguments
+- `model::MyFullGeneralAdjacencyTree`: The tree model instance to populate.
+- `configuration::Function`: A function that takes two arguments (level and index) and returns a NamedTuple with the configuration data for that node.
+
+### Returns
+- `MyFullGeneralAdjacencyTree`: The updated tree model with populated data.
+"""
+function populate!(model::MyFullGeneralAdjacencyTree, configuration::Function)::MyFullGeneralAdjacencyTree
+
+    # initialize -
+    data = Dict{Int64,NamedTuple}();
+    n = model.n; # branching factor
+    h = model.h; # height of the tree
+    
+    # compute the data for this tree by calling the configuration function -
+    for i ∈ 0:h
+        offset = (n^h - 1)/(n - 1)
+        for k ∈ 1:n
+            local_index = offset + k;
+            data[local_index] = configuration(i, k);
+        end
+    end
+   
+    # update the model -
+    model.data = data;
+
+    # return the updated model -
+    return model;
+end
 # -- PACKAGE API ABOVE ───────────────────────────────────────────────────────────────────--------- #

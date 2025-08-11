@@ -200,6 +200,52 @@ function build(modeltype::Type{MyAdjacencyRecombiningCommodityPriceTree},
 end
 
 """
+    function build(modeltype::Type{MyFullGeneralAdjacencyTree}, data::NamedTuple) -> MyFullGeneralAdjacencyTree
+
+This function builds a `MyFullGeneralAdjacencyTree` model given the data in the `NamedTuple`. 
+It populates the connectivity of the tree. However, it does not populate the data for the tree nodes.
+We populate the data using the `populate!` method.
+
+### Arguments
+- `modeltype::Type{MyFullGeneralAdjacencyTree}`: The type of the model to build.
+- `data::NamedTuple`: The data to use to build the model. The NamedTuple must have the following fields:
+    - `h::Int64`: The height of the tree.
+    - `n::Int64`: The branching factor of the tree.
+
+### Returns
+- `MyFullGeneralAdjacencyTree`: The constructed tree model.
+"""
+function build(modeltype::Type{MyFullGeneralAdjacencyTree}, 
+    data::NamedTuple)::MyFullGeneralAdjacencyTree
+
+    # get data -
+    n = data.n; # branching factor
+    h = data.h; # height of the tree
+    model = modeltype(); # create an empty model
+    
+    # initialize -
+    connectivity = Dict{Int64, Array{Int64,1}}()
+    Nₕ = (n^(h+1) - 1) ÷ (n - 1); # number of nodes in the tree
+
+    # main loop -
+    for i ∈ 0:(Nₕ - 1)
+        for k ∈ 1:n
+            connectivity[i] = n*i + k; # children indices
+        end
+    end
+
+    
+    # set the data, and connectivity for the model -
+    model.data = nothing; # we don't have any data yet, set as nothing
+    model.connectivity = connectivity;
+    model.h = h; # height of the tree
+    model.n = n; # branching factor
+
+    # return -
+    return model;
+end
+
+"""
     function build(modeltype::Type{MyOneDimensionalElementaryWolframRuleModel}, data::NamedTuple) -> MyOneDimensionalElementarWolframRuleModel
 
 This `build` method constructs an instance of the [`MyOneDimensionalElementaryWolframRuleModel`](@ref) type using the data in a [NamedTuple](https://docs.julialang.org/en/v1/base/base/#Core.NamedTuple).

@@ -2,6 +2,7 @@ abstract type AbstractTextRecordModel end
 abstract type AbstractTextDocumentCorpusModel end
 abstract type AbstractFeatureHashingAlgorithm end
 abstract type AbstractPriceTreeModel end
+abstract type AbstractTreeModel end
 abstract type AbstractRuleModel end
 abstract type AbstractWolframSimulationAlgorithm end
 
@@ -109,6 +110,29 @@ mutable struct MyAdjacencyRecombiningCommodityPriceTree <: AbstractPriceTreeMode
     MyAdjacencyRecombiningCommodityPriceTree() = new()
 end
 
+""" 
+    mutable struct MyFullGeneralAdjacencyTree <: AbstractTreeModel
+
+The `MyFullGeneralAdjacencyTree` type is a model of a full general adjacency tree that uses a dictionary to store the tree structure.
+There is a build and populate! method to build the tree and populate it with data.
+
+### Fields
+- `data::Union{Nothing, Dict{Int64,NamedTuple}}`: A dictionary that stores the node data for the tree.
+- `connectivity::Dict{Int64,Array{Int64,1}}`: A dictionary that stores the connectivity information between nodes.
+- `h::Int64`: The height of the tree.
+- `n::Int64`: The branching factor of the tree.
+"""
+mutable struct MyFullGeneralAdjacencyTree <: AbstractTreeModel
+
+    # data -
+    data::Union{Nothing, Dict{Int64,NamedTuple}}
+    connectivity::Dict{Int64,Array{Int64,1}}
+    h::Int64 # height of the tree
+    n::Int64 # branching factor
+
+    # constructor
+    MyFullGeneralAdjacencyTree() = new()
+end
 
 """
     mutable struct MyOneDimensionalElementaryWolframRuleModel <: AbstractRuleModel

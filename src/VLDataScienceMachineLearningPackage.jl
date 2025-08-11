@@ -21,7 +21,7 @@ export MySarcasmRecordModel;
 export MySarcasmRecordCorpusModel;
 export UnsignedFeatureHashing, SignedFeatureHashing;
 export MySMSSpamHamRecordModel, MySMSSpamHamRecordCorpusModel;
-export MyAdjacencyRecombiningCommodityPriceTree;
+export MyAdjacencyRecombiningCommodityPriceTree, MyFullGeneralAdjacencyTree;
 export MyOneDimensionalElementaryWolframRuleModel;
 export WolframDeterministicSimulation, WolframStochasticSimulation;
 
