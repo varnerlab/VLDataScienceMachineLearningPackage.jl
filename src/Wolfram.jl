@@ -1,6 +1,6 @@
 # -- PRIVATE API BELOW HERE ------------------------------------------------------------------------ #
 function _simulate(algorithm::WolframDeterministicSimulation, rulemodel::MyOneDimensionalElementaryWolframRuleModel, initial::Array{Int64,1}; 
-    steps::Int64 = 240)::Dict{Int64, Array{Int64,2}}
+    steps::Int64 = 240, maxnumberofmoves::Union{Int64, Nothing} = nothing)::Dict{Int64, Array{Int64,2}}
     
     # get stuff from model -
     radius = rulemodel.radius; # how many cells am I looking at?
