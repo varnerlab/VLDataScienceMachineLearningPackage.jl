@@ -229,9 +229,9 @@ function build(modeltype::Type{MyFullGeneralAdjacencyTree},
 
     # main loop -
     for i ∈ 0:(Nₕ - 1)
-        children = Array{Int64,1}(undef, n);
+        children = Array{Int64,1}();
         for k ∈ 1:n
-            children[k] = n*i + k; # children indices
+            push!(children, n*i + k); # children indices
         end
         connectivity[i] = children;
     end
