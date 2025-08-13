@@ -142,7 +142,7 @@ function populate!(model::MyFullGeneralAdjacencyTree, configuration::Function)::
         offset = (n^i - 1)/(n - 1)
 
         if (offset == 0) # root node
-            data[0] = configuration(i, 0, nothing);
+            data[0] = configuration(i, 0, offset, nothing);
         end
         
         for k ∈ 1:n
