@@ -148,7 +148,7 @@ function populate!(model::MyFullGeneralAdjacencyTree, configuration::Function)::
 
             # compute the parent index -
             parent_index = ((local_index - 1) ÷ n) |> floor |> Int;
-            data[local_index] = configuration(i, k, offset, parent_index);
+            data[local_index - 1] = configuration(i, k, offset, parent_index);
         end
     end
    
