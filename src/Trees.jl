@@ -136,21 +136,19 @@ function populate!(model::MyFullGeneralAdjacencyTree, configuration::Function)::
     data = Dict{Int64,NamedTuple}();
     n = model.n; # branching factor
     h = model.h; # height of the tree
-    
+    Nₕ = (n^(h + 1) - 1) ÷ (n - 1); # number of nodes in the tree
+
+    # populate the data for the root of the tree -
+    data[0] = configuration(0, 0, nothing); # root node configuration
+
     # compute the data for this tree by calling the configuration function -
-    counter = 0;
-    for i ∈ 0:h
-        offset = (n^i - 1)/(n - 1)
+    for i ∈ 0:(Nₕ - 1)
+        
+        # what are the children of node i?
+        children = model.connectivity[i] |> sort;
 
-        for k ∈ 1:n
-
-            # what is my index?
-            counter += 1;
-            local_index = counter;
-
-            # compute the parent index -
-            parent_index = ((local_index - 1) ÷ n) |> floor |> Int;
-            data[local_index] = configuration(i, k, offset, parent_index);
+        for k ∈ children
+            data[k] = configuration(i, k, data[i]);
         end
     end
    
