@@ -125,7 +125,7 @@ Populates the data for the tree model using the provided configuration function.
 
 ### Arguments
 - `model::MyFullGeneralAdjacencyTree`: The tree model instance to populate.
-- `configuration::Function`: A function that takes two arguments (level and index) and returns a NamedTuple with the configuration data for that node.
+- `configuration::Function`: A function that takes four arguments (level, index, offset and parentdatapayload) and returns a NamedTuple with the configuration data for that node.
 
 ### Returns
 - `MyFullGeneralAdjacencyTree`: The updated tree model with populated data.
@@ -141,16 +141,19 @@ function populate!(model::MyFullGeneralAdjacencyTree, configuration::Function)::
     for i ∈ 0:h
         offset = (n^i - 1)/(n - 1)
 
-        if (i == 0)
+        if (offset == 0) # root node
             data[0] = configuration(i, 0, nothing);
         end
         
         for k ∈ 1:n
 
-            previous_data = i == 0 ? nothing : data[offset + k - 1];
-
+            # what is my index?
             local_index = offset + k;
-            data[local_index] = configuration(i, k);
+
+            # compute the parent index -
+            parent_index = ((local_index - 1) ÷ n) |> floor |> Int;
+            parentdatapayload = haskey(data, parent_index) ? data[parent_index] : nothing; # get parent data if it exists
+            data[local_index] = configuration(i, k, offset, parentdatapayload);
         end
     end
    
