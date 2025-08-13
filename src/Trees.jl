@@ -148,8 +148,7 @@ function populate!(model::MyFullGeneralAdjacencyTree, configuration::Function)::
 
             # compute the parent index -
             parent_index = ((local_index - 1) ÷ n) |> floor |> Int;
-            parentdatapayload = haskey(data, parent_index) ? data[parent_index] : nothing; # get parent data if it exists
-            data[local_index] = configuration(i, k, offset, parentdatapayload);
+            data[local_index] = configuration(i, k, offset, parent_index);
         end
     end
    
