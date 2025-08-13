@@ -138,13 +138,15 @@ function populate!(model::MyFullGeneralAdjacencyTree, configuration::Function)::
     h = model.h; # height of the tree
     
     # compute the data for this tree by calling the configuration function -
+    counter = 0;
     for i ∈ 0:h
         offset = (n^i - 1)/(n - 1)
 
         for k ∈ 1:n
 
             # what is my index?
-            local_index = offset + k;
+            counter += 1;
+            local_index = counter;
 
             # compute the parent index -
             parent_index = ((local_index - 1) ÷ n) |> floor |> Int;
