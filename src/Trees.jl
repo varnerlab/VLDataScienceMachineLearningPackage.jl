@@ -139,7 +139,7 @@ function populate!(model::MyFullGeneralAdjacencyTree, configuration::Function)::
     Nₕ = (n^(h + 1) - 1) ÷ (n - 1); # number of nodes in the tree
 
     # populate the data for the root of the tree -
-    data[0] = configuration(0, 0, nothing); # root node configuration
+    data[0] = configuration(0, 0, 0, nothing); # root node has no parent
 
     # compute the data for this tree by calling the configuration function -
     for i ∈ 0:(Nₕ - 1)
