@@ -140,7 +140,15 @@ function populate!(model::MyFullGeneralAdjacencyTree, configuration::Function)::
     # compute the data for this tree by calling the configuration function -
     for i ∈ 0:h
         offset = (n^i - 1)/(n - 1)
+
+        if (i == 0)
+            data[0] = configuration(i, 0, nothing);
+        end
+        
         for k ∈ 1:n
+
+            previous_data = i == 0 ? nothing : data[offset + k - 1];
+
             local_index = offset + k;
             data[local_index] = configuration(i, k);
         end
