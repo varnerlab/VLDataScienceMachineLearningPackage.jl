@@ -9,4 +9,5 @@ VLDataScienceMachineLearningPackage.MyCommonForenameDataset
 VLDataScienceMachineLearningPackage.MySarcasmCorpus
 VLDataScienceMachineLearningPackage.MySMSSpamHamCorpus
 VLDataScienceMachineLearningPackage.MyTrainingMarketDataSet
+VLDataScienceMachineLearningPackage.MyGraphEdgeModels
 ```

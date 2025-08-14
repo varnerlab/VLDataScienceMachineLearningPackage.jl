@@ -260,4 +260,61 @@ function MySMSSpamHamCorpus()::MySMSSpamHamRecordCorpusModel
     return document;
 end
 
+"""
+    function MyGraphEdgeModels(filepath::String, edgeparser::Function; comment::Char='#', 
+    delim::Char=',')::Dict{Int64,MyGraphEdgeModel}
+
+Function to parse an edge file and return a dictionary of edges models.
+
+### Arguments
+- `filepath::String`: The path to the edge file.
+- `edgeparser::Function`: A callback function to parse each edge line. This function should take a line as input, and a delimiter character, and return a tuple of the form `(source, target, data)`, where:
+  - `source::Int64`: The source node ID.
+  - `target::Int64`: The target node ID.
+  - `data::Any`: Any additional data associated with the edge, e.g., a weight, a tuple of information, etc.
+
+### Returns
+- `Dict{Int64,MyGraphEdgeModel}`: A dictionary of edge models.
+"""
+function MyGraphEdgeModels(filepath::String, edgeparser::Function; comment::Char='#', 
+    delim::Char=',')::Dict{Int64,MyGraphEdgeModel}
+
+    # quick validation - ensure the path exists and is a regular file
+    if !isfile(filepath)
+        throw(ArgumentError("Invalid filepath: '$filepath' does not point to an existing regular file"))
+    end
+
+    # initialize
+    edges = Dict{Int64, MyGraphEdgeModel}()
+    linecounter = 0;
+    
+    # main -
+    open(filepath, "r") do file # open a stream to the file
+        for line ∈ eachline(file) # process each line in a file, one at a time
+            
+            # check: do we have comments?
+            if (contains(line, comment) == true) || (isempty(line) == true)
+                continue; # skip this line, and move to the next one
+            end
+            
+            # call the edge parser callback function -
+            (s, t, data) = edgeparser(line, delim);
+
+            # build the edge model -
+            edges[linecounter] = build(MyGraphEdgeModel, (
+                source = s,
+                target = t,
+                weight = data,
+                id = linecounter
+            ));
+
+            # update the line counter -
+            linecounter += 1;
+        end
+    end
+
+    # return -
+    return edges;
+end
+
 # -- PUBLIC FUNCTIONS ABOVE HERE ------------------------------------------------------------------------------ #
