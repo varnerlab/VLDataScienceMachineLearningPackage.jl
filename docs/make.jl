@@ -13,6 +13,7 @@ makedocs(
         "Factory" => "factory.md",
         "Text" => "text.md",
         "Wolfram" => "wolfram.md",
+        "Graphs" => "graphs.md",
     ], 
 )
 

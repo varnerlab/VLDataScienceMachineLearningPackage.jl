@@ -292,3 +292,75 @@ function build(modeltype::Type{MyOneDimensionalElementaryWolframRuleModel},
     # return
     return model;
 end
+
+
+function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where T <: MyAbstractGraphModel
+
+    # build and empty graph model -
+    graphmodel = model();
+    nodes = Dict{Int64, MyGraphNodeModel}();
+    edges = Dict{Tuple{Int64, Int64}, Int64}();
+    children = Dict{Int64, Set{Int64}}();
+
+    # let's build a list of nodes ids -
+    tmp_node_ids = Set{Int64}();
+    for (_,v) ∈ edgemodels
+        push!(tmp_node_ids, v.source);
+        push!(tmp_node_ids, v.target);
+    end
+    list_of_node_ids = tmp_node_ids |> collect |> sort;
+
+    # remap the node ids to a contiguous ordering -
+    nodeidmap = Dict{Int64, Int64}();
+    nodecounter = 1;
+    for id ∈ list_of_node_ids
+        nodeidmap[id] = nodecounter;
+        nodecounter += 1;
+    end
+
+    # build the nodes models -
+    [nodes[nodeidmap[id]] = MyGraphNodeModel(nodeidmap[id], nothing) for id ∈ list_of_node_ids];
+
+    # build the edges -
+    for (_, v) ∈ edgemodels
+        source_index = nodeidmap[v.source];
+        target_index = nodeidmap[v.target];
+        edges[(source_index, target_index)] = v.weight;
+    end
+
+    # compute the children -
+    for id ∈ list_of_node_ids
+        newid = nodeidmap[id];
+        node = nodes[newid];
+        children[newid] = _children(edges, node.id);
+    end
+
+    # add stuff to model -
+    graphmodel.nodes = nodes;
+    graphmodel.edges = edges;
+    graphmodel.children = children;
+
+    # return -
+    return graphmodel;
+end
+
+function build(edgemodel::Type{MyGraphEdgeModel}, data::NamedTuple)::MyGraphEdgeModel
+   
+    # initialize -
+    model = edgemodel(); # build an empty edge model
+
+    # get data from the tuple -
+    id = data.id;
+    source = data.source;
+    target = data.target;
+    weight = data.weight;
+    
+    # populate -
+    model.id = id;
+    model.source = source;
+    model.target = target;
+    model.weight = weight;
+
+    # return -
+    return model
+end

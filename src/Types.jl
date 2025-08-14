@@ -5,6 +5,12 @@ abstract type AbstractPriceTreeModel end
 abstract type AbstractTreeModel end
 abstract type AbstractRuleModel end
 abstract type AbstractWolframSimulationAlgorithm end
+abstract type MyAbstractGraphModel end
+abstract type MyAbstractGraphNodeModel end
+abstract type MyAbstractGraphEdgeModel end
+abstract type MyAbstractGraphSearchAlgorithm end
+abstract type MyAbstractGraphFlowAlgorithm end
+
 
 """
     MySMSSpamHamRecordModel <: AbstractTextRecordModel
@@ -31,8 +37,8 @@ end
 Model for a collection of records in the SMS Spam Ham dataset.
 
 ### Fields
-- `records::Dict{Int, MySMSSpamHamRecordModel}`: The records in the document (collection of records)
-- `tokens::Dict{String, Int64}`: A dictionary of tokens in alphabetical order (key: token, value: position) for the entire document
+- `records::Dict{Int, MySMSSpamHamRecordModel}` - The records in the document (collection of records)
+- `tokens::Dict{String, Int64}` - A dictionary of tokens in alphabetical order (key: token, value: position) for the entire document
 """
 mutable struct MySMSSpamHamRecordCorpusModel <: AbstractTextDocumentCorpusModel
     
@@ -50,8 +56,8 @@ end
 
 Model for a record in the Sarcasm dataset.
 
-### Fields 
-- `data::Array{String, Any}`: The data found in the record in the order they were found
+### Fields
+- `data::Array{String, Any}` - The data found in the record in the order they were found
 """
 mutable struct MySarcasmRecordModel <: AbstractTextRecordModel
     
@@ -71,8 +77,8 @@ end
 Model for a collection of records in the Sarcasm dataset.
 
 ### Fields
-- `records::Dict{Int, MySarcasmRecordModel}`: The records in the document (collection of records)
-- `tokens::Dict{String, Int64}`: A dictionary of tokens in alphabetical order (key: token, value: position) for the entire document
+- `records::Dict{Int, MySarcasmRecordModel}` - The records in the document (collection of records)
+- `tokens::Dict{String, Int64}` - A dictionary of tokens in alphabetical order (key: token, value: position) for the entire document
 """
 mutable struct MySarcasmRecordCorpusModel <: AbstractTextDocumentCorpusModel
     
@@ -95,8 +101,8 @@ The `MyAdjacencyRecombiningCommodityPriceTree` type is a model of a commodity pr
 This model stores the connectivity information between nodes.
 
 ### Fields
-- `data::Union{Nothing, Dict{Int64,NamedTuple}}`: A dictionary that stores the price data and path informationfor the tree.
-- `connectivity::Dict{Int64,Array{Int64,1}}`: A dictionary that stores the connectivity information between nodes.
+- `data::Union{Nothing, Dict{Int64,NamedTuple}}` - A dictionary that stores the price data and path informationfor the tree.
+- `connectivity::Dict{Int64,Array{Int64,1}}` - A dictionary that stores the connectivity information between nodes.
 """
 mutable struct MyAdjacencyRecombiningCommodityPriceTree <: AbstractPriceTreeModel
 
@@ -117,10 +123,10 @@ The `MyFullGeneralAdjacencyTree` type is a model of a full general adjacency tre
 There is a build and populate! method to build the tree and populate it with data.
 
 ### Fields
-- `data::Union{Nothing, Dict{Int64,NamedTuple}}`: A dictionary that stores the node data for the tree.
-- `connectivity::Dict{Int64,Array{Int64,1}}`: A dictionary that stores the connectivity information between nodes.
-- `h::Int64`: The height of the tree.
-- `n::Int64`: The branching factor of the tree.
+- `data::Union{Nothing, Dict{Int64,NamedTuple}}` - A dictionary that stores the node data for the tree.
+- `connectivity::Dict{Int64,Array{Int64,1}}` - A dictionary that stores the connectivity information between nodes.
+- `h::Int64` - The height of the tree.
+- `n::Int64` - The branching factor of the tree.
 """
 mutable struct MyFullGeneralAdjacencyTree <: AbstractTreeModel
 
@@ -139,10 +145,10 @@ end
 
 The `MyOneDimensionalElementarWolframRuleModel` mutable struct represents a one-dimensional elementary Wolfram rule model.
 
-### Required fields
-- `index::Int`: The index of the rule
-- `radius::Int`: The radius, i.e, the number of cells that influence the next state for this rule
-- `rule::Dict{Int,Int}`: A dictionary that holds the rule where the `key` is the binary representation of the neighborhood and the `value` is the next state
+### Fields
+- `index::Int` - The index of the rule
+- `radius::Int` - The radius, i.e, the number of cells that influence the next state for this rule
+- `rule::Dict{Int,Int}` - A dictionary that holds the rule where the `key` is the binary representation of the neighborhood and the `value` is the next state
 """
 mutable struct MyOneDimensionalElementaryWolframRuleModel <: AbstractRuleModel
     
@@ -158,3 +164,104 @@ end
 
 struct WolframDeterministicSimulation <: AbstractWolframSimulationAlgorithm end
 struct WolframStochasticSimulation <: AbstractWolframSimulationAlgorithm end
+
+# -- GRAPHS BELOW HERE ---------------------------------------------------------------------------- #
+"""
+    mutable struct MyGraphNodeModel
+
+A lightweight mutable node model used in simple graph representations.
+
+### Fields
+- `id::Int64` - Unique integer identifier for the node.
+"""
+mutable struct MyGraphNodeModel <: MyAbstractGraphNodeModel
+   
+   # data -
+   id::Int64
+   data::Union{Nothing, Any}; # this is a little fancy??
+
+   # constructor -
+   MyGraphNodeModel(id::Int64, data::Union{Nothing, Any}) = new(id, data);
+end
+
+"""
+    mutable struct MyGraphEdgeModel
+
+A mutable edge model representing a directed or undirected connection between nodes.
+The model stores a numeric id, endpoint indices, and an optional numeric weight.
+
+### Fields
+- `id::Int64` - Unique integer identifier for the edge.
+- `source::Int64` - Identifier of the source node (or one endpoint).
+- `target::Int64` - Identifier of the target node (or the other endpoint).
+- `weight::Union{Nothing, Float64}` - Optional edge weight; nothing indicates an unweighted edge.
+"""
+mutable struct MyGraphEdgeModel <: MyAbstractGraphEdgeModel
+   
+    # data -
+    id::Int64
+    source::Int64
+    target::Int64
+    weight::Union{Nothing, Any}; # this is a little fancy??
+
+    # constructor -
+    MyGraphEdgeModel() = new();
+end
+
+
+"""
+    mutable struct MySimpleDirectedGraphModel
+
+A minimal mutable directed graph container that keeps node and edge registries
+and a children adjacency map for fast traversal of outgoing neighbors.
+
+### Fields
+- `nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}` - Optional mapping from node id to MyGraphNodeModel. Use nothing when uninitialized.
+- `edges::Union{Nothing, Dict{Tuple{Int, Int}, Int64}}` - Optional mapping from (source, target) tuple to edge id. Use nothing when uninitialized.
+- `children::Union{Nothing, Dict{Int64, Set{Int64}}}` - Optional adjacency map from a node id to the set of its child (outgoing) node ids.
+"""
+mutable struct MySimpleDirectedGraphModel <: MyAbstractGraphModel
+   
+   # data -
+   nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}
+   edges::Union{Nothing, Dict{Tuple{Int, Int}, Int64}}
+   children::Union{Nothing, Dict{Int64, Set{Int64}}}
+
+   # constructor -
+   MySimpleDirectedGraphModel() = new();
+end
+
+"""
+    mutable struct MySimpleUndirectedGraphModel
+
+A minimal mutable undirected graph container that keeps node and edge registries and a children adjacency map for fast traversal of outgoing neighbors.
+
+### Fields
+- `nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}` - Optional mapping from node id to MyGraphNodeModel. Use nothing when uninitialized.
+- `edges::Union{Nothing, Dict{Tuple{Int, Int}, Int64}}` - Optional mapping from (source, target) tuple to edge id. Use nothing when uninitialized.
+- `children::Union{Nothing, Dict{Int64, Set{Int64}}}` - Optional adjacency map from a node id to the set of its child (outgoing) node ids.
+"""
+mutable struct MySimpleUndirectedGraphModel <: MyAbstractGraphModel
+   
+    # data -
+    nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}
+    edges::Union{Nothing, Dict{Tuple{Int, Int}, Int64}}
+    children::Union{Nothing, Dict{Int64, Set{Int64}}}
+ 
+    # constructor -
+    MySimpleUndirectedGraphModel() = new();
+ end
+
+struct DikjstraAlgorithm <: MyAbstractGraphSearchAlgorithm
+   DikjstraAlgorithm() = new();
+end
+
+struct BellmanFordAlgorithm <: MyAbstractGraphSearchAlgorithm
+   BellmanFordAlgorithm() = new();
+end
+
+struct FordFulkersonAlgorithm <: MyAbstractGraphFlowAlgorithm
+   FordFulkersonAlgorithm() = new();
+end
+
+# -- GRAPHS ABOVE HERE ---------------------------------------------------------------------------- #

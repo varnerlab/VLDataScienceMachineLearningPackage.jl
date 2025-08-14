@@ -24,6 +24,8 @@ export MySMSSpamHamRecordModel, MySMSSpamHamRecordCorpusModel;
 export MyAdjacencyRecombiningCommodityPriceTree, MyFullGeneralAdjacencyTree;
 export MyOneDimensionalElementaryWolframRuleModel;
 export WolframDeterministicSimulation, WolframStochasticSimulation;
+export MyGraphNodeModel, MyGraphEdgeModel, MySimpleDirectedGraphModel, MySimpleUndirectedGraphModel, DikjstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm;
+
 
 # methods -
 export tokenize;
@@ -31,6 +33,8 @@ export featurehashing;
 export build;
 export populate!;
 export simulate;
+export children;
+export weight;
 
 
 end # module VLDataScienceMachineLearningPackage
