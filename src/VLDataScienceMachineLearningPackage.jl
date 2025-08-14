@@ -24,7 +24,7 @@ export MySMSSpamHamRecordModel, MySMSSpamHamRecordCorpusModel;
 export MyAdjacencyRecombiningCommodityPriceTree, MyFullGeneralAdjacencyTree;
 export MyOneDimensionalElementaryWolframRuleModel;
 export WolframDeterministicSimulation, WolframStochasticSimulation;
-export MyGraphNodeModel, MyGraphEdgeModel, MySimpleDirectedGraphModel, MySimpleUndirectedGraphModel, DikjstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm;
+export MyGraphNodeModel, MyGraphEdgeModel, MyGraphEdgeModels, MySimpleDirectedGraphModel, MySimpleUndirectedGraphModel, DikjstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm;
 
 
 # methods -
