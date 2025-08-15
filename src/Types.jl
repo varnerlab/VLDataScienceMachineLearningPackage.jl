@@ -5,12 +5,12 @@ abstract type AbstractPriceTreeModel end
 abstract type AbstractTreeModel end
 abstract type AbstractRuleModel end
 abstract type AbstractWolframSimulationAlgorithm end
-abstract type MyAbstractGraphModel end
-abstract type MyAbstractGraphNodeModel end
-abstract type MyAbstractGraphEdgeModel end
-abstract type MyAbstractGraphSearchAlgorithm end
-abstract type MyAbstractGraphFlowAlgorithm end
-abstract type MyAbstractGraphTraversalAlgorithm end
+abstract type AbstractGraphModel end
+abstract type AbstractGraphNodeModel end
+abstract type AbstractGraphEdgeModel end
+abstract type AbstractGraphSearchAlgorithm end
+abstract type AbstractGraphFlowAlgorithm end
+abstract type AbstractGraphTraversalAlgorithm end
 
 
 """
@@ -175,7 +175,7 @@ A lightweight mutable node model used in simple graph representations.
 ### Fields
 - `id::Int64` - Unique integer identifier for the node.
 """
-mutable struct MyGraphNodeModel <: MyAbstractGraphNodeModel
+mutable struct MyGraphNodeModel <: AbstractGraphNodeModel
    
    # data -
    id::Int64
@@ -197,8 +197,8 @@ The model stores a numeric id, endpoint indices, and an optional numeric weight.
 - `target::Int64` - Identifier of the target node (or the other endpoint).
 - `weight::Union{Nothing, Float64}` - Optional edge weight; nothing indicates an unweighted edge.
 """
-mutable struct MyGraphEdgeModel <: MyAbstractGraphEdgeModel
-   
+mutable struct MyGraphEdgeModel <: AbstractGraphEdgeModel
+
     # data -
     id::Int64
     source::Int64
@@ -221,7 +221,7 @@ and a children adjacency map for fast traversal of outgoing neighbors.
 - `edges::Union{Nothing, Dict{Tuple{Int, Int}, Int64}}` - Optional mapping from (source, target) tuple to edge id. Use nothing when uninitialized.
 - `children::Union{Nothing, Dict{Int64, Set{Int64}}}` - Optional adjacency map from a node id to the set of its child (outgoing) node ids.
 """
-mutable struct MySimpleDirectedGraphModel <: MyAbstractGraphModel
+mutable struct MySimpleDirectedGraphModel <: AbstractGraphModel
    
    # data -
    nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}
@@ -242,7 +242,7 @@ A minimal mutable undirected graph container that keeps node and edge registries
 - `edges::Union{Nothing, Dict{Tuple{Int, Int}, Int64}}` - Optional mapping from (source, target) tuple to edge id. Use nothing when uninitialized.
 - `children::Union{Nothing, Dict{Int64, Set{Int64}}}` - Optional adjacency map from a node id to the set of its child (outgoing) node ids.
 """
-mutable struct MySimpleUndirectedGraphModel <: MyAbstractGraphModel
+mutable struct MySimpleUndirectedGraphModel <: AbstractGraphModel
    
     # data -
     nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}
@@ -253,10 +253,10 @@ mutable struct MySimpleUndirectedGraphModel <: MyAbstractGraphModel
     MySimpleUndirectedGraphModel() = new();
  end
 
-struct DikjstraAlgorithm <: MyAbstractGraphSearchAlgorithm end
-struct BellmanFordAlgorithm <: MyAbstractGraphSearchAlgorithm end
-struct FordFulkersonAlgorithm <: MyAbstractGraphFlowAlgorithm end
-struct DepthFirstSearchAlgorithm <: MyAbstractGraphTraversalAlgorithm end
-struct BreadthFirstSearchAlgorithm <: MyAbstractGraphTraversalAlgorithm end
+struct DikjstraAlgorithm <: AbstractGraphSearchAlgorithm end
+struct BellmanFordAlgorithm <: AbstractGraphSearchAlgorithm end
+struct FordFulkersonAlgorithm <: AbstractGraphFlowAlgorithm end
+struct DepthFirstSearchAlgorithm <: AbstractGraphTraversalAlgorithm end
+struct BreadthFirstSearchAlgorithm <: AbstractGraphTraversalAlgorithm end
 
 # -- GRAPHS ABOVE HERE ---------------------------------------------------------------------------- #

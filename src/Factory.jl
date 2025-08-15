@@ -294,7 +294,7 @@ function build(modeltype::Type{MyOneDimensionalElementaryWolframRuleModel},
 end
 
 
-function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where T <: MyAbstractGraphModel
+function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where T <: AbstractGraphModel
 
     # build and empty graph model -
     graphmodel = model();
