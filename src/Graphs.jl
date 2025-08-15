@@ -57,7 +57,7 @@ function _BFS(graph::T, node::MyGraphNodeModel, visited::Set{Int64}, order::Arra
             
             # print - if verbose is true
             if (verbose == true)
-                println("Visiting node: $(v.id). My Queue: $(q)");
+                println("Visiting node: $(v). My Queue: $(q)");
             end
 
             push!(visited, v); # add this node to the visited set
