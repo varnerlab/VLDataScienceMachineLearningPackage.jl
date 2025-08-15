@@ -45,7 +45,6 @@ function _BFS(graph::T, node::MyGraphNodeModel, visited::Set{Int64}, order::Arra
 
     # initialize -
     q = Queue{Int64}();
-    push!(order, node.id); # add this node to the order array
 
     # enqueue the first node -
     enqueue!(q, node.id);
