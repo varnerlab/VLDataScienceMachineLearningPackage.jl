@@ -128,13 +128,14 @@ It maintains a set of visited nodes to avoid cycles and ensure that each node is
 ### Arguments
 - `graph::T`: The graph to traverse.
 - `startnode::MyGraphNodeModel`: The node to start the traversal from.
-- `algorithm::AbstractGraphTraversalAlgorithm`: The algorithm to use for the traversal (DFS or BFS).
+- `algorithm::AbstractGraphTraversalAlgorithm`: The algorithm to use for the traversal. This can be either an instance of `DepthFirstSearchAlgorithm` or `BreadthFirstSearchAlgorithm`. Default is `BreadthFirstSearchAlgorithm`.
 - `verbose::Bool`: Whether to print verbose output (default is false).
 
 ### Returns
 - `Array{Int64,1}`: The collection of visited node IDs in the order they were visited.
 """
-function walk(graph::T, startnode::MyGraphNodeModel, algorithm::AbstractGraphTraversalAlgorithm; 
+function walk(graph::T, startnode::MyGraphNodeModel; 
+    algorithm::AbstractGraphTraversalAlgorithm = BreadthFirstSearchAlgorithm(), 
     verbose::Bool = false)::Array{Int64,1} where T <: AbstractGraphModel
 
     # initialize -
