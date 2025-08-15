@@ -17,6 +17,7 @@ export MyTrainingMarketDataSet;
 export AbstractTextRecordModel;
 export AbstractTextDocumentCorpusModel;
 export AbstractPriceTreeModel;
+export AbstractGraphTraversalAlgorithm;
 export MySarcasmRecordModel;
 export MySarcasmRecordCorpusModel;
 export UnsignedFeatureHashing, SignedFeatureHashing;
@@ -25,6 +26,7 @@ export MyAdjacencyRecombiningCommodityPriceTree, MyFullGeneralAdjacencyTree;
 export MyOneDimensionalElementaryWolframRuleModel;
 export WolframDeterministicSimulation, WolframStochasticSimulation;
 export MyGraphNodeModel, MyGraphEdgeModel, MyGraphEdgeModels, MySimpleDirectedGraphModel, MySimpleUndirectedGraphModel, DikjstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm;
+export DepthFirstSearchAlgorithm, BreadthFirstSearchAlgorithm;
 
 
 # methods -
@@ -35,6 +37,7 @@ export populate!;
 export simulate;
 export children;
 export weight;
+export walk;
 
 
 end # module VLDataScienceMachineLearningPackage

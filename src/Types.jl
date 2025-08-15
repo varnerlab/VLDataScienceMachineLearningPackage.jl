@@ -10,6 +10,7 @@ abstract type MyAbstractGraphNodeModel end
 abstract type MyAbstractGraphEdgeModel end
 abstract type MyAbstractGraphSearchAlgorithm end
 abstract type MyAbstractGraphFlowAlgorithm end
+abstract type MyAbstractGraphTraversalAlgorithm end
 
 
 """
@@ -252,16 +253,10 @@ mutable struct MySimpleUndirectedGraphModel <: MyAbstractGraphModel
     MySimpleUndirectedGraphModel() = new();
  end
 
-struct DikjstraAlgorithm <: MyAbstractGraphSearchAlgorithm
-   DikjstraAlgorithm() = new();
-end
-
-struct BellmanFordAlgorithm <: MyAbstractGraphSearchAlgorithm
-   BellmanFordAlgorithm() = new();
-end
-
-struct FordFulkersonAlgorithm <: MyAbstractGraphFlowAlgorithm
-   FordFulkersonAlgorithm() = new();
-end
+struct DikjstraAlgorithm <: MyAbstractGraphSearchAlgorithm end
+struct BellmanFordAlgorithm <: MyAbstractGraphSearchAlgorithm end
+struct FordFulkersonAlgorithm <: MyAbstractGraphFlowAlgorithm end
+struct DepthFirstSearchAlgorithm <: MyAbstractGraphTraversalAlgorithm end
+struct BreadthFirstSearchAlgorithm <: MyAbstractGraphTraversalAlgorithm end
 
 # -- GRAPHS ABOVE HERE ---------------------------------------------------------------------------- #
