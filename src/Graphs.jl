@@ -256,21 +256,21 @@ function walk(graph::T, startnode::MyGraphNodeModel;
 end
 
 """
-    findshortestpath(graph::T, start::MyGraphNodeModel, 
-        algorithm::AbstractGraphSearchAlgorithm) where T <: AbstractGraphModel
+    findshortestpath(graph::T, start::MyGraphNodeModel; 
+        algorithm::AbstractGraphSearchAlgorithm = BellmanFordAlgorithm()) where T <: AbstractGraphModel
 
 The function computes the shortest paths from a starting node to all other nodes in a graph model. 
 
 ### Arguments
 - `graph::T`: the graph model to search. This is a subtype of `AbstractGraphModel`.
 - `start::MyGraphNodeModel`: the node to start the search from.
-- `algorithm::MyAbstractGraphSearchAlgorithm`: the algorithm to use for the search.
+- `algorithm::MyAbstractGraphSearchAlgorithm`: the algorithm to use for the search. The default is `BellmanFordAlgorithm`, but it can also be `DijkstraAlgorithm`.
 
 ### Returns
 - a tuple of two dictionaries: the first dictionary contains the distances from the starting node to all other nodes, and the second dictionary contains the previous node in the shortest path from the starting node to all other nodes.
 """
-function findshortestpath(graph::T, start::MyGraphNodeModel, 
-    algorithm::AbstractGraphSearchAlgorithm) where T <: AbstractGraphModel
+function findshortestpath(graph::T, start::MyGraphNodeModel;
+    algorithm::AbstractGraphSearchAlgorithm = BellmanFordAlgorithm()) where T <: AbstractGraphModel
     return _search(graph, start, algorithm);
 end
 
