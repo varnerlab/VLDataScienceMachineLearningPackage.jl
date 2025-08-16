@@ -195,7 +195,7 @@ The model stores a numeric id, endpoint indices, and an optional numeric weight.
 - `id::Int64` - Unique integer identifier for the edge.
 - `source::Int64` - Identifier of the source node (or one endpoint).
 - `target::Int64` - Identifier of the target node (or the other endpoint).
-- `weight::Union{Nothing, Float64}` - Optional edge weight; nothing indicates an unweighted edge.
+- `weight::Union{Nothing, Any}` - Optional edge weight; nothing indicates an unweighted edge.
 """
 mutable struct MyGraphEdgeModel <: AbstractGraphEdgeModel
 
@@ -225,7 +225,7 @@ mutable struct MySimpleDirectedGraphModel <: AbstractGraphModel
    
    # data -
    nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}
-   edges::Union{Nothing, Dict{Tuple{Int, Int}, Int64}}
+   edges::Union{Nothing, Dict{Tuple{Int, Int}, Number}}
    children::Union{Nothing, Dict{Int64, Set{Int64}}}
 
    # constructor -
@@ -246,7 +246,7 @@ mutable struct MySimpleUndirectedGraphModel <: AbstractGraphModel
    
     # data -
     nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}
-    edges::Union{Nothing, Dict{Tuple{Int, Int}, Int64}}
+    edges::Union{Nothing, Dict{Tuple{Int, Int}, Number}}
     children::Union{Nothing, Dict{Int64, Set{Int64}}}
  
     # constructor -
