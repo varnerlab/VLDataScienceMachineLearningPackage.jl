@@ -312,6 +312,7 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
     nodes = Dict{Int64, MyGraphNodeModel}();
     edges = Dict{Tuple{Int64, Int64}, Number}();
     children = Dict{Int64, Set{Int64}}();
+    edgesinverse = Dict{Int, Tuple{Int, Int}}();
 
     # let's build a list of nodes ids -
     tmp_node_ids = Set{Int64}();
@@ -339,7 +340,7 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
         edges[(source_index, target_index)] = v.weight;
     end
 
-     # build the inverse edge dictionary edgeid -> (source, target)
+    # build the inverse edge dictionary edgeid -> (source, target)
     n = length(nodes);
     edgecounter = 1;
     for source ∈ 1:n
