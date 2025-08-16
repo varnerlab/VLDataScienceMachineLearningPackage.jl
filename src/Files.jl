@@ -297,17 +297,17 @@ function MyGraphEdgeModels(filepath::String, edgeparser::Function; comment::Char
                 continue; # skip this line, and move to the next one
             end
             
-            # call the edge parser callback function -
-            (s, t, data) = edgeparser(line, delim);
+            # # call the edge parser callback function -
+            (s,t,data) = edgeparser(line, delim);
 
-            # build the edge model -
+            # # build the edge model -
             edges[linecounter] = build(MyGraphEdgeModel, (
                 source = s,
                 target = t,
                 weight = data,
                 id = linecounter
             ));
-
+            
             # update the line counter -
             linecounter += 1;
         end

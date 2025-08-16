@@ -1,4 +1,4 @@
-function _children(edges::Dict{Tuple{Int64, Int64}, Int64}, id::Int64)::Set{Int64}
+function _children(edges::Dict{Tuple{Int64, Int64}, Number}, id::Int64)::Set{Int64}
     
     # initialize -
     childrenset = Set{Int64}();
