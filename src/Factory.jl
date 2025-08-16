@@ -299,7 +299,7 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
     # build and empty graph model -
     graphmodel = model();
     nodes = Dict{Int64, MyGraphNodeModel}();
-    edges = Dict{Tuple{Int64, Int64}, Int64}();
+    edges = Dict{Tuple{Int64, Int64}, Number}();
     children = Dict{Int64, Set{Int64}}();
 
     # let's build a list of nodes ids -
