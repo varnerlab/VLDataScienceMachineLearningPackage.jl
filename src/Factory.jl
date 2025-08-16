@@ -293,7 +293,18 @@ function build(modeltype::Type{MyOneDimensionalElementaryWolframRuleModel},
     return model;
 end
 
+"""
+    function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where T <: AbstractGraphModel
 
+This function builds a graph model from a dictionary of edge models.
+
+### Arguments
+- `model::Type{T}`: The type of graph model to build, where `T` is a subtype of `AbstractGraphModel`.
+- `edgemodels::Dict{Int64, MyGraphEdgeModel}`: A dictionary of edge models to use for building the graph.
+
+### Returns
+- `T`: The constructed graph model, where `T` is a subtype of `AbstractGraphModel`.
+"""
 function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where T <: AbstractGraphModel
 
     # build and empty graph model -
@@ -328,6 +339,18 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
         edges[(source_index, target_index)] = v.weight;
     end
 
+     # build the inverse edge dictionary edgeid -> (source, target)
+    n = length(nodes);
+    edgecounter = 1;
+    for source ∈ 1:n
+        for target ∈ 1:n
+            if haskey(edges, (source, target)) == true
+                edgesinverse[edgecounter] = (source, target);
+                edgecounter += 1;
+            end
+        end
+    end
+    
     # compute the children -
     for id ∈ list_of_node_ids
         newid = nodeidmap[id];
@@ -335,9 +358,11 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
         children[newid] = _children(edges, node.id);
     end
 
+
     # add stuff to model -
     graphmodel.nodes = nodes;
     graphmodel.edges = edges;
+    graphmodel.edgesinverse = edgesinverse;
     graphmodel.children = children;
 
     # return -

@@ -227,6 +227,7 @@ mutable struct MySimpleDirectedGraphModel <: AbstractGraphModel
    nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}
    edges::Union{Nothing, Dict{Tuple{Int, Int}, Number}}
    children::Union{Nothing, Dict{Int64, Set{Int64}}}
+   edgesinverse::Dict{Int, Tuple{Int, Int}} # map between edge id and source and target
 
    # constructor -
    MySimpleDirectedGraphModel() = new();
@@ -248,6 +249,7 @@ mutable struct MySimpleUndirectedGraphModel <: AbstractGraphModel
     nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}
     edges::Union{Nothing, Dict{Tuple{Int, Int}, Number}}
     children::Union{Nothing, Dict{Int64, Set{Int64}}}
+    edgesinverse::Dict{Int, Tuple{Int, Int}} # map between edge id and source and target
  
     # constructor -
     MySimpleUndirectedGraphModel() = new();
