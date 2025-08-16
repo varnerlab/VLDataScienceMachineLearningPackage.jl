@@ -6,4 +6,5 @@ We work with various graph structures in this package, including directed and un
 VLDataScienceMachineLearningPackage.children
 VLDataScienceMachineLearningPackage.weight
 VLDataScienceMachineLearningPackage.walk
+VLDataScienceMachineLearningPackage.findshortestpath
 ```
