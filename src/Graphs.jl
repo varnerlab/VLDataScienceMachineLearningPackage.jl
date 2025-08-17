@@ -72,7 +72,7 @@ function _BFS(graph::T, node::MyGraphNodeModel, visited::Set{Int64}, order::Arra
     end
 end
 
-function _search(graph::T, start::MyGraphNodeModel, algorithm::DikjstraAlgorithm) where T <: AbstractGraphModel
+function _search(graph::T, start::MyGraphNodeModel, algorithm::DijkstraAlgorithm) where T <: AbstractGraphModel
     
     # initialize -
     distances = Dict{Int64, Float64}();

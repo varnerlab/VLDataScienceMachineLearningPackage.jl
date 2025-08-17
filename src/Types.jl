@@ -255,7 +255,7 @@ mutable struct MySimpleUndirectedGraphModel <: AbstractGraphModel
     MySimpleUndirectedGraphModel() = new();
  end
 
-struct DikjstraAlgorithm <: AbstractGraphSearchAlgorithm end
+struct DijkstraAlgorithm <: AbstractGraphSearchAlgorithm end
 struct BellmanFordAlgorithm <: AbstractGraphSearchAlgorithm end
 struct FordFulkersonAlgorithm <: AbstractGraphFlowAlgorithm end
 struct DepthFirstSearchAlgorithm <: AbstractGraphTraversalAlgorithm end

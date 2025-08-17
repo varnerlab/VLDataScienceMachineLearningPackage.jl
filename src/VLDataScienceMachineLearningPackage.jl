@@ -27,7 +27,7 @@ export MyOneDimensionalElementaryWolframRuleModel;
 export WolframDeterministicSimulation, WolframStochasticSimulation;
 export MyGraphNodeModel, MyGraphEdgeModel, MyGraphEdgeModels, MySimpleDirectedGraphModel, MySimpleUndirectedGraphModel, DikjstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm;
 export DepthFirstSearchAlgorithm, BreadthFirstSearchAlgorithm;
-export DikjstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm;
+export DijkstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm;
 
 
 # methods -
