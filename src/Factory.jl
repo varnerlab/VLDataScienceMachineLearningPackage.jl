@@ -341,15 +341,10 @@ function build(model::Type{T}, edgemodels::Dict{Int64, MyGraphEdgeModel}) where 
     end
 
     # build the inverse edge dictionary edgeid -> (source, target)
-    n = length(nodes);
-    edgecounter = 1;
-    for source ∈ 1:n
-        for target ∈ 1:n
-            if haskey(edges, (source, target)) == true
-                edgesinverse[edgecounter] = (source, target);
-                edgecounter += 1;
-            end
-        end
+    for (id, model) ∈ edgemodels
+        source_index = nodeidmap[model.source];
+        target_index = nodeidmap[model.target];
+        edgesinverse[id] = (source_index, target_index);
     end
     
     # compute the children -
