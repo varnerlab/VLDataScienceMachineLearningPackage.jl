@@ -252,6 +252,8 @@ function _flow(algorithm::FordFulkersonAlgorithm, C::AbstractMatrix{T}, source::
     F = zeros(T, n, n)
     maxflow = zero(T)
     flows = Dict{Tuple{Int64,Int64}, T}();
+    s = source;
+    t = sink;
 
     # run the search -
     while true
@@ -280,6 +282,8 @@ function _flow(algorithm::EdmondsKarpAlgorithm, C::AbstractMatrix{T}, source::In
     F = zeros(T, n, n)
     maxflow = zero(T)
     flows = Dict{Tuple{Int64,Int64}, T}();
+    s = source;
+    t = sink;
 
     # run the search -
     while true
