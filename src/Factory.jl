@@ -505,7 +505,7 @@ function build(modeltype::Type{MyDirectedBipartiteGraphModel}, data::NamedTuple)
     model.children = children;
     model.capacity = capacity;
     model.source = s;
-    model.target = t;
+    model.sink = t;
 
     # return -
     return model
