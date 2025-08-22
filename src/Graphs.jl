@@ -158,6 +158,148 @@ function _search(graph::T, start::MyGraphNodeModel, algorithm::BellmanFordAlgori
     return distances, previous;
 end
 
+
+# --- MAXIMUM FLOW API BELOW HERE --------------------------------------------------------------------- #
+function _find_path_dfs(R::AbstractMatrix{T}, s::Int, t::Int; atol::T=zero(T)) where {T<:Real}
+    n = size(R,1); size(R,2) == n || throw(ArgumentError("R must be square"))
+    parent = fill(0, n)
+    seen = falses(n)
+    stack = Int[s]; seen[s] = true
+    while !isempty(stack)
+        u = pop!(stack)
+        u == t && break
+        @inbounds for v in 1:n
+            if !seen[v] && R[u,v] > atol
+                parent[v] = u
+                seen[v] = true
+                push!(stack, v)
+            end
+        end
+    end
+    if !seen[t]
+        return false, parent, zero(T)
+    end
+    Δ = typemax(T)
+    v = t
+    while v != s
+        u = parent[v]
+        Δ = min(Δ, R[u,v])
+        v = u
+    end
+    return true, parent, Δ
+end
+
+function _find_path_bfs(R::AbstractMatrix{T}, s::Int, t::Int; atol::T=zero(T)) where {T<:Real}
+    n = size(R,1); size(R,2) == n || throw(ArgumentError("R must be square"))
+    parent = fill(0, n)
+    seen   = falses(n)
+    q = Vector{Int}(undef, n); head = 1; tail = 1
+    q[tail] = s; tail += 1
+    seen[s] = true
+    while head < tail
+        u = q[head]; head += 1
+        u == t && break
+        @inbounds for v in 1:n
+            if !seen[v] && R[u,v] > atol
+                parent[v] = u
+                seen[v] = true
+                q[tail] = v; tail += 1
+            end
+        end
+    end
+    if !seen[t]
+        return false, parent, zero(T)
+    end
+    Δ = typemax(T)
+    v = t
+    while v != s
+        u = parent[v]
+        Δ = min(Δ, R[u,v])
+        v = u
+    end
+    return true, parent, Δ
+end
+
+function _augment_path!(R::AbstractMatrix{T}, F::AbstractMatrix{T},
+                       parent::Vector{Int}, s::Int, t::Int, Δ::T) where {T<:Real}
+    v = t
+    while v != s
+        u = parent[v]
+        @inbounds begin
+            R[u,v] -= Δ
+            R[v,u] += Δ
+            F[u,v] += Δ
+            F[v,u] -= Δ
+        end
+        v = u
+    end
+    return nothing
+end
+
+function _edge_flows(C::AbstractMatrix, F::AbstractMatrix)
+    n = size(C,1)
+    flows = [(u, v, F[u,v]) for u in 1:n, v in 1:n if C[u,v] > 0 && F[u,v] > 0]
+    sort!(flows)  # optional
+    return flows
+end
+
+function _flow(algorithm::FordFulkersonAlgorithm, C::AbstractMatrix{T}, source::Int64, sink::Int64; 
+    atol::Float64=1e-8)::Tuple{T, Dict{Tuple{Int64,Int64}, T}} where {T<:Real}
+
+    # initialize -
+    n = size(C,1)
+    R = Matrix{T}(C)
+    F = zeros(T, n, n)
+    maxflow = zero(T)
+    flows = Dict{Tuple{Int64,Int64}, T}();
+
+    # run the search -
+    while true
+        found, parent, Δ = _find_path_dfs(R, s, t; atol=atol)
+        found || break
+        _augment_path!(R, F, parent, s, t, Δ)
+        maxflow += Δ
+    end
+
+    # populate the flows dictionary
+    flow_tuple = _edge_flows(C, F);
+    for (u, v, flow) ∈ flow_tuple
+        flows[(u, v)] = flow
+    end
+
+    # returns a tuple of the maximum flow and the edge flows
+    return (maxflow, flows)
+end
+
+function _flow(algorithm::EdmondsKarpAlgorithm, C::AbstractMatrix{T}, source::Int64, sink::Int64; 
+    atol::Float64=1e-8)::Tuple{T, Dict{Tuple{Int64,Int64}, T}} where {T<:Real}
+
+    # initialize -
+    n = size(C,1)
+    R = Matrix{T}(C)
+    F = zeros(T, n, n)
+    maxflow = zero(T)
+    flows = Dict{Tuple{Int64,Int64}, T}();
+
+    # run the search -
+    while true
+        found, parent, Δ = _find_path_bfs(R, s, t; atol=atol)
+        found || break
+        _augment_path!(R, F, parent, s, t, Δ)
+        maxflow += Δ
+    end
+
+    # populate the flows dictionary
+    flow_tuple = _edge_flows(C, F);
+    for (u, v, flow) ∈ flow_tuple
+        flows[(u, v)] = flow
+    end
+
+    # returns a tuple of the maximum flow and the edge flows
+    return (maxflow, flows)
+end
+# --- MAXIMUM FLOW API ABOVE HERE --------------------------------------------------------------------- #
+
 # --- PUBLIC API BELOW HERE --------------------------------------------------------------------------- #
 
 """
@@ -272,6 +414,42 @@ The function computes the shortest paths from a starting node to all other nodes
 function findshortestpath(graph::T, start::MyGraphNodeModel;
     algorithm::AbstractGraphSearchAlgorithm = BellmanFordAlgorithm()) where T <: AbstractGraphModel
     return _search(graph, start, algorithm);
+end
+
+"""
+    function maximumflow(graph::T, source::MyGraphNodeModel, sink::MyGraphNodeModel;
+        algorithm::AbstractGraphFlowAlgorithm = FordFulkersonAlgorithm()) where T <: AbstractGraphModel
+
+This function computes the maximum flow in a directed graph from a source node to a sink node using the specified algorithm.
+The current implementation does not use the lower bound on the edge capacity (assumes all edges have a lower capacity bound of 0).
+
+### Arguments
+- `graph::T`: The graph to search. This needs to be a directed graph, with capacities on the edges. 
+- `source::MyGraphNodeModel`: The source node.
+- `sink::MyGraphNodeModel`: The sink node.
+- `algorithm::AbstractGraphFlowAlgorithm`: The algorithm to use for the search. The default is `FordFulkersonAlgorithm`. The `EdmondsKarpAlgorithm` can also be used.
+- `atol::Float64`: The absolute tolerance for floating point comparisons (default is 1e-8).
+
+### Returns
+- `Float64`: The maximum flow value.
+- `Dict{{Int64,Int64}, Number}`: A dictionary mapping each edge (as a tuple of source and target node IDs) to its flow value.
+"""
+function maximumflow(graph::T, source::MyGraphNodeModel, sink::MyGraphNodeModel; 
+    algorithm::AbstractGraphFlowAlgorithm = FordFulkersonAlgorithm(), atol::Float64 = 1e-8) where T <: AbstractGraphModel
+
+    # both algorithms use the constraint matrix, so before we call the specific algorithm, we need to build that matrix from the graph model -
+    n = length(graph.nodes); # how many nodes do we have?
+    C = zeros(Float64, n, n); # create a capacity matrix
+    for (edge, value) ∈ graph.capacity
+        C[edge[1], edge[2]] = value[2]; # right now, we are ignoring the lower bound (value[1]) - TODO: fix this later
+    end
+
+    # get the ids for the source and sink nodes -
+    s = source.id;
+    t = sink.id;
+
+    # call the flow calculation -
+    return _flow(algorithm, C, s, t; atol=atol);
 end
 
 # --- PUBLIC API ABOVE HERE --------------------------------------------------------------------------- #

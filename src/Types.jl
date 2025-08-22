@@ -209,6 +209,33 @@ mutable struct MyGraphEdgeModel <: AbstractGraphEdgeModel
     MyGraphEdgeModel() = new();
 end
 
+"""
+    mutable struct MyConstrainedGraphEdgeModel
+
+Mutable model for a graph edge with capacity constraints. 
+    
+### Fields
+- `id::Int64` - Unique identifier for the edge.
+- `source::Int64` - Identifier for the source node.
+- `target::Int64` - Identifier for the target node.
+- `lower::Union{Nothing, Number}` - Lower capacity constraint for the edge.
+- `upper::Union{Nothing, Number}` - Upper capacity constraint for the edge.
+
+"""
+mutable struct MyConstrainedGraphEdgeModel
+    
+    # data -
+    id::Int64
+    source::Int64
+    target::Int64
+    weight::Union{Nothing, Number}; # this is a little fancy??
+    lower::Union{Nothing, Number}
+    upper::Union{Nothing, Number}
+
+    # constructor -
+    MyConstrainedGraphEdgeModel() = new();
+end
+
 
 """
     mutable struct MySimpleDirectedGraphModel
@@ -253,11 +280,46 @@ mutable struct MySimpleUndirectedGraphModel <: AbstractGraphModel
  
     # constructor -
     MySimpleUndirectedGraphModel() = new();
- end
+end
+
+"""
+    mutable struct MyDirectedBipartiteGraphModel <: AbstractGraphModel
+
+This type models a directed bipartite graph with source and sink nodes, along with maximum capacity constraints on the edges.
+This type is constructed using a build method.
+
+### Fields
+- `nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}` - Optional mapping from node id to MyGraphNodeModel. Use nothing when uninitialized.
+- `edges::Union{Nothing, Dict{Tuple{Int, Int}, Int64}}` - Optional mapping from (source, target) tuple to edge id. Use nothing when uninitialized.
+- `children::Union{Nothing, Dict{Int64, Set{Int64}}}` - Optional adjacency map from a node id to the set of its child (outgoing) node ids.
+- `edgesinverse::Dict{Int, Tuple{Int, Int}}` - Map between edge id and (source, target) tuple.
+- `left::Set{Int64}` - Set of left (source) node ids.
+- `right::Set{Int64}` - Set of right (sink) node ids.
+- `source::Int64` - Source node id.
+- `sink::Int64` - Sink node id.
+- `capacity::Dict{Tuple{Int64, Int64}, Tuple{Number, Number}}` - Capacity constraints on the edges.
+"""
+mutable struct MyDirectedBipartiteGraphModel <: AbstractGraphModel
+   
+    # data -
+    nodes::Union{Nothing, Dict{Int64, MyGraphNodeModel}}
+    edges::Union{Nothing, Dict{Tuple{Int, Int}, Number}}
+    children::Union{Nothing, Dict{Int64, Set{Int64}}}
+    edgesinverse::Dict{Int, Tuple{Int, Int}} # map between edge id and source and target
+    left::Set{Int64}
+    right::Set{Int64}
+    source::Int64
+    sink::Int64
+    capacity::Dict{Tuple{Int64, Int64}, Tuple{Number, Number}}
+
+    # constructor -
+    MyDirectedBipartiteGraphModel() = new();
+end
 
 struct DijkstraAlgorithm <: AbstractGraphSearchAlgorithm end
 struct BellmanFordAlgorithm <: AbstractGraphSearchAlgorithm end
 struct FordFulkersonAlgorithm <: AbstractGraphFlowAlgorithm end
+struct EdmondsKarpAlgorithm <: AbstractGraphFlowAlgorithm end
 struct DepthFirstSearchAlgorithm <: AbstractGraphTraversalAlgorithm end
 struct BreadthFirstSearchAlgorithm <: AbstractGraphTraversalAlgorithm end
 

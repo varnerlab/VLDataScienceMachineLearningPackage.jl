@@ -7,4 +7,5 @@ VLDataScienceMachineLearningPackage.children
 VLDataScienceMachineLearningPackage.weight
 VLDataScienceMachineLearningPackage.walk
 VLDataScienceMachineLearningPackage.findshortestpath
+VLDataScienceMachineLearningPackage.maximumflow
 ```

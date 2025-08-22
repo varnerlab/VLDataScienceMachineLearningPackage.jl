@@ -317,4 +317,66 @@ function MyGraphEdgeModels(filepath::String, edgeparser::Function; comment::Char
     return edges;
 end
 
+"""
+    function MyConstrainedGraphEdgeModels(filepath::String, edgeparser::Function; comment::Char='#', 
+        delim::Char=',') -> Dict{Int64,MyConstrainedGraphEdgeModel}
+
+This function parses a constrained graph edge file and returns a dictionary of constrained graph edge models.
+
+### Arguments
+- `filepath::String`: The path to the edge file.
+- `edgeparser::Function`: A callback function to parse each edge line. This function should take a line as input, and a delimiter character, and return a tuple of the form `(source, target, weight, lower, upper)`, where:
+  - `source::Int64`: The source node ID.
+  - `target::Int64`: The target node ID.
+  - `weight::Union{Nothing, Number}`: The weight of the edge.
+  - `lower::Union{Nothing, Number}`: The lower bound of the edge weight.
+  - `upper::Union{Nothing, Number}`: The upper bound of the edge weight.
+
+### Returns
+- `Dict{Int64,MyConstrainedGraphEdgeModel}`: A dictionary of constrained graph edge models.
+"""
+function MyConstrainedGraphEdgeModels(filepath::String, edgeparser::Function; comment::Char='#', 
+    delim::Char=',')::Dict{Int64,MyConstrainedGraphEdgeModel}
+
+
+    # quick validation - ensure the path exists and is a regular file
+    if !isfile(filepath)
+        throw(ArgumentError("Invalid filepath: '$filepath' does not point to an existing regular file"))
+    end
+
+    # initialize
+    edges = Dict{Int64, MyConstrainedGraphEdgeModel}()
+    linecounter = 0;
+    
+    # main -
+    open(filepath, "r") do file # open a stream to the file
+        for line ∈ eachline(file) # process each line in a file, one at a time
+            
+            # check: do we have comments?
+            if (contains(line, comment) == true) || (isempty(line) == true)
+                continue; # skip this line, and move to the next one
+            end
+            
+            # # call the edge parser callback function -
+            (s,t,w,l,u) = edgeparser(line, delim);
+
+            # # build the edge model -
+            edges[linecounter] = build(MyConstrainedGraphEdgeModel, (
+                source = s,
+                target = t,
+                weight = w,
+                lower = l,
+                upper = u,
+                id = linecounter
+            ));
+            
+            # update the line counter -
+            linecounter += 1;
+        end
+    end
+
+    # return -
+    return edges;
+end
+
 # -- PUBLIC FUNCTIONS ABOVE HERE ------------------------------------------------------------------------------ #

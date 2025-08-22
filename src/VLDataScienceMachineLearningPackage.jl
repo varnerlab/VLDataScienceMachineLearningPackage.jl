@@ -25,9 +25,9 @@ export MySMSSpamHamRecordModel, MySMSSpamHamRecordCorpusModel;
 export MyAdjacencyRecombiningCommodityPriceTree, MyFullGeneralAdjacencyTree;
 export MyOneDimensionalElementaryWolframRuleModel;
 export WolframDeterministicSimulation, WolframStochasticSimulation;
-export MyGraphNodeModel, MyGraphEdgeModel, MyGraphEdgeModels, MySimpleDirectedGraphModel, MySimpleUndirectedGraphModel, DikjstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm;
+export MyGraphNodeModel, MyGraphEdgeModel, MyGraphEdgeModels, MySimpleDirectedGraphModel, MySimpleUndirectedGraphModel, MyDirectedBipartiteGraphModel, MyConstrainedGraphEdgeModel, MyConstrainedGraphEdgeModels;
 export DepthFirstSearchAlgorithm, BreadthFirstSearchAlgorithm;
-export DijkstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm;
+export DijkstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm, EdmondsKarpAlgorithm
 
 
 # methods -
@@ -40,6 +40,7 @@ export children;
 export weight;
 export walk;
 export findshortestpath;
+export maximumflow;
 
 
 end # module VLDataScienceMachineLearningPackage

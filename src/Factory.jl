@@ -390,3 +390,123 @@ function build(edgemodel::Type{MyGraphEdgeModel}, data::NamedTuple)::MyGraphEdge
     # return -
     return model
 end
+
+function build(edgemodel::Type{MyConstrainedGraphEdgeModel}, data::NamedTuple)::MyConstrainedGraphEdgeModel
+
+    # initialize -
+    model = edgemodel(); # build an empty edge model
+
+    # get data from the tuple -
+    id = data.id;
+    source = data.source;
+    target = data.target;
+    lower = data.lower;
+    upper = data.upper;
+    weight = data.weight;
+
+    # populate -
+    model.id = id;
+    model.source = source;
+    model.target = target;
+    model.lower = lower;
+    model.upper = upper;
+    model.weight = weight;
+
+    # return -
+    return model
+end
+
+"""
+    function build(modeltype::Type{MyDirectedBipartiteGraphModel}, data::NamedTuple) -> MyDirectedBipartiteGraphModel
+
+This function builds a mutable `MyDirectedBipartiteGraphModel` instance given the data in the `data::NamedTuple` argument.
+
+### Arguments
+- `modeltype::Type{MyDirectedBipartiteGraphModel}` - The type of the model to build.
+- `data::NamedTuple` - The data to populate the model with.
+
+The `data::NamedTuple` argument must contain the following fields:
+- `s::Int64` - The source node index.
+- `t::Int64` - The target node index.
+- `edges::Dict{Int, MyConstrainedGraphEdgeModel}` - The edges dictionary containing the constrained graph edges models.
+
+"""
+function build(modeltype::Type{MyDirectedBipartiteGraphModel}, data::NamedTuple)::MyDirectedBipartiteGraphModel
+    
+    # initialize -
+    model = modeltype(); # build an empty model
+    nodes = Dict{Int64, MyGraphNodeModel}();
+    edges = Dict{Tuple{Int64, Int64}, Number}();
+    children = Dict{Int64, Set{Int64}}();
+    edgesinverse = Dict{Int, Tuple{Int, Int}}();
+    capacity = Dict{Tuple{Int64, Int64}, Tuple{Number, Number}}();
+
+    # get stuff from the NamedTuple -
+    s = data.s; # source node index
+    t = data.t; # target node index
+    edgemodels = data.edges; # edges dictionary
+
+    # let's build a list of nodes ids -
+    tmp_node_ids = Set{Int64}();
+    for (_,v) ∈ edgemodels
+        push!(tmp_node_ids, v.source);
+        push!(tmp_node_ids, v.target);
+    end
+    list_of_node_ids = tmp_node_ids |> collect |> sort;
+
+    # remap the node ids to a contiguous ordering -
+    nodeidmap = Dict{Int64, Int64}();
+    nodecounter = 1;
+    for id ∈ list_of_node_ids
+        nodeidmap[id] = nodecounter;
+        nodecounter += 1;
+    end
+
+    # build the nodes models -
+    [nodes[nodeidmap[id]] = MyGraphNodeModel(nodeidmap[id], nothing) for id ∈ list_of_node_ids];
+
+    # build the edges -
+    for (_, v) ∈ edgemodels
+        source_index = nodeidmap[v.source];
+        target_index = nodeidmap[v.target];
+        edges[(source_index, target_index)] = v.weight;
+    end
+
+    # build the inverse edge dictionary edgeid -> (source, target)
+    n = length(nodes);
+    edgecounter = 1;
+    for source ∈ 1:n
+        for target ∈ 1:n
+            if haskey(edges, (source, target)) == true
+                edgesinverse[edgecounter] = (source, target);
+                edgecounter += 1;
+            end
+        end
+    end
+
+    # compute the children -
+    for id ∈ list_of_node_ids
+        newid = nodeidmap[id];
+        node = nodes[newid];
+        children[newid] = _children(edges, node.id);
+    end
+
+    # let's build the capacity dictionary -
+    for edge ∈ edgemodels
+        s = edge.source;
+        t = edge.target;
+        capacity[(s, t)] = (edge.lower, edge.upper);
+    end
+    
+    # populate the model -
+    model.nodes = nodes;
+    model.edges = edges;
+    model.edgesinverse = edgesinverse;
+    model.children = children;
+    model.capacity = capacity;
+    model.source = s;
+    model.target = t;
+
+    # return -
+    return model
+end
