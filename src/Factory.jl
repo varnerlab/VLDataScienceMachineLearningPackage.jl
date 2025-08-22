@@ -492,7 +492,7 @@ function build(modeltype::Type{MyDirectedBipartiteGraphModel}, data::NamedTuple)
     end
 
     # let's build the capacity dictionary -
-    for edge ∈ edgemodels
+    for (_, edge) ∈ edgemodels
         s = edge.source;
         t = edge.target;
         capacity[(s, t)] = (edge.lower, edge.upper);
