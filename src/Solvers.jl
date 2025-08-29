@@ -1,5 +1,5 @@
 function _solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector{T}, algorithm::JacobiMethod;
-    ϵ::Float64 = 0.01, maxiterations::Int64 = 100, ω::Float64 = 0.01) where T <: Number
+    ϵ::Float64 = 1e-6, maxiterations::Int64 = 1000, ω::Float64 = 1.0) where T <: Number
 
     # initialize -
     is_ok_to_terminate = false;
@@ -22,19 +22,32 @@ function _solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector
     DI = inv(D); # compute the inverse of the diagonal matrix D
 
     # iterate -
+    prev_residual = Inf;
     while (is_ok_to_terminate == false)
 
         # compute the residual -
         x = copy(archive[k-1]);
         r = b - A*x;
+        current_residual = norm(r);
         d = DI * r;
 
         # check the error condition -
-        (maximum(r) < ϵ || k > maxiterations) ? is_ok_to_terminate = true : is_ok_to_terminate = false;
+        if (current_residual < ϵ)
+            is_ok_to_terminate = true;
+        elseif (k > maxiterations)
+            @warn "Jacobi method did not converge within $maxiterations iterations. Final residual: $current_residual"
+            is_ok_to_terminate = true;
+        elseif (current_residual > 1e10)  # Check for divergence
+            @warn "Jacobi method appears to be diverging. Residual: $current_residual"
+            is_ok_to_terminate = true;
+        else
+            is_ok_to_terminate = false;
+        end
 
         y = x + d; # generate new solution vector at k
         archive[k] = y; # save new solution vector in archive
         k += 1;  # update the iteration counter
+        prev_residual = current_residual;
     end
 
     # return archive -
@@ -42,7 +55,7 @@ function _solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector
 end
 
 function _solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector{T}, algorithm::GaussSeidelMethod;
-    ϵ::Float64 = 0.01, maxiterations::Int64 = 100, ω::Float64 = 0.01) where T <: Number
+    ϵ::Float64 = 1e-6, maxiterations::Int64 = 1000, ω::Float64 = 1.0) where T <: Number
 
     # initialize -
     is_ok_to_terminate = false;
@@ -64,20 +77,33 @@ function _solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector
     end
     C = inv(D + L); # compute the inverse of the matrix D+L
 
-    # iterate -
+        # iterate -
+    prev_residual = Inf;
     while (is_ok_to_terminate == false)
 
         x = copy(archive[k-1]); # grab the current solution vector, create a copy so we don't overwrite the data in the archive
         r = b - A*x; # compute the residual
+        current_residual = norm(r);
         d = C * r; # compute the direction vector
 
         # check the error condition -
-        (maximum(r) < ϵ || k > maxiterations) ? is_ok_to_terminate = true : is_ok_to_terminate = false;
+        if (current_residual < ϵ)
+            is_ok_to_terminate = true;
+        elseif (k > maxiterations)
+            @warn "Gauss-Seidel method did not converge within $maxiterations iterations. Final residual: $current_residual"
+            is_ok_to_terminate = true;
+        elseif (current_residual > 1e10)  # Check for divergence
+            @warn "Gauss-Seidel method appears to be diverging. Residual: $current_residual"
+            is_ok_to_terminate = true;
+        else
+            is_ok_to_terminate = false;
+        end
 
         # update the archive -
         y = x + d; # generate new solution vector at k
         archive[k] = y; # grab a copy of the solution vector at k+1 (do I need to make a copy here?)
         k += 1;  # update the iteration counter -
+        prev_residual = current_residual;
     end
 
     # return archive -
@@ -85,10 +111,9 @@ function _solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector
 end
 
 function _solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector{T}, algorithm::SuccessiveOverRelaxationMethod;
-    ϵ::Float64 = 0.01, maxiterations::Int64 = 100, ω::Float64 = 0.01) where T <: Number
+    ϵ::Float64 = 1e-6, maxiterations::Int64 = 1000, ω::Float64 = 1.0) where T <: Number
 
     # initialize -
-    (number_of_rows, number_of_columns) = size(A);
     is_ok_to_terminate = false;
     k = 0; # initialize iteration counter to 0
     archive = Dict{Int, Array{Float64,1}}(); # we store every iteration in this dictionary
@@ -108,20 +133,33 @@ function _solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector
     end
     C = inv(D + ω*L);
 
-    # Grok: Impl me -
+        # Grok: Impl me -
+    prev_residual = Inf;
     while (is_ok_to_terminate == false)
 
         x = copy(archive[k-1]); # grab the current solution vector, create a copy so we don't overwrite the data in the archive
         r = b - A*x; # compute the residual
+        current_residual = norm(r);
         d = ω * C * r; # compute the direction vector
 
         # check the error condition -
-        (maximum(r) < ϵ || k > maxiterations) ? is_ok_to_terminate = true : is_ok_to_terminate = false;
+        if (current_residual < ϵ)
+            is_ok_to_terminate = true;
+        elseif (k > maxiterations)
+            @warn "SOR method did not converge within $maxiterations iterations. Final residual: $current_residual"
+            is_ok_to_terminate = true;
+        elseif (current_residual > 1e10)  # Check for divergence
+            @warn "SOR method appears to be diverging. Residual: $current_residual"
+            is_ok_to_terminate = true;
+        else
+            is_ok_to_terminate = false;
+        end
 
         # update the archive -
         y = x + d;
         archive[k] = y; # grab a copy of the solution vector at k+1 (do I need to make a copy here?)
         k += 1;  # update the iteration counter -
+        prev_residual = current_residual;
     end
     
     # Successive Over-Relaxation method
@@ -142,16 +180,16 @@ The function returns the solution vector `x` for each iteration of an iterative 
 - `b::AbstractVector{T}`: The right-hand side vector `b` in the linear system of equations `Ax = b`.
 - `xₒ::AbstractVector{T}`: The initial guess for the solution vector `x`.
 - `algorithm::AbstractLinearSolverAlgorithm`: The algorithm to use to solve the linear system of equations. The default algorithm is `JacobiMethod()`.
-- `ϵ::Float64`: The error tolerance for the iterative method. The default value is `0.01`.
-- `maxiterations::Int64`: The maximum number of iterations for the iterative method. The default value is `100`.
-- `ω::Float64`: The relaxation factor for the Successive Over-Relaxation method. The default value is `0.01`. This parameter is only used if the `SuccessiveOverRelaxationMethod` algorithm is selected.
+- `ϵ::Float64`: The error tolerance for the iterative method. The default value is `1e-6`.
+- `maxiterations::Int64`: The maximum number of iterations for the iterative method. The default value is `1000`.
+- `ω::Float64`: The relaxation factor for the Successive Over-Relaxation method. The default value is `1.0`. This parameter is only used if the `SuccessiveOverRelaxationMethod` algorithm is selected.
 
 ### Returns
 - `d::Dict{Int,Array{T,1}}`: The solution vector `x` for each iteration of an iterative method. The keys of the dictionary are the iteration numbers, and the values are the solution vectors at each iteration.
 """
 function solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector{T};
     algorithm::AbstractLinearSolverAlgorithm = JacobiMethod(), 
-    ϵ::Float64 = 0.01, maxiterations::Int64 = 100, ω::Float64 = 0.01) where T <: Number
+    ϵ::Float64 = 1e-6, maxiterations::Int64 = 1000, ω::Float64 = 1.0) where T <: Number
     
     
     # return -
