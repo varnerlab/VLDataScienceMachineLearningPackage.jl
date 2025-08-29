@@ -42,6 +42,7 @@ export weight;
 export walk;
 export findshortestpath;
 export maximumflow;
+export solve;
 
 
 end # module VLDataScienceMachineLearningPackage
