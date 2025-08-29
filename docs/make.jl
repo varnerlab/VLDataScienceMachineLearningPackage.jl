@@ -14,6 +14,7 @@ makedocs(
         "Text" => "text.md",
         "Wolfram" => "wolfram.md",
         "Graphs" => "graphs.md",
+        "Solvers" => "solvers.md",
     ], 
 )
 

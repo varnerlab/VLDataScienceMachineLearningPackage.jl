@@ -11,6 +11,7 @@ abstract type AbstractGraphEdgeModel end
 abstract type AbstractGraphSearchAlgorithm end
 abstract type AbstractGraphFlowAlgorithm end
 abstract type AbstractGraphTraversalAlgorithm end
+abstract type AbstractLinearSolverAlgorithm end
 
 
 """
@@ -316,11 +317,15 @@ mutable struct MyDirectedBipartiteGraphModel <: AbstractGraphModel
     MyDirectedBipartiteGraphModel() = new();
 end
 
+# Let's create some tag types
 struct DijkstraAlgorithm <: AbstractGraphSearchAlgorithm end
 struct BellmanFordAlgorithm <: AbstractGraphSearchAlgorithm end
 struct FordFulkersonAlgorithm <: AbstractGraphFlowAlgorithm end
 struct EdmondsKarpAlgorithm <: AbstractGraphFlowAlgorithm end
 struct DepthFirstSearchAlgorithm <: AbstractGraphTraversalAlgorithm end
 struct BreadthFirstSearchAlgorithm <: AbstractGraphTraversalAlgorithm end
+struct JacobiMethod <: AbstractLinearSolverAlgorithm end
+struct GaussSeidelMethod <: AbstractLinearSolverAlgorithm end
+struct SuccessiveOverRelaxationMethod <: AbstractLinearSolverAlgorithm end
 
 # -- GRAPHS ABOVE HERE ---------------------------------------------------------------------------- #

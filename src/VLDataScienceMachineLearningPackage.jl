@@ -18,6 +18,7 @@ export AbstractTextRecordModel;
 export AbstractTextDocumentCorpusModel;
 export AbstractPriceTreeModel;
 export AbstractGraphTraversalAlgorithm;
+export AbstractLinearSolverAlgorithm;
 export MySarcasmRecordModel;
 export MySarcasmRecordCorpusModel;
 export UnsignedFeatureHashing, SignedFeatureHashing;
@@ -28,7 +29,7 @@ export WolframDeterministicSimulation, WolframStochasticSimulation;
 export MyGraphNodeModel, MyGraphEdgeModel, MyGraphEdgeModels, MySimpleDirectedGraphModel, MySimpleUndirectedGraphModel, MyDirectedBipartiteGraphModel, MyConstrainedGraphEdgeModel, MyConstrainedGraphEdgeModels;
 export DepthFirstSearchAlgorithm, BreadthFirstSearchAlgorithm;
 export DijkstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm, EdmondsKarpAlgorithm
-
+export JacobiMethod, GaussSeidelMethod, SuccessiveOverRelaxationMethod;
 
 # methods -
 export tokenize;
