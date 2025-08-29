@@ -16,12 +16,10 @@ function _solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector
     L = tril(A,-1);
 
     # check: if any zeros on the diagonal, throw an error -
-    DI = nothing;
     if (any(diag(A) .== 0.0))
         error("Matrix A has zero(s) on the diagonal, cannot proceed with Jacobi Method.")
-    else
-        DI = inv(D); # compute the inverse of the diagonal matrix D
     end
+    DI = inv(D); # compute the inverse of the diagonal matrix D
 
     # iterate -
     while (is_ok_to_terminate == false)
@@ -61,12 +59,10 @@ function _solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector
     L = tril(A,-1);
 
     # check: (D+L) must be invertible, if not, throw an error -
-    C = nothing;
     if (det(D+L) == 0.0)
         error("Matrix D+L is not invertible, cannot proceed with Gauss-Seidel Method.")
-    else
-        C = inv(D + L); # compute the inverse of the matrix D+L
     end
+    C = inv(D + L); # compute the inverse of the matrix D+L
 
     # iterate -
     while (is_ok_to_terminate == false)
@@ -107,12 +103,10 @@ function _solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector
     L = tril(A,-1);
 
     # check -
-    C = nothing;
     if (det(D + ω*L) == 0.0)
         error("Matrix D + ω*L is not invertible, cannot proceed with Successive Over-Relaxation Method.")
-    else
-        C = inv(D + ω*L);
     end
+    C = inv(D + ω*L);
 
     # Grok: Impl me -
     while (is_ok_to_terminate == false)
