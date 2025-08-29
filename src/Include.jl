@@ -9,6 +9,8 @@ using FileIO
 using JSON
 using DataStructures
 using Distributions
+using LinearAlgebra
+using Statistics
 
 # load my codes -
 include(joinpath(_PATH_TO_SRC, "Types.jl"));
