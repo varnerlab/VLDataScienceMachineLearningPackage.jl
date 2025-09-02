@@ -1,6 +1,7 @@
-# Iterative Solvers for Linear Systems
-We provide several iterative solvers for linear systems, including Jacobi, Gauss-Seidel, and Successive Over-Relaxation methods. These solvers are useful for large, sparse systems where direct methods may be inefficient.
+# Linear Systems
+We provide several techniques for working with linear systems, including eigendecomposition using QR iteration and iterative solvers for linear systems. These solvers are useful for large, sparse systems where direct methods may be inefficient.
 
 ```@docs
+VLDataScienceMachineLearningPackage.qriteration
 VLDataScienceMachineLearningPackage.solve
 ```

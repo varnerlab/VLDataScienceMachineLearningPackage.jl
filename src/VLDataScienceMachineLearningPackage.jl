@@ -43,6 +43,7 @@ export walk;
 export findshortestpath;
 export maximumflow;
 export solve;
+export qriteration;
 
 
 end # module VLDataScienceMachineLearningPackage
