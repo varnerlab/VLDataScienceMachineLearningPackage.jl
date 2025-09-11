@@ -87,6 +87,17 @@ function MyCommonForenameDataset()::DataFrame
     return CSV.read(joinpath(_PATH_TO_DATA, "common-forenames-by-country.csv"), DataFrame)
 end
 
+
+"""
+    MyHousingPricesDataset() -> DataFrame
+
+Load the house prices dataset from Kaggle as a DataFrame.
+The original dataset can be found at: [Housing Prices Dataset on Kaggle](https://www.kaggle.com/datasets/yasserh/housing-prices-dataset?select=Housing.csv)
+"""
+function MyKaggleHousingPricesDataset()::DataFrame
+    return CSV.read(joinpath(_PATH_TO_DATA, "Housing-Training-Dataset-Kaggle.csv"), DataFrame)
+end
+
 """
     function MySarcasmCorpus() -> MySarcasmRecordCorpusModel
 

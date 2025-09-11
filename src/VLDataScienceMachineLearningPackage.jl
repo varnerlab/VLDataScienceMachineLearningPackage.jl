@@ -11,6 +11,7 @@ export MyCommonForenameDataset;
 export MySarcasmCorpus;
 export MySMSSpamHamCorpus;
 export MyTrainingMarketDataSet;
+export MyKaggleHousingPricesDataset;
 
 
 # types -
