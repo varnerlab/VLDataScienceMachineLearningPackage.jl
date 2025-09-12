@@ -45,6 +45,7 @@ export findshortestpath;
 export maximumflow;
 export solve;
 export qriteration;
+export log_growth_matrix;
 
 
 end # module VLDataScienceMachineLearningPackage

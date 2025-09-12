@@ -9,7 +9,16 @@ VLDataScienceMachineLearningPackage.MyCommonForenameDataset
 VLDataScienceMachineLearningPackage.MyKaggleHousingPricesDataset
 VLDataScienceMachineLearningPackage.MySarcasmCorpus
 VLDataScienceMachineLearningPackage.MySMSSpamHamCorpus
-VLDataScienceMachineLearningPackage.MyTrainingMarketDataSet
 VLDataScienceMachineLearningPackage.MyGraphEdgeModels
 VLDataScienceMachineLearningPackage.MyConstrainedGraphEdgeModels
+```
+
+## Financial Data
+We have included a dataset of market data that we use for examples and activities in the financial domain. This 
+dataset holds the daily open, high, low, close, and volume data for a selection of stocks between 2014 and 2024. 
+In addition, we have defined a few methods for working with this data.
+
+```@docs
+VLDataScienceMachineLearningPackage.MyTrainingMarketDataSet
+VLDataScienceMachineLearningPackage.log_growth_matrix
 ```
