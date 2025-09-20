@@ -16,11 +16,25 @@ export MyBanknoteAuthenticationDataset;
 
 
 # types -
+# Abstract types -
 export AbstractTextRecordModel;
 export AbstractTextDocumentCorpusModel;
+export AbstractFeatureHashingAlgorithm;
 export AbstractPriceTreeModel;
+export AbstractTreeModel;
+export AbstractRuleModel;
+export AbstractWolframSimulationAlgorithm;
+export AbstractGraphModel;
+export AbstractGraphNodeModel;
+export AbstractGraphEdgeModel;
+export AbstractGraphSearchAlgorithm;
+export AbstractGraphFlowAlgorithm;
 export AbstractGraphTraversalAlgorithm;
 export AbstractLinearSolverAlgorithm;
+export AbstractClassificationAlgorithm;
+
+# Concrete types -
+export MyPerceptronClassificationModel;
 export MySarcasmRecordModel;
 export MySarcasmRecordCorpusModel;
 export UnsignedFeatureHashing, SignedFeatureHashing;
