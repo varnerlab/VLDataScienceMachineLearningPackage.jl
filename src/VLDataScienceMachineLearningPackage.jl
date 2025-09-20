@@ -12,6 +12,7 @@ export MySarcasmCorpus;
 export MySMSSpamHamCorpus;
 export MyTrainingMarketDataSet;
 export MyKaggleHousingPricesDataset;
+export MyBanknoteAuthenticationDataset;
 
 
 # types -

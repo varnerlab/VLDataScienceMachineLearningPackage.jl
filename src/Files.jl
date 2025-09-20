@@ -99,6 +99,16 @@ function MyKaggleHousingPricesDataset()::DataFrame
 end
 
 """
+    MyBanknoteAuthenticationDataset() -> DataFrame
+
+The second dataset we will explore is the [banknote authentication dataset from the UCI archive](https://archive.ics.uci.edu/dataset/267/banknote+authentication). 
+This dataset has `1372` instances of 4 continuous features and an integer (-1,1) class variable. 
+"""
+function MyBanknoteAuthenticationDataset()::DataFrame
+    return CSV.read(joinpath(_PATH_TO_DATA, "data-banknote-authentication.csv"), DataFrame)
+end
+
+"""
     function MySarcasmCorpus() -> MySarcasmRecordCorpusModel
 
 The function `corpus` reads a file composed of JSON records and returns the data as a `MySarcasmRecordCorpusModel` instance.

@@ -11,6 +11,7 @@ VLDataScienceMachineLearningPackage.MySarcasmCorpus
 VLDataScienceMachineLearningPackage.MySMSSpamHamCorpus
 VLDataScienceMachineLearningPackage.MyGraphEdgeModels
 VLDataScienceMachineLearningPackage.MyConstrainedGraphEdgeModels
+VLDataScienceMachineLearningPackage.MyBanknoteAuthenticationDataset
 ```
 
 ## Financial Data
