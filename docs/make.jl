@@ -15,6 +15,7 @@ makedocs(
         "Wolfram" => "wolfram.md",
         "Graphs" => "graphs.md",
         "Linear" => "solvers.md",
+        "Binary Classification" => "binaryclassification.md",
     ], 
 )
 

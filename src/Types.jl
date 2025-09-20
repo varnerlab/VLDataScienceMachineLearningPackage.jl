@@ -12,6 +12,27 @@ abstract type AbstractGraphSearchAlgorithm end
 abstract type AbstractGraphFlowAlgorithm end
 abstract type AbstractGraphTraversalAlgorithm end
 abstract type AbstractLinearSolverAlgorithm end
+abstract type AbstractClassificationAlgorithm end
+
+
+"""
+    mutable struct MyPerceptronClassificationModel <: AbstractClassificationAlgorithm
+
+A mutable struct that represents a perceptron classification model.
+
+### Fields
+    - `β::Vector{Float64}`: coefficients
+    - `mistakes::Int64`: number of mistakes that are are willing to make
+"""
+mutable struct MyPerceptronClassificationModel <: AbstractClassificationAlgorithm
+    
+    # data -
+    β::Vector{Float64}; # coefficients
+    mistakes::Int64; # number of mistakes that are are willing to make
+
+    # empty constructor -
+    MyPerceptronClassificationModel() = new();
+end
 
 
 """

@@ -47,6 +47,8 @@ export maximumflow;
 export solve;
 export qriteration;
 export log_growth_matrix;
+export learn;
+export classify;
 
 
 end # module VLDataScienceMachineLearningPackage

@@ -22,3 +22,4 @@ include(joinpath(_PATH_TO_SRC, "Wolfram.jl"));
 include(joinpath(_PATH_TO_SRC, "Graphs.jl"));
 include(joinpath(_PATH_TO_SRC, "Solvers.jl"));
 include(joinpath(_PATH_TO_SRC, "Eigen.jl"));
+include(joinpath(_PATH_TO_SRC, "Binary.jl"));
