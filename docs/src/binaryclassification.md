@@ -4,4 +4,5 @@ We've implemented some basic functionality for binary classification tasks, incl
 ```@docs
 VLDataScienceMachineLearningPackage.learn
 VLDataScienceMachineLearningPackage.classify
+VLDataScienceMachineLearningPackage.confusion
 ```

@@ -63,6 +63,7 @@ export qriteration;
 export log_growth_matrix;
 export learn;
 export classify;
+export confusion;
 
 
 end # module VLDataScienceMachineLearningPackage
