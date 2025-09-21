@@ -245,7 +245,6 @@ function solve(problem::MyLinearProgrammingProblemModel)::Dict{String,Any}
     x_opt = value.(x);
     results["argmax"] = x_opt
     results["objective_value"] = objective_value(model);
-    results["budget"] = transpose(c)*x_opt;
     results["status"] = termination_status(model);
 
     # return -
