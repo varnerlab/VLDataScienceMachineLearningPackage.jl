@@ -197,12 +197,12 @@ function solve(A::AbstractMatrix{T}, b::AbstractVector{T}, xₒ::AbstractVector{
 end
 
 """
-    solve(problem::MySimpleLinearChoiceProblem) -> Dict{String,Any}
+    solve(problem::MyLinearProgrammingProblemModel) -> Dict{String,Any}
 
-Solves a constrained uility maximization problem with linear utility function and linear budget constraint.
+Solves a linear programming problem defined by the `MyLinearProgrammingProblemModel` instance using the GLPK solver.
 
 ### Arguments
-- problem::MySimpleLinearChoiceProblem: An instance of MySimpleLinearChoiceProblem holding the data for the problem.
+- problem::MyLinearProgrammingProblemModel: An instance of MyLinearProgrammingProblemModel holding the data for the problem.
 
 ### Returns
 - Dict{String,Any}: A dictionary with the following keys:
@@ -245,6 +245,8 @@ function solve(problem::MyLinearProgrammingProblemModel)::Dict{String,Any}
     x_opt = value.(x);
     results["argmax"] = x_opt
     results["objective_value"] = objective_value(model);
+    results["budget"] = transpose(c)*x_opt;
+    results["status"] = termination_status(model);
 
     # return -
     return results
