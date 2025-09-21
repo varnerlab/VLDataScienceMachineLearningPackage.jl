@@ -11,6 +11,8 @@ using DataStructures
 using Distributions
 using LinearAlgebra
 using Statistics
+using JuMP
+using GLPK
 
 # load my codes -
 include(joinpath(_PATH_TO_SRC, "Types.jl"));

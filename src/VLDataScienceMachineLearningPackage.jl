@@ -32,8 +32,10 @@ export AbstractGraphFlowAlgorithm;
 export AbstractGraphTraversalAlgorithm;
 export AbstractLinearSolverAlgorithm;
 export AbstractClassificationAlgorithm;
+export AbstractLinearProgrammingProblemType;
 
 # Concrete types -
+export MyLinearProgrammingProblemModel;
 export MyPerceptronClassificationModel;
 export MySarcasmRecordModel;
 export MySarcasmRecordCorpusModel;

@@ -152,6 +152,41 @@ function build(record::Type{T}, data::NamedTuple)::T where T <: AbstractTextReco
     return _build(record, data);
 end
 
+"""
+    function build(modeltype::Type{T}, 
+        data::NamedTuple)::T where T <: AbstractLinearProgrammingProblemType
+
+The function builds a linear programming problem model from the data provided.
+
+### Arguments
+- `modeltype::Type{T}`: the type of the model to build where `T` is a subtype of `AbstractLinearProgrammingProblemType`.
+- `data::NamedTuple`: the data to use to build the model.   
+
+The `data::NamedTuple` must have the following fields:
+- `A::Array{Float64,2}`: the constraint matrix.
+- `b::Array{Float64,1}`: the right-hand side vector.
+- `c::Array{Float64,1}`: the cost vector.
+- `lb::Array{Float64,1}`: the lower bounds vector.
+- `ub::Array{Float64,1}`: the upper bounds vector.
+
+### Returns
+- a linear programming problem model of type `T` where `T` is a subtype of `AbstractLinearProgrammingProblemType`.
+"""
+function build(modeltype::Type{T}, data::NamedTuple) where T <: AbstractLinearProgrammingProblemType
+
+    # initialize -
+    model = modeltype(); # build an empty model 
+
+    # set the data -
+    model.A = data.A;
+    model.b = data.b;
+    model.c = data.c;
+    model.lb = data.lb;
+    model.ub = data.ub;
+
+    # return -
+    return model;
+end
 
 """
     build(modeltype::Type{MyPerceptronClassificationModel}, 
