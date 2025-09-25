@@ -512,8 +512,8 @@ function build(modeltype::Type{MyDirectedBipartiteGraphModel}, data::NamedTuple)
     capacity = Dict{Tuple{Int64, Int64}, Tuple{Number, Number}}();
 
     # get stuff from the NamedTuple -
-    s = data.s; # source node index
-    t = data.t; # target node index
+    sid = data.s; # source node index
+    tid = data.t; # target node index
     edgemodels = data.edges; # edges dictionary
 
     # let's build a list of nodes ids -
@@ -574,8 +574,8 @@ function build(modeltype::Type{MyDirectedBipartiteGraphModel}, data::NamedTuple)
     model.edgesinverse = edgesinverse;
     model.children = children;
     model.capacity = capacity;
-    model.source = s;
-    model.sink = t;
+    model.source = sid;
+    model.sink = tid;
 
     # return -
     return model
