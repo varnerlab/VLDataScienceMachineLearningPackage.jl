@@ -231,7 +231,7 @@ function solve(problem::MyLinearProgrammingProblemModel)::Dict{String,Any}
     @objective(model, Max, transpose(c)*x);
     @constraints(model, 
         begin
-            A*x == b # my material balance constraints
+            A*x <= b # my material balance constraints
         end
     );
 
