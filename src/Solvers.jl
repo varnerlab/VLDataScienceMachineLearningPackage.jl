@@ -210,7 +210,7 @@ Solves a linear programming problem defined by the `MyLinearProgrammingProblemMo
     - "budget": The budget at the optimal choice.
     - "objective_value": The value of the objective function at the optimal choice.
 """
-function solve(problem::MyLinearProgrammingProblemModel)::Dict{String,Any}
+function solve(problem::MyLinearProgrammingProblemModel; constraints::Symbol = :le)::Dict{String,Any}
 
     # initialize -
     results = Dict{String,Any}()
@@ -229,12 +229,29 @@ function solve(problem::MyLinearProgrammingProblemModel)::Dict{String,Any}
     
     # set objective function -   
     @objective(model, Max, transpose(c)*x);
-    @constraints(model, 
-        begin
-            A*x <= b # my material balance constraints
-        end
+    
+    if (constraints == :le)
+        @constraints(model, 
+            begin
+                A*x <= b # my material balance constraints
+            end
     );
-
+    elseif (constraints == :ge)
+        @constraints(model, 
+            begin
+                A*x >= b # my material balance constraints
+            end
+        );
+    elseif (constraints == :eq)
+        @constraints(model, 
+            begin
+                A*x == b # my material balance constraints
+            end
+        );
+    else
+        error("Invalid constraints type. Must be :le, :ge, or :eq.")
+    end
+    
     # run the optimization -
     optimize!(model)
 
