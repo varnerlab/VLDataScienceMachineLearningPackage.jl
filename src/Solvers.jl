@@ -203,7 +203,7 @@ Solves a linear programming problem defined by the `MyLinearProgrammingProblemMo
 
 ### Arguments
 - problem::MyLinearProgrammingProblemModel: An instance of MyLinearProgrammingProblemModel holding the data for the problem.
-- constraints::Symbol: The type of constraints to apply. Options are :le (less than or equal to), :ge (greater than or equal to), or :eq (equal to). Default is :le.
+- constraints::Symbol: The type of constraints to apply. Options are :leq (less than or equal to), :geq (greater than or equal to), or :eq (equal to). Default is :leq.
 
 ### Returns
 - Dict{String,Any}: A dictionary with the following keys:
@@ -211,7 +211,7 @@ Solves a linear programming problem defined by the `MyLinearProgrammingProblemMo
     - "budget": The budget at the optimal choice.
     - "objective_value": The value of the objective function at the optimal choice.
 """
-function solve(problem::MyLinearProgrammingProblemModel; constraints::Symbol = :le)::Dict{String,Any}
+function solve(problem::MyLinearProgrammingProblemModel; constraints::Symbol = :leq)::Dict{String,Any}
 
     # initialize -
     results = Dict{String,Any}()
@@ -231,13 +231,13 @@ function solve(problem::MyLinearProgrammingProblemModel; constraints::Symbol = :
     # set objective function -   
     @objective(model, Max, transpose(c)*x);
     
-    if (constraints == :le)
+    if (constraints == :leq)
         @constraints(model, 
             begin
                 A*x <= b # my material balance constraints
             end
     );
-    elseif (constraints == :ge)
+    elseif (constraints == :geq)
         @constraints(model, 
             begin
                 A*x >= b # my material balance constraints
@@ -250,7 +250,7 @@ function solve(problem::MyLinearProgrammingProblemModel; constraints::Symbol = :
             end
         );
     else
-        error("Invalid constraints type. Must be :le, :ge, or :eq.")
+        error("Invalid constraints type. Must be :leq, :geq, or :eq.")
     end
     
     # run the optimization -
