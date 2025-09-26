@@ -203,6 +203,7 @@ Solves a linear programming problem defined by the `MyLinearProgrammingProblemMo
 
 ### Arguments
 - problem::MyLinearProgrammingProblemModel: An instance of MyLinearProgrammingProblemModel holding the data for the problem.
+- constraints::Symbol: The type of constraints to apply. Options are :le (less than or equal to), :ge (greater than or equal to), or :eq (equal to). Default is :le.
 
 ### Returns
 - Dict{String,Any}: A dictionary with the following keys:
