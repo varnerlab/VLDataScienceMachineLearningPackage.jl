@@ -1,4 +1,16 @@
 # --- PRIVATE API BELOW HERE -------------------------------------------------------------------------------------- #
+function ∇f(f, x, y, θ, h)
+    
+    diff = zeros(size(θ))
+    for i ∈ eachindex(θ)
+        θᵢ = copy(θ) # bad ...
+        θᵢ[i] += h
+        diff[i] = (f(x, y, θᵢ) - f(x, y, θ)) / h
+    end
+    
+    return diff
+end
+
 function _learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorithm::MyPerceptronClassificationModel; 
     maxiter::Int64 = 100, verbose::Bool = false)
 
@@ -48,8 +60,78 @@ function _learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorith
 end
 
 
+function _learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorithm::MyLogisticRegressionClassificationModel; 
+    maxiter::Int64 = 100, verbose::Bool = false)
+    
+    # get data from the algorithm -
+    β = algorithm.β; # parameters
+    α = algorithm.α; # learning rate
+    ϵ = algorithm.ϵ; # stopping criterion
+    L = algorithm.L; # loss function
+    is_ok_to_continue = true;
+    loop_counter = 1;
+
+    # main loop -
+    βᵢ = copy(β); # copy the coefficients, initial guess
+    error = nothing;
+    while (is_ok_to_continue == true && loop_counter ≤ maxiter) 
+        
+        # initialize the gradient -
+        ∇L = zeros(size(βᵢ));
+        
+        # compute the gradient -
+        for i ∈ eachindex(labels) # for each training pair
+            
+            x = features[i,:]; # feature vector (n+1) x 1
+            y = labels[i]; # classification -1,1
+            
+            # compute the gradient -
+            ∇L = ∇L .+ ∇f(L, x, y, βᵢ, 1e-6); # call forward diff approx of derivative
+        end # end training loop for
+        
+        # update the coefficients -
+        βᵢ = βᵢ .- α*∇L;
+        
+        # should we stay in the loop? (or should we go ...)
+        error = norm(∇L);
+        if (error ≤ ϵ)
+            is_ok_to_continue = false; # we are done!
+        else
+            is_ok_to_continue = true; # we are not done yet!
+            loop_counter+=1; # increment the loop counter
+        end
+    end
+
+    # print the results if verbose is true -
+    if (verbose == true)
+        println("Stopped after number of iterations: ", loop_counter, ". We have error: ", error);
+    end
+
+    # update the algorithm -
+    algorithm.β = βᵢ; # update the coefficients
+
+    # return -
+    return algorithm;
+end
+
 function _classify(features::Array{<:Number,2}, algorithm::MyPerceptronClassificationModel)
     return sign.(features*algorithm.β);
+end
+
+function _classify(features::Array{<:Number,2}, algorithm::MyLogisticRegressionClassificationModel)
+
+    # initialize -
+    number_of_examples = size(features,1); # number of rows
+    labels = zeros(number_of_examples,2);
+    β = algorithm.β;
+
+    for i ∈ 1:number_of_examples
+        x = features[i,:];
+        labels[i,1] = (1)/(1+exp(-2*dot(x,β))); # probability y = 1;
+        labels[i,2] = (1)/(1+exp(2*dot(x,β))); # probability y = -1;
+    end
+
+    return labels;
 end
 # --- PRIVATE API ABOVE HERE -------------------------------------------------------------------------------------- #
 
