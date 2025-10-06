@@ -36,7 +36,7 @@ export AbstractLinearProgrammingProblemType;
 
 # Concrete types -
 export MyLinearProgrammingProblemModel;
-export MyPerceptronClassificationModel;
+export MyPerceptronClassificationModel, MyLogisticRegressionClassificationModel;
 export MySarcasmRecordModel;
 export MySarcasmRecordCorpusModel;
 export UnsignedFeatureHashing, SignedFeatureHashing;
