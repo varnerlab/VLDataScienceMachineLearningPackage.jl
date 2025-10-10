@@ -108,6 +108,14 @@ function MyBanknoteAuthenticationDataset()::DataFrame
     return CSV.read(joinpath(_PATH_TO_DATA, "data-banknote-authentication.csv"), DataFrame)
 end
 
+function MyEnglishLanguageVocubularyModel()::Dict{Char, Set{String}}
+
+    # initialize -
+
+    # call build method, return dictionary
+    return _build(joinpath(_PATH_TO_DATA, "english-vocabulary.txt"));
+end
+
 """
     function MySarcasmCorpus() -> MySarcasmRecordCorpusModel
 
