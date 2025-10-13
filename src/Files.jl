@@ -108,12 +108,36 @@ function MyBanknoteAuthenticationDataset()::DataFrame
     return CSV.read(joinpath(_PATH_TO_DATA, "data-banknote-authentication.csv"), DataFrame)
 end
 
-function MyEnglishLanguageVocubularyModel()::Dict{Char, Set{String}}
+"""
+    MyEnglishLanguageVocabularyModel() -> Dict{Char, Set{String}}
+
+Load the English language vocabulary model as a dictionary where the keys are characters (the first letter of each word) 
+and the values are sets of words that start with that letter.
+"""
+function MyEnglishLanguageVocabularyModel()::Dict{Char, Set{String}}
 
     # initialize -
+    filepath = joinpath(_PATH_TO_DATA, "words-dictionary.json");
+    data = JSON.parsefile(filepath); # read the data from the *.json file
+    wordsdictionary = Dict{Char, Set{String}}(); # create an empty dictionary
 
-    # call build method, return dictionary
-    return _build(joinpath(_PATH_TO_DATA, "english-vocabulary.txt"));
+    # the words are the keys of the dictionary
+    list_of_words = keys(data) |> collect;
+    for word ∈ list_of_words
+        
+        # what is the first letter of the word?
+        first_letter = word[1]; # this gives the first letter of the word as a Char
+
+        # do we have this letter in the model?
+        if (haskey(wordsdictionary, first_letter) == false)
+            wordsdictionary[first_letter] = Set{String}(); # create an empty new set
+        end
+
+        # add the word to the set
+        push!(wordsdictionary[first_letter], word); # fancy!!
+    end
+
+    return wordsdictionary;
 end
 
 """
