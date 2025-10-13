@@ -39,7 +39,7 @@ export MyLinearProgrammingProblemModel;
 export MyPerceptronClassificationModel, MyLogisticRegressionClassificationModel;
 export MySarcasmRecordModel;
 export MySarcasmRecordCorpusModel;
-export MyEnglishLanguageVocubularyModel;
+export MyEnglishLanguageVocabularyModel;
 export UnsignedFeatureHashing, SignedFeatureHashing;
 export MySMSSpamHamRecordModel, MySMSSpamHamRecordCorpusModel;
 export MyAdjacencyRecombiningCommodityPriceTree, MyFullGeneralAdjacencyTree;
