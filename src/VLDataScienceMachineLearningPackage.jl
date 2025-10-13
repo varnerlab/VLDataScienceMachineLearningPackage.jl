@@ -67,6 +67,8 @@ export log_growth_matrix;
 export learn;
 export classify;
 export confusion;
+export vocabulary_transition_matrix;
+export sample_words;
 
 
 end # module VLDataScienceMachineLearningPackage
