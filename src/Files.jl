@@ -117,7 +117,7 @@ and the values are sets of words that start with that letter.
 function MyEnglishLanguageVocabularyModel()::Dict{Char, Set{String}}
 
     # initialize -
-    filepath = joinpath(_PATH_TO_DATA, "words-dictionary.json");
+    filepath = joinpath(_PATH_TO_DATA, "words_dictionary.json");
     data = JSON.parsefile(filepath); # read the data from the *.json file
     wordsdictionary = Dict{Char, Set{String}}(); # create an empty dictionary
 
