@@ -36,4 +36,5 @@ VLDataScienceMachineLearningPackage.myrandpolicy(problem::MyMDPProblemModel,
 VLDataScienceMachineLearningPackage.myrandstep(problem::MyMDPProblemModel, 
     world::MyRectangularGridWorldModel, s::Int, a::Int)
 VLDataScienceMachineLearningPackage.iterative_policy_evaluation
+VLDataScienceMachineLearningPackage.greedy
 ```
