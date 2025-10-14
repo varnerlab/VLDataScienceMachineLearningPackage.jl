@@ -33,6 +33,8 @@ export AbstractGraphTraversalAlgorithm;
 export AbstractLinearSolverAlgorithm;
 export AbstractClassificationAlgorithm;
 export AbstractLinearProgrammingProblemType;
+export AbstractProcessModel;
+export AbstractWorldModel;
 
 # Concrete types -
 export MyLinearProgrammingProblemModel;
@@ -49,6 +51,8 @@ export MyGraphNodeModel, MyGraphEdgeModel, MyGraphEdgeModels, MySimpleDirectedGr
 export DepthFirstSearchAlgorithm, BreadthFirstSearchAlgorithm;
 export DijkstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm, EdmondsKarpAlgorithm
 export JacobiMethod, GaussSeidelMethod, SuccessiveOverRelaxationMethod;
+export MyValueIterationModel, MyValueFunctionPolicy;
+export MyRectangularGridWorldModel, MyMDPProblemModel;
 
 # methods -
 export tokenize;
@@ -70,5 +74,14 @@ export confusion;
 export vocabulary_transition_matrix;
 export sample_words;
 
+# MDP and RL methods -
+export lookahead;
+export backup;
+export Q;
+export policy;
+export myrandpolicy;
+export myrandstep;
+export iterative_policy_evaluation;
+export greedy;
 
 end # module VLDataScienceMachineLearningPackage

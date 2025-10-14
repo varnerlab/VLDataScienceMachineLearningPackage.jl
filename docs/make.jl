@@ -16,6 +16,9 @@ makedocs(
         "Graphs" => "graphs.md",
         "Linear" => "solvers.md",
         "Binary Classification" => "binaryclassification.md",
+        "Reinforcement Learning" => [
+            "Markov Decision Processes" => "mdp.md",
+        ],
     ], 
 )
 
