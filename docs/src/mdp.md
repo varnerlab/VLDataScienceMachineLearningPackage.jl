@@ -11,16 +11,7 @@ VLDataScienceMachineLearningPackage.MyValueIterationModel
 VLDataScienceMachineLearningPackage.MyValueFunctionPolicy
 ```
 
-We construct the `MyMDProblemModel` type, and the `MyRectangularGridWorldModel` type to represent the environment in which the MDP operates using custom build methods:
-
-```@docs
-VLDataScienceMachineLearningPackage.build(model::Type{MyMDPProblemModel}, data::NamedTuple)VLDataScienceMachineLearningPackage.build(modeltype::Type{MyRectangularGridWorldModel}, data::NamedTuple)
-```
-
-
-The `MyValueIterationModel` type is used to define the parameters for the Value Iteration algorithm, and the `MyValueFunctionPolicy` type is used to store the results of the Value Iteration algorithm, including the optimal value function and policy.
-
-These types allow us to create and manipulate MDPs, define the environment, and implement algorithms for solving MDPs.
+We construct the `MyMDProblemModel` type, and the `MyRectangularGridWorldModel` type to represent the environment in which the MDP operates using custom build methods. The `MyValueIterationModel` and `MyValueFunctionPolicy` can be constructed using their default constructors.
 
 ## Value Iteration Algorithm
 We have implemented the Value Iteration algorithm, which is a dynamic programming algorithm used to compute the optimal policy and value function for an MDP. The algorithm iteratively updates the value of each state based on the expected rewards and the values of successor states.

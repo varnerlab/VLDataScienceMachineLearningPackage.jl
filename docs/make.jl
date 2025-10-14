@@ -14,7 +14,7 @@ makedocs(
         "Text" => "text.md",
         "Wolfram" => "wolfram.md",
         "Graphs" => "graphs.md",
-        "Linear" => "solvers.md",
+        "Linear Systems" => "solvers.md",
         "Binary Classification" => "binaryclassification.md",
         "Reinforcement Learning" => [
             "Markov Decision Processes" => "mdp.md",
