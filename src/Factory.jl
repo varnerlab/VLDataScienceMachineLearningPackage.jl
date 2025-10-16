@@ -727,3 +727,46 @@ function build(modeltype::Type{MyRectangularGridWorldModel}, data::NamedTuple)::
     # return -
     return model
 end
+
+"""
+    build(type::MySimpleCobbDouglasChoiceProblem, data::NamedTuple) -> MySimpleCobbDouglasChoiceProblem
+
+Builds a `MySimpleCobbDouglasChoiceProblem` model from data in a `NamedTuple`.
+
+### Arguments
+- `type::MySimpleCobbDouglasChoiceProblem`: the type of model to build
+- `data::NamedTuple`: the data to use to build the model
+
+The `data` `NamedTuple` must contain the following keys:
+- `α::Array{Float64,1}`: the Cobb-Douglas parameters
+- `c::Array{Float64,1}`: the costs of goods
+- `initial::Array{Float64,1}`: the initial endowment of goods
+- `bounds::Array{Float64,2}`: the bounds on the choice variables
+- `I::Float64`: the budget we can spend
+
+### Returns
+- `MySimpleCobbDouglasChoiceProblem`: the built Cobb-Douglas choice problem model
+"""
+function build(modeltype::Type{MySimpleCobbDouglasChoiceProblem},
+    data::NamedTuple)::MySimpleCobbDouglasChoiceProblem
+
+    # initialize and empty model -
+    model = modeltype();
+
+    # get stuff from the NamedTuple -
+    α = data.α;
+    c = data.c;
+    initial = data.initial;
+    bounds = data.bounds;
+    I = data.I;
+
+    # package stuff into the model -
+    model.α = α;
+    model.c = c;
+    model.initial = initial;
+    model.bounds = bounds;
+    model.I = I;
+
+    # return -
+    return model;
+end

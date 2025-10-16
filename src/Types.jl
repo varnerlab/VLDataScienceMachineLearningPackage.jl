@@ -487,4 +487,30 @@ struct MyValueFunctionPolicy
     problem::MyMDPProblemModel
     U::Array{Float64,1}
 end
+
+
+"""
+    mutable struct MySimpleCobbDouglasChoiceProblem
+
+A model for a Cobb-Douglas choice problem. 
+
+### Fields
+- `α::Array{Float64,1}`: the vector of parameters for the Cobb-Douglas utility function (preferences)
+- `c::Array{Float64,1}`: the vector of unit prices for the goods
+- `I::Float64`: the income the consumer has to spend
+- `bounds::Array{Float64,2}`: the bounds on the goods [0,U] where U is the upper bound
+- `initial::Array{Float64,1}`: the initial guess for the solution
+"""
+mutable struct MySimpleCobbDouglasChoiceProblem
+
+    # data -
+    α::Array{Float64,1}         # preferences
+    c::Array{Float64,1}         # prices
+    I::Float64                  # budget
+    bounds::Array{Float64,2}    # bounds
+    initial::Array{Float64,1}   # initial guess
+
+    # constructor
+    MySimpleCobbDouglasChoiceProblem() = new();
+end
 # -- MDP AND RL ABOVE HERE ------------------------------------------------------------------------ #

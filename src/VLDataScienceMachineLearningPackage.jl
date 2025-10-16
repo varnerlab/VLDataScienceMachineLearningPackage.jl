@@ -52,7 +52,7 @@ export DepthFirstSearchAlgorithm, BreadthFirstSearchAlgorithm;
 export DijkstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm, EdmondsKarpAlgorithm
 export JacobiMethod, GaussSeidelMethod, SuccessiveOverRelaxationMethod;
 export MyValueIterationModel, MyValueFunctionPolicy;
-export MyRectangularGridWorldModel, MyMDPProblemModel;
+export MyRectangularGridWorldModel, MyMDPProblemModel, MySimpleCobbDouglasChoiceProblem;
 
 # methods -
 export tokenize;

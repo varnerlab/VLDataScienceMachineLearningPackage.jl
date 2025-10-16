@@ -29,3 +29,11 @@ VLDataScienceMachineLearningPackage.myrandstep(problem::MyMDPProblemModel,
 VLDataScienceMachineLearningPackage.iterative_policy_evaluation
 VLDataScienceMachineLearningPackage.greedy
 ```
+
+## Cobb-Douglas Choice Problem
+We have also implemented a simple Cobb-Douglas choice problem, which is a type of economic model used to represent consumer preferences and choices. The Cobb-Douglas utility function is commonly used in economics to model the relationship between consumption of goods and overall utility.
+
+```@docs
+VLDataScienceMachineLearningPackage.MySimpleCobbDouglasChoiceProblem
+VLDataScienceMachineLearningPackage.solve(problem::MySimpleCobbDouglasChoiceProblem)
+```
