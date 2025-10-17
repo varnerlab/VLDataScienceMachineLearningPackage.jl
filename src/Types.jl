@@ -475,6 +475,18 @@ struct MyValueIterationModel
 end
 
 """
+    struct MyRandomRolloutModel
+
+A struct that defines a random rollout model.
+The random rollout model is defined by the depth of the rollout.
+"""
+struct MyRandomRolloutModel
+    # data -
+    depth::Int64; # depth of the rollout
+end
+
+
+"""
     struct MyValueFunctionPolicy
 
 A struct that defines a value function policy.

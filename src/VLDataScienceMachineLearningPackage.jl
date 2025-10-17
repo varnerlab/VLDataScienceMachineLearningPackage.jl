@@ -51,7 +51,7 @@ export MyGraphNodeModel, MyGraphEdgeModel, MyGraphEdgeModels, MySimpleDirectedGr
 export DepthFirstSearchAlgorithm, BreadthFirstSearchAlgorithm;
 export DijkstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm, EdmondsKarpAlgorithm
 export JacobiMethod, GaussSeidelMethod, SuccessiveOverRelaxationMethod;
-export MyValueIterationModel, MyValueFunctionPolicy;
+export MyValueIterationModel, MyValueFunctionPolicy, MyRandomRolloutModel;
 export MyRectangularGridWorldModel, MyMDPProblemModel, MySimpleCobbDouglasChoiceProblem;
 
 # methods -

@@ -227,6 +227,59 @@ function solve(model::MyValueIterationModel, problem::MyMDPProblemModel)::MyValu
 end
 
 """
+    solve(model::MyRandomRolloutModel, problem::MyMDPProblemModel, 
+        world::MyRectangularGridWorldModel, s::Int64) -> Float64
+
+This function solves the MDP problem using random rollouts.
+
+### Arguments
+- `model::MyRandomRolloutModel`: the random rollout model
+- `problem::MyMDPProblemModel`: the MDP problem model
+- `world::MyRectangularGridWorldModel`: the world model
+- `s::Int64`: the state
+
+### Returns
+- `Float64`: the estimated utility value of the state `s`
+"""
+function solve(model::MyRandomRolloutModel, problem::MyMDPProblemModel, 
+        world::MyRectangularGridWorldModel, s::Int64)::Float64
+
+    # initialize -
+    ret = 0.0;
+    γ = problem.γ;
+    visited_states = Set{Int64}();
+    is_ok_to_stop = false;
+    i = 1;
+    depth = model.depth;
+
+    while (is_ok_to_stop == false)
+       
+        a = myrandpolicy(problem, world, s);
+        s, r = myrandstep(problem, world, s, a);
+
+        if (s ∉ visited_states)
+            push!(visited_states, s);
+            ret += r*γ^(i-1);
+            i += 1;
+
+            # can we stop?
+            if (length(visited_states) ≥ depth)
+                is_ok_to_stop = true;
+            end
+        end
+    end    
+    
+    # for i ∈ 1:depth
+    #     a = myrandpolicy(problem, world, s);
+    #     s, r = myrandstep(problem, world, s, a);
+    #     ret += r*γ^(i-1);
+    # end
+
+    # return -
+    return ret;
+end;
+
+"""
     iterative_policy_evaluation(p::MyMDPProblemModel, π, k_max::Int) -> Array{Float64,1}
 
 This function performs iterative policy evaluation for a given MDP problem and policy.

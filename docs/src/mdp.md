@@ -9,9 +9,10 @@ VLDataScienceMachineLearningPackage.MyMDPProblemModel
 VLDataScienceMachineLearningPackage.MyRectangularGridWorldModel
 VLDataScienceMachineLearningPackage.MyValueIterationModel
 VLDataScienceMachineLearningPackage.MyValueFunctionPolicy
+VLDataScienceMachineLearningPackage.MyRandomRolloutModel
 ```
 
-We construct the `MyMDProblemModel` type, and the `MyRectangularGridWorldModel` type to represent the environment in which the MDP operates using custom build methods. The `MyValueIterationModel` and `MyValueFunctionPolicy` can be constructed using their default constructors.
+We construct the `MyMDProblemModel` type, and the `MyRectangularGridWorldModel` type to represent the environment in which the MDP operates using custom build methods. The `MyValueIterationModel`, `MyRandomRolloutModel`, and `MyValueFunctionPolicy` can be constructed using their default constructors.
 
 ## Value Iteration Algorithm
 We have implemented the Value Iteration algorithm, which is a dynamic programming algorithm used to compute the optimal policy and value function for an MDP. The algorithm iteratively updates the value of each state based on the expected rewards and the values of successor states.
@@ -22,12 +23,14 @@ VLDataScienceMachineLearningPackage.backup(problem::MyMDPProblemModel, U::Array{
 VLDataScienceMachineLearningPackage.policy(Q_array::Array{Float64,2})
 VLDataScienceMachineLearningPackage.Q(p::MyMDPProblemModel, U::Array{Float64,1})
 VLDataScienceMachineLearningPackage.lookahead
+VLDataScienceMachineLearningPackage.iterative_policy_evaluation
+VLDataScienceMachineLearningPackage.greedy
 VLDataScienceMachineLearningPackage.myrandpolicy(problem::MyMDPProblemModel, 
     world::MyRectangularGridWorldModel, s::Int)
 VLDataScienceMachineLearningPackage.myrandstep(problem::MyMDPProblemModel, 
     world::MyRectangularGridWorldModel, s::Int, a::Int)
-VLDataScienceMachineLearningPackage.iterative_policy_evaluation
-VLDataScienceMachineLearningPackage.greedy
+VLDataScienceMachineLearningPackage.solve(model::MyRandomRolloutModel, problem::MyMDPProblemModel, 
+        world::MyRectangularGridWorldModel, s::Int64)
 ```
 
 ## Cobb-Douglas Choice Problem
