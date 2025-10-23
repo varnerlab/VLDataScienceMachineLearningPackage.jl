@@ -35,6 +35,7 @@ export AbstractClassificationAlgorithm;
 export AbstractLinearProgrammingProblemType;
 export AbstractProcessModel;
 export AbstractWorldModel;
+export AbstractBanditAlgorithmModel;
 
 # Concrete types -
 export MyLinearProgrammingProblemModel;
@@ -53,6 +54,7 @@ export DijkstraAlgorithm, BellmanFordAlgorithm, FordFulkersonAlgorithm, EdmondsK
 export JacobiMethod, GaussSeidelMethod, SuccessiveOverRelaxationMethod;
 export MyValueIterationModel, MyValueFunctionPolicy, MyRandomRolloutModel;
 export MyRectangularGridWorldModel, MyMDPProblemModel, MySimpleCobbDouglasChoiceProblem;
+export MyExploreFirstAlgorithmModel, MyEpsilonGreedyAlgorithmModel, MyUCB1AlgorithmModel;
 
 # methods -
 export tokenize;
@@ -83,5 +85,8 @@ export myrandpolicy;
 export myrandstep;
 export iterative_policy_evaluation;
 export greedy;
+
+# bandit methods -
+export regret;
 
 end # module VLDataScienceMachineLearningPackage

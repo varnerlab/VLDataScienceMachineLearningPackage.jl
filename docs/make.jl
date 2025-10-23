@@ -18,6 +18,7 @@ makedocs(
         "Binary Classification" => "binaryclassification.md",
         "Reinforcement Learning" => [
             "Markov Decision Processes" => "mdp.md",
+            "Bandit Algorithms" => "bandit.md",
         ],
     ], 
 )
