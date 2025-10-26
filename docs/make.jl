@@ -19,6 +19,7 @@ makedocs(
         "Reinforcement Learning" => [
             "Markov Decision Processes" => "mdp.md",
             "Bandit Algorithms" => "bandit.md",
+            "Multiplicative Weight Updates" => "online.md",
         ],
     ], 
 )

@@ -17,6 +17,7 @@ abstract type AbstractLinearProgrammingProblemType end
 abstract type AbstractProcessModel end
 abstract type AbstractWorldModel end
 abstract type AbstractBanditAlgorithmModel end
+abstract type AbstractOnlineLearningModel end
 
 """
     mutable struct MyLinearProgrammingProblemModel <: AbstractLinearProgrammingProblemType 
@@ -569,3 +570,33 @@ mutable struct MyUCB1AlgorithmModel <: AbstractBanditAlgorithmModel
     MyUCB1AlgorithmModel() = new();
 end
 # -- MDP AND RL ABOVE HERE ------------------------------------------------------------------------ #
+
+# -- WMA and MWA BELOW HERE ----------------------------------------------------------------------- #
+
+"""
+    MyBinaryWeightedMajorityAlgorithmModel
+
+A mutable type for the Binary Weighted Majority Algorithm model. 
+This model is used to simulate the Binary Weighted Majority Algorithm. The model has the following fields:
+
+- `ϵ::Float64`: learning rate
+- `n::Int64`: number of experts
+- `T::Int64`: number of rounds
+- `weights::Array{Float64,2}`: weights of the experts
+- `expert::Function`: expert function
+- `adversary::Function`: adversary function
+"""
+mutable struct MyBinaryWeightedMajorityAlgorithmModel <: AbstractOnlineLearningModel
+    
+    # parameters
+    ϵ::Float64 # learning rate
+    n::Int64 # number of experts
+    T::Int64 # number of rounds
+    weights::Array{Float64,2} # weights of the experts
+    expert::Function # expert function
+    adversary::Function # adversary function
+
+    # default constructor -
+    MyBinaryWeightedMajorityAlgorithmModel() = new();
+end
+# -- WMA and MWA ABOVE HERE ----------------------------------------------------------------------- #

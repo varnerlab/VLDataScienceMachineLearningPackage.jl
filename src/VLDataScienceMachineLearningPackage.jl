@@ -36,6 +36,7 @@ export AbstractLinearProgrammingProblemType;
 export AbstractProcessModel;
 export AbstractWorldModel;
 export AbstractBanditAlgorithmModel;
+export AbstractOnlineLearningModel;
 
 # Concrete types -
 export MyLinearProgrammingProblemModel;
@@ -55,6 +56,7 @@ export JacobiMethod, GaussSeidelMethod, SuccessiveOverRelaxationMethod;
 export MyValueIterationModel, MyValueFunctionPolicy, MyRandomRolloutModel;
 export MyRectangularGridWorldModel, MyMDPProblemModel, MySimpleCobbDouglasChoiceProblem;
 export MyExploreFirstAlgorithmModel, MyEpsilonGreedyAlgorithmModel, MyUCB1AlgorithmModel;
+export MyBinaryWeightedMajorityAlgorithmModel;
 
 # methods -
 export tokenize;
@@ -88,5 +90,8 @@ export greedy;
 
 # bandit methods -
 export regret;
+
+# WMA and MWA methods -
+export play;
 
 end # module VLDataScienceMachineLearningPackage
