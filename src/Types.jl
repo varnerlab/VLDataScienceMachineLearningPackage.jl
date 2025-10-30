@@ -599,4 +599,30 @@ mutable struct MyBinaryWeightedMajorityAlgorithmModel <: AbstractOnlineLearningM
     # default constructor -
     MyBinaryWeightedMajorityAlgorithmModel() = new();
 end
+
+"""
+    mutable struct MyTwoPersonZeroSumGameModel <: AbstractOnlineLearningModel
+
+A mutable type for the Two-Person Zero-Sum Game model. 
+This model is used to simulate the Two-Person Zero-Sum Game using the Multiplicative Weights Algorithm. 
+The model has the following fields:
+
+- `ϵ::Float64`: learning rate
+- `n::Int64`: number of experts (actions)
+- `T::Int64`: number of rounds
+- `weights::Array{Float64,2}`: weights of the experts
+- `payoffmatrix::Array{Float64,2}`: payoff matrix
+"""
+mutable struct MyTwoPersonZeroSumGameModel <: AbstractOnlineLearningModel
+    
+    # parameters
+    ϵ::Float64 # learning rate
+    n::Int64 # number of experts (actions)
+    T::Int64 # number of rounds
+    weights::Array{Float64,2} # weights of the experts
+    payoffmatrix::Array{Float64,2} # payoff matrix
+
+    # default constructor -
+    MyTwoPersonZeroSumGameModel() = new();
+end
 # -- WMA and MWA ABOVE HERE ----------------------------------------------------------------------- #

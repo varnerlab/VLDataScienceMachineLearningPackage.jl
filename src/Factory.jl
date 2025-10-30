@@ -887,3 +887,44 @@ function build(modeltype::Type{MyBinaryWeightedMajorityAlgorithmModel},
     # return the model -
     return model;
 end
+
+"""
+    function build(modeltype::Type{MyTwoPersonZeroSumGameModel}, 
+        data::NamedTuple)::MyTwoPersonZeroSumGameModel
+
+This method builds and returns an instance of the `MyTwoPersonZeroSumGameModel` type.
+
+### Arguments
+- `modeltype::Type{MyTwoPersonZeroSumGameModel}`: The model type to build.
+- `data::NamedTuple`: A named tuple containing the model parameters:
+    - `ϵ::Float64`: The learning rate.
+    - `n::Int`: The number of experts (actions).
+    - `T::Int`: The number of rounds.
+    - `payoffmatrix::Array{Float64,2}`: The payoff matrix.
+
+### Returns 
+- `model::MyTwoPersonZeroSumGameModel`: An instance of the `MyTwoPersonZeroSumGameModel` type with the specified parameters.
+"""
+function build(modeltype::Type{MyTwoPersonZeroSumGameModel},
+    data::NamedTuple)::MyTwoPersonZeroSumGameModel
+
+    # initialize -
+    model = modeltype(); # build an empty model
+    ϵ = data.ϵ; # learning rate
+    n = data.n; # number of experts (actions)
+    T = data.T; # number of rounds
+    payoffmatrix = data.payoffmatrix; # payoff matrix
+
+    # set the parameters -
+    model.ϵ = ϵ;
+    model.n = n;
+    model.T = T;
+    model.payoffmatrix = payoffmatrix;
+    model.weights = zeros(Float64, T+1, n) # initialize the weights array with ones
+
+    # generate a random initial weight vector -
+    model.weights[1, :] = rand(n);
+
+    # return the model -
+    return model;
+end

@@ -56,7 +56,7 @@ export JacobiMethod, GaussSeidelMethod, SuccessiveOverRelaxationMethod;
 export MyValueIterationModel, MyValueFunctionPolicy, MyRandomRolloutModel;
 export MyRectangularGridWorldModel, MyMDPProblemModel, MySimpleCobbDouglasChoiceProblem;
 export MyExploreFirstAlgorithmModel, MyEpsilonGreedyAlgorithmModel, MyUCB1AlgorithmModel;
-export MyBinaryWeightedMajorityAlgorithmModel;
+export MyBinaryWeightedMajorityAlgorithmModel, MyTwoPersonZeroSumGameModel;
 
 # methods -
 export tokenize;
