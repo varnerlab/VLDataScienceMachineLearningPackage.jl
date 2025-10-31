@@ -972,6 +972,7 @@ The `data` `NamedTuple` must contain the following keys:
 - `B::Float64`: budget that we have to spend on the collection of assets
 - `nₒ::Array{Float64,1}`: initial guess for the solution
 - `μₒ::Array{Float64,1}`: initial for the utility of each arm
+- `γ::Array{Float64,1}`: parameters for the utility function (preferences)
 
 ### Returns
 - `MyConsumerChoiceBanditContextModel`: a populated consumer choice bandit context model
@@ -986,23 +987,26 @@ function build(modeltype::Type{MyConsumerChoiceBanditContextModel},
     # B::Float64 # budget that we have to spend on the collection of assets
     # nₒ::Array{Float64,1} # initial guess for the solution
     # μₒ::Array{Float64,1} # initial for the utility of each arm
+    # γ::Array{Float64,1} # parameters for the utility function (preferences)
 
     # get stuff from the NamedTuple -
-    data = data.data; # data dictionary for each item, or more generally the context
+    contextdata = data.data; # data dictionary for each item, or more generally the context
     items = data.items; # items for each asset
     bounds = data.bounds; # bounds on the assets that we can purchase
     B = data.B; # budget that we have to spend on the collection of assets
     nₒ = data.nₒ; # initial guess for the solution
     μₒ = data.μₒ; # initial for the utility of each arm
+    γ = data.γ; # parameters for the utility function (preferences)
 
     # build empty model -
     model = modeltype();
-    model.data = data;
+    model.data = contextdata;
     model.items = items;
     model.bounds = bounds;
     model.B = B;
     model.nₒ = nₒ;
     model.μₒ = μₒ;
+    model.γ = γ;
 
     # return -
     return model;

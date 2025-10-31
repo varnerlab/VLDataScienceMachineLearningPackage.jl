@@ -611,6 +611,7 @@ mutable struct MyConsumerChoiceBanditContextModel <: AbstractBanditProblemContex
     B::Float64 # budget that we have to spend on the collection of assets
     nₒ::Array{Float64,1} # initial guess for the solution
     μₒ::Array{Float64,1} # initial for the utility of each arm
+    γ::Array{Float64,1} # parameters for the utility function (preferences)
 
     # constructor -
     MyConsumerChoiceBanditContextModel() = new();
