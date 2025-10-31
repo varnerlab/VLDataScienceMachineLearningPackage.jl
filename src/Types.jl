@@ -572,9 +572,9 @@ mutable struct MyEpsilonGreedyAlgorithmModel <: AbstractBanditAlgorithmModel
 end
 
 """
-    mutable struct MyBinaryArmEpsilonGreedyAlgorithmModel <: AbstractBanditAlgorithmModel
+    mutable struct MyBinaryVectorArmsEpsilonGreedyAlgorithmModel <: AbstractBanditAlgorithmModel
 
-A mutable struct that represents a binary-arm epsilon-greedy bandit algorithm model.
+A mutable struct that represents a binary vector arms epsilon-greedy bandit algorithm model.
 
 ### Fields
 - `K::Int64`: number of arms
