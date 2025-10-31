@@ -37,6 +37,7 @@ export AbstractProcessModel;
 export AbstractWorldModel;
 export AbstractBanditAlgorithmModel;
 export AbstractOnlineLearningModel;
+export AbstractBanditAlgorithmContextModel;
 
 # Concrete types -
 export MyLinearProgrammingProblemModel;
@@ -57,6 +58,7 @@ export MyValueIterationModel, MyValueFunctionPolicy, MyRandomRolloutModel;
 export MyRectangularGridWorldModel, MyMDPProblemModel, MySimpleCobbDouglasChoiceProblem;
 export MyExploreFirstAlgorithmModel, MyEpsilonGreedyAlgorithmModel, MyUCB1AlgorithmModel;
 export MyBinaryWeightedMajorityAlgorithmModel, MyTwoPersonZeroSumGameModel;
+export MyBinaryVectorArmEpsilonGreedyAlgorithmModel, MyConsumerChoiceBanditContextModel;
 
 # methods -
 export tokenize;
