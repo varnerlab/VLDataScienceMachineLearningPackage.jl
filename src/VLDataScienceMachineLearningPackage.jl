@@ -37,7 +37,7 @@ export AbstractProcessModel;
 export AbstractWorldModel;
 export AbstractBanditAlgorithmModel;
 export AbstractOnlineLearningModel;
-export AbstractBanditAlgorithmContextModel;
+export AbstractBanditProblemContextModel;
 
 # Concrete types -
 export MyLinearProgrammingProblemModel;

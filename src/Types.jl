@@ -18,7 +18,7 @@ abstract type AbstractProcessModel end
 abstract type AbstractWorldModel end
 abstract type AbstractBanditAlgorithmModel end
 abstract type AbstractOnlineLearningModel end
-abstract type AbstractBanditAlgorithmContextModel end
+abstract type AbstractBanditProblemContextModel end
 
 """
     mutable struct MyLinearProgrammingProblemModel <: AbstractLinearProgrammingProblemType 
