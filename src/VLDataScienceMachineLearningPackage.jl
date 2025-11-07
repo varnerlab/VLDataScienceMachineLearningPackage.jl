@@ -58,7 +58,7 @@ export MyValueIterationModel, MyValueFunctionPolicy, MyRandomRolloutModel;
 export MyRectangularGridWorldModel, MyMDPProblemModel, MySimpleCobbDouglasChoiceProblem;
 export MyExploreFirstAlgorithmModel, MyEpsilonGreedyAlgorithmModel, MyUCB1AlgorithmModel;
 export MyBinaryWeightedMajorityAlgorithmModel, MyTwoPersonZeroSumGameModel;
-export MyBinaryVectorArmEpsilonGreedyAlgorithmModel, MyConsumerChoiceBanditContextModel;
+export MyBinaryVectorArmsEpsilonGreedyAlgorithmModel, MyConsumerChoiceBanditContextModel;
 
 # methods -
 export tokenize;
