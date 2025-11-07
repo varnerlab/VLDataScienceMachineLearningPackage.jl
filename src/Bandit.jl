@@ -103,7 +103,7 @@ function _solve(model::MyUCB1AlgorithmModel; T::Int = 0, world::Function = _null
 end
 
 function _solve(model::MyBinaryVectorArmsEpsilonGreedyAlgorithmModel, context::MyConsumerChoiceBanditContextModel;
-    T::Int = 0, world::Function = _null)
+    T::Int = 0, world::Function = _null, startdayindex::Int = 1)
 
     # initialize -
     K = model.K; # get the number of goods to choose from
@@ -202,10 +202,11 @@ Solve the contextual bandit problem using the given model and context.
 - `context::MyConsumerChoiceBanditContextModel`: The context model to use. Must be a subtype of `AbstractBanditProblemContextModel`.
 - `T::Int = 0`: The number of rounds to play. Default is 0.
 - `world::Function = _null`: The function that returns the reward for a given action. Default is the private `_null` function.
+- `startdayindex::Int = 1`: The starting time index for the context model. Default is 1. This is useful for time series data.
 """
 function solve(model::MyBinaryVectorArmsEpsilonGreedyAlgorithmModel, context::MyConsumerChoiceBanditContextModel;
-    T::Int = 0, world::Function = _null)
-    return _solve(model, context, T = T, world = world);    
+    T::Int = 0, world::Function = _null, startdayindex::Int = 1)
+    return _solve(model, context, T = T, world = world, startdayindex = startdayindex);
 end
 
 
