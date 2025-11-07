@@ -203,7 +203,7 @@ Solve the contextual bandit problem using the given model and context.
 - `T::Int = 0`: The number of rounds to play. Default is 0.
 - `world::Function = _null`: The function that returns the reward for a given action. Default is the private `_null` function.
 """
-function solve(model::MyBinaryVectorArmsEpsilonGreedyAlgorithmModel, context::AbstractBanditProblemContextModel;
+function solve(model::MyBinaryVectorArmsEpsilonGreedyAlgorithmModel, context::MyConsumerChoiceBanditContextModel;
     T::Int = 0, world::Function = _null)
     return _solve(model, context, T = T, world = world);    
 end

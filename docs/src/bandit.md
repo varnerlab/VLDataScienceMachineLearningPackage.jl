@@ -17,4 +17,5 @@ We've built in support for this type of bandit problem in the package. Specifica
 ```@docs
 VLDataScienceMachineLearningPackage.MyBinaryVectorArmsEpsilonGreedyAlgorithmModel
 VLDataScienceMachineLearningPackage.MyConsumerChoiceBanditContextModel
+VLDataScienceMachineLearningPackage.solve(model::MyBinaryVectorArmsEpsilonGreedyAlgorithmModel, context::MyConsumerChoiceBanditContextModel; T::Int = 0, world::Function = _null)
 ```
