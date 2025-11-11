@@ -154,7 +154,7 @@ function _solve(model::MyBinaryVectorArmsEpsilonGreedyAlgorithmModel, context::M
         rₜ, nₜ, pₜ, γₜ = world(startdayindex, aₜ, context); # get the reward from the world (use the first day of the OOS data)
 
         # for each arm, compute the reward -
-        μ[î]+=(t/T)*(rₜ - μ[î]); # update the average reward for the chosen arm (learning rate = α)
+        μ[î]+=(1/t)*(rₜ - μ[î]); # update the average reward for the chosen arm (learning rate = α)
 
         # store other data -
         R[t, î] = rₜ; # store the reward in the rewards array
