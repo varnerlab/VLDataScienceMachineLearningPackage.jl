@@ -59,6 +59,7 @@ export MyRectangularGridWorldModel, MyMDPProblemModel, MySimpleCobbDouglasChoice
 export MyExploreFirstAlgorithmModel, MyEpsilonGreedyAlgorithmModel, MyUCB1AlgorithmModel;
 export MyBinaryWeightedMajorityAlgorithmModel, MyTwoPersonZeroSumGameModel;
 export MyBinaryVectorArmsEpsilonGreedyAlgorithmModel, MyConsumerChoiceBanditContextModel;
+export MyQLearningAgentModel;
 
 # methods -
 export tokenize;

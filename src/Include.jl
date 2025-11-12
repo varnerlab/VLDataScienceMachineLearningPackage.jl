@@ -29,3 +29,4 @@ include(joinpath(_PATH_TO_SRC, "Binary.jl"));
 include(joinpath(_PATH_TO_SRC, "MDP.jl"));
 include(joinpath(_PATH_TO_SRC, "Bandit.jl"));
 include(joinpath(_PATH_TO_SRC, "Online.jl"));
+include(joinpath(_PATH_TO_SRC, "QLearning.jl"));

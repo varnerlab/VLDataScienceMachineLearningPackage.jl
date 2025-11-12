@@ -20,6 +20,7 @@ makedocs(
             "Markov Decision Processes" => "mdp.md",
             "Bandit Algorithms" => "bandit.md",
             "Multiplicative Weight Updates" => "online.md",
+            "Q-Learning" => "qlearning.md",
         ],
     ], 
 )

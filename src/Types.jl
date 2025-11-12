@@ -672,4 +672,29 @@ mutable struct MyTwoPersonZeroSumGameModel <: AbstractOnlineLearningModel
     # default constructor -
     MyTwoPersonZeroSumGameModel() = new();
 end
+
+"""
+    mutable struct MyQLearningAgentModel <: AbstractOnlineLearningModel
+
+A mutable type for the Q-Learning Agent model.
+
+### Fields
+- `states::Array{Int,1}`: array of states
+- `actions::Array{Int,1}`: array of actions
+- `γ::Float64`: discount factor
+- `α::Float64`: learning rate
+- `Q::Array{Float64,2}`: Q-value table
+"""
+mutable struct MyQLearningAgentModel <: AbstractOnlineLearningModel
+
+    # data -
+    states::Array{Int,1}
+    actions::Array{Int,1}
+    γ::Float64
+    α::Float64 
+    Q::Array{Float64,2}
+
+    # constructor
+    MyQLearningAgentModel() = new();
+end
 # -- WMA and MWA ABOVE HERE ----------------------------------------------------------------------- #

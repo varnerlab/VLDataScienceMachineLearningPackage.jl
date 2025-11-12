@@ -1011,3 +1011,52 @@ function build(modeltype::Type{MyConsumerChoiceBanditContextModel},
     # return -
     return model;
 end
+
+"""
+    function build(type::Type{MyQLearningModel},data::NamedTuple) -> MyQLearningModel
+
+Builds a `MyQLearningAgentModel` from data in a `NamedTuple`.
+
+### Arguments
+- `modeltype::Type{MyQLearningAgentModel}`: the model type to build
+- `data::NamedTuple`: the data to use to build the model
+
+The `data` `NamedTuple` must contain the following keys:
+- `states::Array{Int64,1}`: the state space
+- `actions::Array{Int64,1}`: the action space
+- `α::Float64`: the learning rate
+- `γ::Float64`: the discount factor
+
+### Returns
+- `MyQLearningAgentModel`: a populated Q-learning agent model
+
+"""
+function build(modeltype::Type{MyQLearningAgentModel}, data::NamedTuple)::MyQLearningAgentModel
+
+    # initialize -
+    model = MyQLearningAgentModel();
+
+    # if we have options, add them to the contract model -
+    if (isempty(data) == false)
+    
+        for key ∈ fieldnames(modeltype)
+            
+            # convert the field_name_symbol to a string -
+            field_name_string = string(key)
+
+            # check the for the key -
+            if (haskey(data, key) == false)
+                throw(ArgumentError("NamedTuple is missing: $(field_name_string)"))
+            end
+
+            # get the value -
+            value = data[key]
+
+            # set -
+            setproperty!(model, key, value)
+        end
+    end
+
+    # return -
+    return model
+end
