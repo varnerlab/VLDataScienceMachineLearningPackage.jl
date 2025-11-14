@@ -1,42 +1,6 @@
 # PRIVATE METHODS BELOW HERE ================================================================================= #
-# placeholder - always return 0
-_null(action::Int64)::Int64 = return 0;
-
-
-function _world(model::MyRectangularGridWorldModel, s::Int, a::Int)::Float64
-
-    # initialize -
-    s′ = nothing
-    r = nothing
-    
-    # get data from the model -
-    coordinates = model.coordinates;
-    moves = model.moves
-    states = model.states;
-    rewards = model.rewards;
-
-    # where are we now?
-    current_position = coordinates[s];
-
-    # get the perturbation -
-    Δ = moves[a];
-    new_position = current_position .+ Δ
-
-    # before we go on, have we "driven off the grid"?
-    if (haskey(states, new_position) == true)
-
-        # lookup the new state -
-        s′ = states[new_position];
-        r = rewards[s′];
-    else
-       
-        # ok: so we are all the grid. Bounce us back to to the current_position, and charge a huge penalty 
-        s′ = states[current_position];
-        r = -1000000000000.0
-    end
-
-    # return -
-    return (s′,r);
+function _world(model::MyRectangularGridWorldModel, s::Int, a::Int)::Tuple{Int,Float64}
+    return (s, 0.0); # dummy implementation
 end
 
 
