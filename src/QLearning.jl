@@ -20,7 +20,6 @@ Simulate the Q-Learning agent in the given environment starting from the given s
 ### Arguments
 - `agent::MyQLearningAgentModel`: The Q-Learning agent model.
 - `environment::MyRectangularGridWorldModel`: The environment model.
-- `startstate::Tuple{Int,Int}`: The starting state as a tuple of coordinates.
 - `maxsteps::Int`: The maximum number of steps to simulate.
 - `δ::Float64 = 0.02`: The convergence threshold. Default is 0.02.
 - `worldmodel::Function = _world`: The world model function. Default is the private `_world` function.
