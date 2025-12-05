@@ -22,6 +22,9 @@ makedocs(
             "Multiplicative Weight Updates" => "online.md",
             "Q-Learning" => "qlearning.md",
         ],
+        "Deep Learning" => [
+            "Hopfield Networks" => "hopfield.md",
+        ],
     ], 
 )
 

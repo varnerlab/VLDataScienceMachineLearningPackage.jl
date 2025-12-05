@@ -38,6 +38,7 @@ export AbstractWorldModel;
 export AbstractBanditAlgorithmModel;
 export AbstractOnlineLearningModel;
 export AbstractBanditProblemContextModel;
+export AbstractlHopfieldNetworkModel;
 
 # Concrete types -
 export MyLinearProgrammingProblemModel;
@@ -45,6 +46,9 @@ export MyPerceptronClassificationModel, MyLogisticRegressionClassificationModel;
 export MySarcasmRecordModel;
 export MySarcasmRecordCorpusModel;
 export MyEnglishLanguageVocabularyModel;
+export MyGrayscaleSimpsonsImageDataset;
+export MyUncorreleatedBlackAndWhiteImageDataset;
+
 export UnsignedFeatureHashing, SignedFeatureHashing;
 export MySMSSpamHamRecordModel, MySMSSpamHamRecordCorpusModel;
 export MyAdjacencyRecombiningCommodityPriceTree, MyFullGeneralAdjacencyTree;
@@ -60,6 +64,10 @@ export MyExploreFirstAlgorithmModel, MyEpsilonGreedyAlgorithmModel, MyUCB1Algori
 export MyBinaryWeightedMajorityAlgorithmModel, MyTwoPersonZeroSumGameModel;
 export MyBinaryVectorArmsEpsilonGreedyAlgorithmModel, MyConsumerChoiceBanditContextModel;
 export MyQLearningAgentModel;
+
+# Hopfield Network types -
+export MyClassicalHopfieldNetworkModel;
+export MyModernHopfieldNetworkModel;
 
 # methods -
 export tokenize;
@@ -93,6 +101,9 @@ export greedy;
 
 # bandit methods -
 export regret;
+
+# Hopfield methods -
+export recover;
 
 # WMA and MWA methods -
 export play;

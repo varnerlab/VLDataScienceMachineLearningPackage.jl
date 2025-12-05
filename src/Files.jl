@@ -17,6 +17,8 @@ function _jld2(path::String)::Dict{String,Any}
     return load(path);
 end
 
+_file_extension(file::String) = file[findlast(==('.'), file)+1:end]; # helper function to get the file extension
+
 # -- PRIVATE FUNCTIONS ABOVE HERE ------------------------------------------------------------------------------ #
 
 # -- PUBLIC FUNCTIONS BELOW HERE ------------------------------------------------------------------------------- #
@@ -432,4 +434,61 @@ function MyConstrainedGraphEdgeModels(filepath::String, edgeparser::Function; co
     return edges;
 end
 
+"""
+    MyGrayscaleSimpsonsImageDataset() -> Dict{Int64, Array{Gray{N0f8},2}}
+
+Load the Simpsons images dataset as a dictionary of grayscale images. This dataset contains 1000 images of Simpsons characters, each being 200 x 200 pixel images.
+These images are taken from the [Simpsons Faces Dataset](https://www.kaggle.com/datasets/kostastokis/simpsons-faces) on Kaggle.
+
+### Returns
+- `Dict{Int64, Array{Gray{N0f8},2}}`: A dictionary where the keys are image indices and the values are 2D arrays representing grayscale images.
+"""
+function MyGrayscaleSimpsonsImageDataset()::Dict{Int64, Array{Gray{N0f8},2}}
+
+    # initailize -
+    training_image_dictionary = Dict{Int64, Array{Gray{N0f8},2}}();
+
+    # hard the path to the Simpsons images dataset -
+    pathtoimages = joinpath(_PATH_TO_DATA, "images-simpsons");
+
+    # load the images -
+    files = readdir(pathtoimages); 
+    number_of_files = length(files);
+    imagecount = 1;
+    for i ∈ 1:number_of_files
+        filename = files[i];
+        ext = _file_extension(filename)
+        if (ext == "png")
+            training_image_dictionary[imagecount] = joinpath(pathtoimages, filename) |> x-> FileIO.load(x) |> img-> Gray.(img); # convert to grayscale
+            imagecount += 1
+        end
+    end
+    return training_image_dictionary;
+end
+
+"""
+    MyUncorreleatedBlackAndWhiteImageDataset() -> Array{Gray{N0f8},3}
+
+Load the uncorrelated black and white images dataset as a 3D array. This dataset contains 100 images of size 28 x 28 pixels.
+
+### Returns
+- `Array{Gray{N0f8},3}`: A 3D array where each slice along the third dimension represents a grayscale image.
+"""
+function MyUncorreleatedBlackAndWhiteImageDataset()::Array{Gray{N0f8},3}
+
+    # initailize -
+    number_of_rows = 28;
+    number_of_cols = 28;
+    number_of_training_examples = 100;
+    image_digit_array = Array{Gray{N0f8},3}(undef, number_of_rows, number_of_cols, number_of_training_examples);
+
+    # hard the path to the Simpsons images dataset -
+    pathtoimages = joinpath(_PATH_TO_DATA, "images-uncorrelated-bw");
+    files = readdir(pathtoimages);
+    for i ∈ 1:(number_of_training_examples-1)    
+        filename = files[i];
+        image_digit_array[:,:,i] = joinpath(pathtoimages, filename) |> x-> FileIO.load(x);
+    end
+    return image_digit_array;
+end
 # -- PUBLIC FUNCTIONS ABOVE HERE ------------------------------------------------------------------------------ #

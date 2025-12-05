@@ -1,10 +1,11 @@
 name = "VLDataScienceMachineLearningPackage"
 uuid = "24b76065-2c22-4f73-af85-7cb67476fb03"
-authors = ["Jeffrey Varner <jdv27@cornell.edu>"]
 version = "0.1.0"
+authors = ["Jeffrey Varner <jdv27@cornell.edu>"]
 
 [deps]
 CSV = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
+ColorVectorSpace = "c3611d14-8923-5661-9e6a-0046d554d3a4"
 DataFrames = "a93c6f00-e57d-5684-b7b6-d8193f3e46c0"
 DataStructures = "864edb3b-99cc-5e75-8d2d-829cb0a9cfe8"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
@@ -19,6 +20,7 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [compat]
 CSV = "0.10.15"
+ColorVectorSpace = "0.11.0"
 DataFrames = "1.7.0"
 DataStructures = "0.18.22, 0.19"
 Distributions = "0.25.120"
