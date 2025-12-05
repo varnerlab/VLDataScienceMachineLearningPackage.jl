@@ -1,10 +1,3 @@
-
-"""
-    _energy(s::Array{<:Number,1}, W::Array{<:Number,2}, b::Array{<:Number,1}) -> Float32
-
-Compute the Hopfield energy of state `s` given weight matrix `W` and bias vector `b` using
-`E(s) = -0.5 * s' * W * s + b' * s`.
-"""
 function _energy(s::Array{<: Number,1}, W::Array{<:Number,2}, b::Array{<:Number,1})::Float32
     
     # initialize -
@@ -24,7 +17,7 @@ function _energy(s::Array{<: Number,1}, W::Array{<:Number,2}, b::Array{<:Number,
     return energy_state;
 end
 
-# -- PUBLIC METHODS BELOW HERE ---------------------------------------------------------------------------------------------------------- #
+# -- PUBLIC METHODS BELOW HERE -------------------------------------------------------------------------------------------------------- #
 
 """
     recover(model::MyClassicalHopfieldNetworkModel, sₒ::Array{Int32,1}, trueenergyvalue::Float32;
