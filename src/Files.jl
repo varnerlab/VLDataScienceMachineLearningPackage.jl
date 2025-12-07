@@ -499,10 +499,10 @@ Load the MNIST digits dataset as a dictionary of grayscale images. This dataset 
 The images were taken from the [MNIST dataset](https://www.kaggle.com/datasets/hojjatk/mnist-dataset).
 
 ### Arguments
-- `number_of_training_examples::Int64 = 1000`: The number of training examples to load for each digit (0-9). Default is 1000.
+- `number_of_examples::Int64 = 1000`: The number of training examples to load for each digit (0-9). Default is 1000.
 
 """
-function MyMNISTHandwrittenDigitImageDataset(; number_of_training_examples::Int64 = 1000)::Dict{Int64, Array{Gray{N0f8},3}}
+function MyMNISTHandwrittenDigitImageDataset(; number_of_examples::Int64 = 1000)::Dict{Int64, Array{Gray{N0f8},3}}
 
     # initailize -
     number_of_rows = 28;
@@ -515,10 +515,10 @@ function MyMNISTHandwrittenDigitImageDataset(; number_of_training_examples::Int6
     for i ∈ number_digit_array
         
         # create a set for this digit -
-        image_digit_array = Array{Gray{N0f8},3}(undef, number_of_rows, number_of_cols, number_of_training_examples);
+        image_digit_array = Array{Gray{N0f8},3}(undef, number_of_rows, number_of_cols, number_of_examples);
         files = readdir(joinpath(pathtoimages, "$(i)")); 
         imagecount = 1;
-        for fileindex ∈ 1:number_of_training_examples
+        for fileindex ∈ 1:number_of_examples
             filename = files[fileindex];
             ext = _file_extension(filename)
             if (ext == "jpg")
