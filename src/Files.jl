@@ -491,4 +491,46 @@ function MyUncorreleatedBlackAndWhiteImageDataset()::Array{Gray{N0f8},3}
     end
     return image_digit_array;
 end
+
+"""
+    MyMNISTHandwrittenDigitImageDataset(; number_of_training_examples::Int64 = 1000) -> Dict{Int64, Array{Gray{N0f8},3}}
+
+Load the MNIST digits dataset as a dictionary of grayscale images. This dataset contains images of handwritten digits (0-9), each being 28 x 28 pixel images.
+The images were taken from the [MNIST dataset](https://www.kaggle.com/datasets/hojjatk/mnist-dataset).
+
+### Arguments
+- `number_of_training_examples::Int64 = 1000`: The number of training examples to load for each digit (0-9). Default is 1000.
+
+"""
+function MyMNISTHandwrittenDigitImageDataset(; number_of_training_examples::Int64 = 1000)::Dict{Int64, Array{Gray{N0f8},3}}
+
+    # initailize -
+    number_of_rows = 28;
+    number_of_cols = 28;
+    number_digit_array = range(0, stop=9, step=1) |> collect;
+    pathtoimages = joinpath(_PATH_TO_DATA, "images-mnist-digits");
+    training_image_dictionary = Dict{Int64, Array{Gray{N0f8},3}}();
+
+    # main loop -
+    for i ∈ number_digit_array
+        
+        # create a set for this digit -
+        image_digit_array = Array{Gray{N0f8},3}(undef, number_of_rows, number_of_cols, number_of_training_examples);
+        files = readdir(joinpath(pathtoimages, "$(i)")); 
+        imagecount = 1;
+        for fileindex ∈ 1:number_of_training_examples
+            filename = files[fileindex];
+            ext = _file_extension(filename)
+            if (ext == "jpg")
+                image_digit_array[:,:,fileindex] = joinpath(pathtoimages, "$(i)", filename) |> x-> FileIO.load(x);
+                imagecount += 1
+            end
+        end
+    
+        # capture -
+        training_image_dictionary[i] = image_digit_array
+    end
+
+    return training_image_dictionary;
+end
 # -- PUBLIC FUNCTIONS ABOVE HERE ------------------------------------------------------------------------------ #

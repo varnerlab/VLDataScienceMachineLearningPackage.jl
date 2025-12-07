@@ -48,6 +48,7 @@ export MySarcasmRecordCorpusModel;
 export MyEnglishLanguageVocabularyModel;
 export MyGrayscaleSimpsonsImageDataset;
 export MyUncorreleatedBlackAndWhiteImageDataset;
+export MyMNISTHandwrittenDigitImageDataset;
 
 export UnsignedFeatureHashing, SignedFeatureHashing;
 export MySMSSpamHamRecordModel, MySMSSpamHamRecordCorpusModel;
