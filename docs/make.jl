@@ -24,6 +24,7 @@ makedocs(
         ],
         "Deep Learning" => [
             "Hopfield Networks" => "hopfield.md",
+            "Boltzmann Machines" => "boltzmann.md",
         ],
     ], 
 )

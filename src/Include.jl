@@ -36,3 +36,4 @@ include(joinpath(_PATH_TO_SRC, "Bandit.jl"));
 include(joinpath(_PATH_TO_SRC, "Online.jl"));
 include(joinpath(_PATH_TO_SRC, "QLearning.jl"));
 include(joinpath(_PATH_TO_SRC, "Hopfield.jl"));
+include(joinpath(_PATH_TO_SRC, "Boltzmann.jl"));

@@ -39,6 +39,7 @@ export AbstractBanditAlgorithmModel;
 export AbstractOnlineLearningModel;
 export AbstractBanditProblemContextModel;
 export AbstractlHopfieldNetworkModel;
+export AbstractBoltzmannMachineModel;
 
 # Concrete types -
 export MyLinearProgrammingProblemModel;
@@ -69,6 +70,9 @@ export MyQLearningAgentModel;
 # Hopfield Network types -
 export MyClassicalHopfieldNetworkModel;
 export MyModernHopfieldNetworkModel;
+
+# Boltzmann Machine types -
+export MySimpleBoltzmannMachineModel;
 
 # methods -
 export tokenize;
@@ -103,8 +107,9 @@ export greedy;
 # bandit methods -
 export regret;
 
-# Hopfield methods -
+# Hopfield and Boltzmann methods -
 export recover;
+export sample;
 
 # WMA and MWA methods -
 export play;

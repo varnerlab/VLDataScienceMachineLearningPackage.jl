@@ -1145,3 +1145,30 @@ function build(modeltype::Type{MyModernHopfieldNetworkModel}, data::NamedTuple):
     return model;
 end
 # --- HOPFIELD METHODS ABOVE HERE --------------------------------------------------------------------------------------- #
+
+# -- BOLTZMANN MACHINE METHODS BELOW HERE ------------------------------------------------------------------------------- #
+"""
+    build(modeltype::Type{MySimpleBoltzmannMachineModel}, data::NamedTuple) -> MySimpleBoltzmannMachineModel
+
+Factory method for building a simple Boltzmann machine model.
+
+### Arguments
+- `modeltype::Type{MySimpleBoltzmannMachineModel}`: concrete model type to instantiate.
+- `data::NamedTuple`: expects `W::Array{Float64, 2}` (weight matrix) and `b::Vector{Float64}` (bias vector).
+
+### Returns
+- `model::MySimpleBoltzmannMachineModel`: model populated with `W` and `b`.
+"""
+function build(modeltype::Type{MySimpleBoltzmannMachineModel}, data::NamedTuple)::MySimpleBoltzmannMachineModel
+
+    # initialize -
+    model = modeltype();
+
+    # set the data on the model -
+    model.W = data.W; # weight matrix
+    model.b = data.b; # bias vector
+   
+    # return -
+    return model;
+end
+# -- BOLTZMANN MACHINE METHODS ABOVE HERE ------------------------------------------------------------------------------- #

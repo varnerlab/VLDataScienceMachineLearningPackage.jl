@@ -20,6 +20,7 @@ abstract type AbstractBanditAlgorithmModel end
 abstract type AbstractOnlineLearningModel end
 abstract type AbstractBanditProblemContextModel end
 abstract type AbstractlHopfieldNetworkModel end
+abstract type AbstractBoltzmannMachineModel end
 
 """
     mutable struct MyLinearProgrammingProblemModel <: AbstractLinearProgrammingProblemType 
@@ -743,5 +744,26 @@ mutable struct MyModernHopfieldNetworkModel <: AbstractlHopfieldNetworkModel
 
     # empty constructor -
     MyModernHopfieldNetworkModel() = new();
+end
+
+
+
+"""
+    MySimpleBoltzmannMachineModel <: AbstractBoltzmannMachineModel
+
+A minimal Boltzmann machine model storing weights and biases.
+
+### Fields
+- `W::Array{Float64, 2}`: symmetric weight matrix between units.
+- `b::Vector{Float64}`: bias vector for each unit.
+"""
+mutable struct MySimpleBoltzmannMachineModel <: AbstractBoltzmannMachineModel
+    
+    # fields
+    W::Array{Float64,2}; # weight matrix
+    b::Vector{Float64}; # bias vector
+
+    # constructor
+    MySimpleBoltzmannMachineModel() = new();
 end
 # -- HOPFIELD NETWORKS ABOVE HERE ----------------------------------------------------------------- #
