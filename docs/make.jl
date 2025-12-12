@@ -1,4 +1,7 @@
 using Documenter, VLDataScienceMachineLearningPackage
+using Distributions
+
+DocMeta.setdocmeta!(VLDataScienceMachineLearningPackage, :DocTestSetup, :(using VLDataScienceMachineLearningPackage; using Distributions), recursive=true)
 
 push!(LOAD_PATH,"../src/")
 
