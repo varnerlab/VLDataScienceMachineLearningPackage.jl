@@ -533,4 +533,59 @@ function MyMNISTHandwrittenDigitImageDataset(; number_of_examples::Int64 = 1000)
 
     return training_image_dictionary;
 end
+
+"""
+    MyUSPSHandwrittenDigitImageDataset() -> NamedTuple
+
+Load the USPS handwritten digit image dataset as a NamedTuple containing records and labels.
+
+### Returns
+- `NamedTuple`: A tuple containing:
+    - `records`: A dictionary where keys are record indices and values are arrays of Float64 representing the digit images.
+    - `labels`: An array of Int labels corresponding to each record.
+"""
+function MyUSPSHandwrittenDigitImageDataset()::NamedTuple
+
+    # initailize -
+    records = Dict{Int, Array{Float64, 1}}();
+    labels = Array{Int, 1}();
+    numberoffields::Int = 256; # each record has 256 fields (16 x 16 images)
+
+    # path to the USPS dataset -
+    pathtodtafile = joinpath(_PATH_TO_DATA, "usps-labels-numbers.data");
+
+    # open the file, process each line -
+    linecounter = 1;
+    open(pathtodtafile, "r") do io # open a stream to the file
+        for line ∈ eachline(io)
+            
+            # fields -
+            fields = split(line, " ");
+            y = parse(Int, fields[1]) - 1; # first field is the Int label make 0,9 instead of 1,10
+            push!(labels, y); # store the label in the labels array
+            # println("label: ", y);
+            
+            # split around the : character -
+            record = Dict{Int, Float64}();
+            for field ∈ fields[2:end]
+
+                if (isempty(field) == false)
+                    # split the field around the : character -
+                    key, value = split(field, ":");
+                    key = parse(Int, key);
+                    value = parse(Float64, value);
+                    record[key] = value;
+                end
+            end
+
+            # store the record -
+            records[linecounter] = [record[i] for i ∈ 1:numberoffields];
+            linecounter += 1;
+        end
+    end
+
+    # build a result NamedTuple -
+    result = (records = records, labels = labels);
+    return result;
+end
 # -- PUBLIC FUNCTIONS ABOVE HERE ------------------------------------------------------------------------------ #

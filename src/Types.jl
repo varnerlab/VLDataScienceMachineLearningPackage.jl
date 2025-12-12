@@ -766,4 +766,28 @@ mutable struct MySimpleBoltzmannMachineModel <: AbstractBoltzmannMachineModel
     # constructor
     MySimpleBoltzmannMachineModel() = new();
 end
+
+"""
+    MyRestrictedBoltzmannMachineModel <: AbstractBoltzmannMachineModel
+
+A restricted Boltzmann machine (RBM) model storing weights and biases for visible and hidden units.
+
+### Fields
+- `W::Array{Float64, 2}`: weight matrix between visible and hidden units.
+- `b::Vector{Float64}`: bias vector for hidden units.
+- `a::Vector{Float64}`: bias vector for visible units.
+"""
+mutable struct MyRestrictedBoltzmannMachineModel  <: AbstractBoltzmannMachineModel
+
+    # fields -
+    W::Array{Float64,2}; # weight matrix
+    b::Vector{Float64}; # hidden bias vector
+    a::Vector{Float64}; # visible bias vector
+
+    # constructor -
+    MyRestrictedBoltzmannMachineModel() = new();
+end
+
+struct MyRBMFeedForwardPassModel end # used to tag feed forward pass algorithms
+struct MyRBMFeedbackPassModel end # used to tag feedback pass algorithms
 # -- HOPFIELD NETWORKS ABOVE HERE ----------------------------------------------------------------- #

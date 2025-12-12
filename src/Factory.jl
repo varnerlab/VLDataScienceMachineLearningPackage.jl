@@ -1171,4 +1171,33 @@ function build(modeltype::Type{MySimpleBoltzmannMachineModel}, data::NamedTuple)
     # return -
     return model;
 end
+
+"""
+    build(modeltype::Type{MyRestrictedBoltzmannMachineModel}, data::NamedTuple) -> MyRestrictedBoltzmannMachineModel
+
+Factory method for building a restricted Boltzmann machine model.
+
+### Arguments
+- `modeltype::Type{MyRestrictedBoltzmannMachineModel}`: concrete model type to instantiate.
+- `data::NamedTuple`: the data to use to build the model. The NamedTuple must have the following fields:
+    - `W::Array{Float64,2}`: weight matrix between visible and hidden units.
+    - `b::Vector{Float64}`: bias vector for visible units.
+    - `a::Vector{Float64}`: bias vector for hidden units.
+
+### Returns
+- `model::MyRestrictedBoltzmannMachineModel`: model populated with `W`, `b`, and `a`.
+"""
+function build(modeltype::Type{MyRestrictedBoltzmannMachineModel}, data::NamedTuple)::MyRestrictedBoltzmannMachineModel
+    
+    # Create a new instance of the model
+    model = modeltype()
+    
+    # Initialize the model with the data
+    model.W = data.W
+    model.b = data.b
+    model.a = data.a
+    
+    # return the model with parameters
+    return model
+end
 # -- BOLTZMANN MACHINE METHODS ABOVE HERE ------------------------------------------------------------------------------- #

@@ -50,6 +50,7 @@ export MyEnglishLanguageVocabularyModel;
 export MyGrayscaleSimpsonsImageDataset;
 export MyUncorreleatedBlackAndWhiteImageDataset;
 export MyMNISTHandwrittenDigitImageDataset;
+export MyUSPSHandwrittenDigitImageDataset;
 
 export UnsignedFeatureHashing, SignedFeatureHashing;
 export MySMSSpamHamRecordModel, MySMSSpamHamRecordCorpusModel;
@@ -73,6 +74,7 @@ export MyModernHopfieldNetworkModel;
 
 # Boltzmann Machine types -
 export MySimpleBoltzmannMachineModel;
+export MyRestrictedBoltzmannMachineModel;
 
 # methods -
 export tokenize;
