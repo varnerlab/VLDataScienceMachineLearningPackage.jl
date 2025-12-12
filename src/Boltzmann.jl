@@ -309,18 +309,18 @@ function learn(model::MyRestrictedBoltzmannMachineModel, data::Array{Int64,2}, p
             # ok, so we have the visible and hidden states from sampling - weights
             for j ∈ 1:number_of_visible_neurons
                 for k ∈ 1:number_of_hidden_neurons
-                    W[j,k] += η * (v[j, end] * h[k, end] - xₒ[j] * h[k, 1]); # update the weights
+                    W[j,k] += η * (xₒ[j] * h[k, 1] - v[j, end] * h[k, end]); # positive phase minus negative phase
                 end
             end
 
             # hidden bias update
             for k ∈ 1:number_of_hidden_neurons
-                b[k] += η * (h[k, end] - h[k, 1]); # update the hidden bias
+                b[k] += η * (h[k, 1] - h[k, end]); # positive phase minus negative phase
             end
 
             # visible bias update
             for j ∈ 1:number_of_visible_neurons
-                a[j] += η * (v[j, end] - xₒ[j]); # update the visible bias
+                a[j] += η * (xₒ[j] - v[j, end]); # positive phase minus negative phase
             end
         end
 
