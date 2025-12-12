@@ -14,5 +14,5 @@ A Restricted Boltzmann Machine (RBM) is a special type of Boltzmann Machine that
 ```@docs
 VLDataScienceMachineLearningPackage.MyRestrictedBoltzmannMachineModel
 VLDataScienceMachineLearningPackage.sample(model::MyRestrictedBoltzmannMachineModel, sₒ::Vector{Int})
-VLDataScienceMachineLearningPackage.learn(model::MyRestrictedBoltzmannMachineModel, data::Array{Int64,2}, p::Categorical)
+VLDataScienceMachineLearningPackage.learn(model::MyRestrictedBoltzmannMachineModel, data::Array{Int64,2}, p::Distributions.Categorical)
 ```
