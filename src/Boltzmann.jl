@@ -27,7 +27,7 @@ function _sample(model::MyRestrictedBoltzmannMachineModel, pass::MyRBMFeedForwar
 
         # update the state of the neurons -
         for i ∈ 1:number_of_hidden_neurons
-            pᵢ = (1 / (1 + exp(-β * IN[i])));  # compute the probability of flipping the i-th bit
+            pᵢ = (1 / (1 + exp(-2 * β * IN[i])));  # compute the probability of flipping the i-th bit
             flag = Bernoulli(pᵢ) |> rand # flip the i-th bit with probability pᵢ
             h[i] = flag == 1 ? 1 : -1; # flip the i-th bit for the *next* state
         end
@@ -73,7 +73,7 @@ function _sample(model::MyRestrictedBoltzmannMachineModel, pass::MyRBMFeedbackPa
 
         # update the state of the neurons -
         for i ∈ 1:number_of_visible_neurons
-            pᵢ = (1 / (1 + exp(-β * IN[i])));  # compute the probability of flipping the i-th bit
+            pᵢ = (1 / (1 + exp(-2 * β * IN[i])));  # compute the probability of flipping the i-th bit
             flag = Bernoulli(pᵢ) |> rand # flip the i-th bit with probability pᵢ
             v[i] = flag == 1 ? 1 : -1; # flip the i-th bit for the *next* state
         end
@@ -173,18 +173,76 @@ and a feedback pass to sample the visible and hidden states.
 function sample(model::MyRestrictedBoltzmannMachineModel, vₒ::Vector{Int}; 
     T::Int = 100, β::Float64 = 1.0)
     
-    # forward pass - computes the hidden state given the visible state
-    h = _sample(model, MyRBMFeedForwardPassModel(), vₒ; T = T, β = β); # multiplex dispatch rocks!!
-    v = _sample(model,  MyRBMFeedbackPassModel(), h[:,end]; T = T, β = β); # multiplex dispatch rocks!!
+    # initialize -
+    W = model.W; # weight matrix
+    b = model.b; # hidden bias vector
+    a = model.a; # visible bias vector
+
+    number_of_visible_neurons = length(a); # number of visible neurons
+    number_of_hidden_neurons = length(b); # number of hidden neurons
+
+    V = zeros(Int, number_of_visible_neurons, T); # visible trajectory
+    H = zeros(Int, number_of_hidden_neurons, T); # hidden trajectory
+    v = copy(vₒ); # visible state
+    h = zeros(Int, number_of_hidden_neurons); # hidden state
+    IN_h = zeros(Float64, number_of_hidden_neurons); # input to hidden neurons
+    IN_v = zeros(Float64, number_of_visible_neurons); # input to visible neurons
+    is_ok_to_stop = false; # flag to stop the simulation
+
+    # package initial state -
+    V[:, 1] .= v; # store the initial visible state
+    for k ∈ 1:number_of_hidden_neurons
+        IN_h[k] = dot(W[:, k], v) + b[k]; # input for hidden node k
+    end
+    for k ∈ 1:number_of_hidden_neurons
+        pᵢ = (1 / (1 + exp(-2 * β * IN_h[k])));  # probability of flipping the k-th bit
+        flag = Bernoulli(pᵢ) |> rand # flip the k-th bit with probability pᵢ
+        h[k] = flag == 1 ? 1 : -1; # flip the k-th bit for the *next* state
+    end
+    H[:, 1] .= h; # store the initial hidden sample
+
+    # main loop -
+    t = 2;
+    while (is_ok_to_stop == false)
+
+        # Compute the input to each hidden neuron, sample h | v -
+        for k ∈ 1:number_of_hidden_neurons
+            IN_h[k] = dot(W[:, k], v) + b[k]; # compute the input for hidden node k -
+        end
+        for k ∈ 1:number_of_hidden_neurons
+            pᵢ = (1 / (1 + exp(-2 * β * IN_h[k])));  # compute the probability of flipping the k-th bit
+            flag = Bernoulli(pᵢ) |> rand # flip the k-th bit with probability pᵢ
+            h[k] = flag == 1 ? 1 : -1; # flip the k-th bit for the *next* state
+        end
+
+        # Compute the input to each visible neuron, sample v | h -
+        for j ∈ 1:number_of_visible_neurons
+            IN_v[j] = dot(W[j, :], h) + a[j]; # compute the input for visible node j -
+        end
+        for j ∈ 1:number_of_visible_neurons
+            pᵢ = (1 / (1 + exp(-2 * β * IN_v[j])));  # compute the probability of flipping the j-th bit
+            flag = Bernoulli(pᵢ) |> rand # flip the j-th bit with probability pᵢ
+            v[j] = flag == 1 ? 1 : -1; # flip the j-th bit for the *next* state
+        end
+
+        V[:, t] .= copy(v); # store the current visible state
+        H[:, t] .= copy(h); # store the current hidden state
+        
+        if (t == T)
+            is_ok_to_stop = true; # stop the simulation
+        else
+            t += 1; # increment the time step, and continue
+        end
+    end
 
     # return the results -
-    return (v, h);
+    return (V, H);
 end
 
 """
     learn(model::MyRestrictedBoltzmannMachineModel, data::Array{Int64,2}, p::Categorical;
         maxnumberofiterations::Int = 100, T::Int = 100, β::Float64 = 1.0, batchsize::Int = 10, η::Float64 = 0.01,
-            verbose::Bool = true) -> MyRestrictedBoltzmannMachineModel
+            tol::Float64 = 1e-6, verbose::Bool = true) -> MyRestrictedBoltzmannMachineModel
 
 Train a Restricted Boltzmann Machine (RBM) model using Contrastive Divergence (CD) algorithm.
 
@@ -197,6 +255,7 @@ Train a Restricted Boltzmann Machine (RBM) model using Contrastive Divergence (C
 - `β::Float64`: inverse temperature parameter.
 - `batchsize::Int`: size of the batch for training.
 - `η::Float64`: learning rate.
+- `tol::Float64`: relative parameter change tolerance for early stopping.
 - `verbose::Bool`: whether to print progress information.
 
 ### Return 
@@ -205,7 +264,7 @@ Train a Restricted Boltzmann Machine (RBM) model using Contrastive Divergence (C
 """
 function learn(model::MyRestrictedBoltzmannMachineModel, data::Array{Int64,2}, p::Categorical;
     maxnumberofiterations::Int = 100, T::Int = 100, β::Float64 = 1.0, batchsize::Int = 10, η::Float64 = 0.01,
-    verbose::Bool = true)::MyRestrictedBoltzmannMachineModel
+    tol::Float64 = 1e-6, verbose::Bool = true)::MyRestrictedBoltzmannMachineModel
 
     # initialize -
     W = model.W # weight matrix
@@ -221,6 +280,10 @@ function learn(model::MyRestrictedBoltzmannMachineModel, data::Array{Int64,2}, p
 
     # main loop -
     while (is_ok_to_stop == false)
+
+        W_prev = copy(W); # stash current params
+        b_prev = copy(b);
+        a_prev = copy(a);
 
         # generate some training data for this round -
         idx_batch_set = Set{Int64}();
@@ -246,7 +309,7 @@ function learn(model::MyRestrictedBoltzmannMachineModel, data::Array{Int64,2}, p
             # ok, so we have the visible and hidden states from sampling - weights
             for j ∈ 1:number_of_visible_neurons
                 for k ∈ 1:number_of_hidden_neurons
-                    W[j,k] += η * (v[j, end] * h[k, end] - v[j, 1] * h[k, 1]); # update the weights - from GitHub Copilot - does this work?
+                    W[j,k] += η * (v[j, end] * h[k, end] - xₒ[j] * h[k, 1]); # update the weights
                 end
             end
 
@@ -257,17 +320,22 @@ function learn(model::MyRestrictedBoltzmannMachineModel, data::Array{Int64,2}, p
 
             # visible bias update
             for j ∈ 1:number_of_visible_neurons
-                a[j] += η * (v[j, end] - v[j, 1]); # update the visible bias
+                a[j] += η * (v[j, end] - xₒ[j]); # update the visible bias
             end
         end
 
+        # compute parameter change for early stopping -
+        ΔW = norm(W .- W_prev) / (norm(W_prev) + eps(Float64));
+        Δb = norm(b .- b_prev) / (norm(b_prev) + eps(Float64));
+        Δa = norm(a .- a_prev) / (norm(a_prev) + eps(Float64));
+        parameter_change = maximum((ΔW, Δb, Δa));
 
         if (verbose == true)
-            println("Iteration: ", counter);
+            println("Iteration: ", counter, ", max parameter change: ", parameter_change);
         end
         
         # check for convergence - should we stop?
-        if (counter ≥ maxnumberofiterations)
+        if ((counter ≥ maxnumberofiterations) || (parameter_change < tol))
             is_ok_to_stop = true; # stop the training 
         else
             counter += 1; # increment the counter
