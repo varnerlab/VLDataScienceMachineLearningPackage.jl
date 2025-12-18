@@ -19,6 +19,7 @@ using Colors
 using Images
 using ImageIO
 using NNlib
+using Distances
 
 # load my codes -
 include(joinpath(_PATH_TO_SRC, "Types.jl"));
