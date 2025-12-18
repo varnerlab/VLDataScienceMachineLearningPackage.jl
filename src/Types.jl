@@ -21,6 +21,7 @@ abstract type AbstractOnlineLearningModel end
 abstract type AbstractBanditProblemContextModel end
 abstract type AbstractlHopfieldNetworkModel end
 abstract type AbstractBoltzmannMachineModel end
+abstract type MyAbstractUnsupervisedClusteringAlgorithm end
 
 """
     mutable struct MyLinearProgrammingProblemModel <: AbstractLinearProgrammingProblemType 
@@ -791,3 +792,34 @@ end
 struct MyRBMFeedForwardPassModel end # used to tag feed forward pass algorithms
 struct MyRBMFeedbackPassModel end # used to tag feedback pass algorithms
 # -- HOPFIELD NETWORKS ABOVE HERE ----------------------------------------------------------------- #
+
+# -- CLUSTERING BELOW HERE ------------------------------------------------------------------------ #
+"""
+    mutable struct MyNaiveKMeansClusteringAlgorithm <: MyAbstractUnsupervisedClusteringAlgorithm
+
+A mutable struct that represents a naive K-Means clustering algorithm.
+
+### Fields
+- `K::Int64`: number of clusters
+- `centroids::Dict{Int64, Vector{Float64}}`: cluster centroids
+- `assignments::Vector{Int64}`: cluster assignments
+- `ϵ::Float64`: convergence criteria
+- `maxiter::Int64`: maximum number of iterations
+- `dimension::Int64`: dimension of the data
+- `number_of_points::Int64`: number of data points
+"""
+mutable struct MyNaiveKMeansClusteringAlgorithm <: MyAbstractUnsupervisedClusteringAlgorithm
+
+    # data -
+    K::Int64 # number of clusters
+    centroids::Dict{Int64, Vector{Float64}} # cluster centroids
+    assignments::Vector{Int64} # cluster assignments
+    ϵ::Float64 # convergence criteria
+    maxiter::Int64 # maximum number of iterations (alternatively, could use this convergence criterion)
+    dimension::Int64 # dimension of the data
+    number_of_points::Int64 # number of data points
+
+    # constructor -
+    MyNaiveKMeansClusteringAlgorithm() = new(); # build empty object
+end
+# -- CLUSTERING ABOVE HERE ------------------------------------------------------------------------ #

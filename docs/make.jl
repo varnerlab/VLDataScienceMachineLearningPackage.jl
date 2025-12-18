@@ -29,6 +29,9 @@ makedocs(
             "Hopfield Networks" => "hopfield.md",
             "Boltzmann Machines" => "boltzmann.md",
         ],
+        "Unsupervised Learning" => [
+            "Clustering Algorithms" => "clustering.md",
+        ],
     ], 
 )
 

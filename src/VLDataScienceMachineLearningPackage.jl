@@ -40,6 +40,7 @@ export AbstractOnlineLearningModel;
 export AbstractBanditProblemContextModel;
 export AbstractlHopfieldNetworkModel;
 export AbstractBoltzmannMachineModel;
+export MyAbstractUnsupervisedClusteringAlgorithm;
 
 # Concrete types -
 export MyLinearProgrammingProblemModel;
@@ -76,6 +77,9 @@ export MyModernHopfieldNetworkModel;
 export MySimpleBoltzmannMachineModel;
 export MyRestrictedBoltzmannMachineModel;
 
+# unsupervised clustering algorithm types -
+export MyNaiveKMeansClusteringAlgorithm;
+
 # methods -
 export tokenize;
 export featurehashing;
@@ -92,6 +96,7 @@ export qriteration;
 export log_growth_matrix;
 export learn;
 export classify;
+export cluster;
 export confusion;
 export vocabulary_transition_matrix;
 export sample_words;
