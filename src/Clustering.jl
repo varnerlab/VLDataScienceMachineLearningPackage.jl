@@ -1,7 +1,7 @@
 
-
+# -- PRIVATE IMPLENTATIONS BELOW HERE ------------------------------------------------------------------------------------ #
 function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlgorithm; 
-    d = Euclidean(), verbose::Bool = false)
+    d = Euclidean(), verbose::Bool = false, tmpdir::String = ".")
     
     # get data -
     K = algorithm.K;
@@ -24,7 +24,7 @@ function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlg
         
         # verbose mode -
         if (verbose == true) # dump the data to disk
-            path_to_save_file = joinpath(pwd(), "tmp", "data-$(loopcount).jld2");
+            path_to_save_file = joinpath(tmpdir, "data-$(loopcount).jld2");
             save(path_to_save_file, Dict("assignments" => â, "centroids" => ĉ, "loopcount" => loopcount));
         end
 
@@ -61,8 +61,9 @@ function _cluster(data::Array{<:Number,2}, algorithm::MyNaiveKMeansClusteringAlg
     # return the model -
     return (assignments = algorithm.assignments, centroids = algorithm.centroids, loopcount = loopcount);
 end
+# -- PRIVATE IMPLENTATIONS ABOVE HERE ------------------------------------------------------------------------------------ #
 
-
+# -- PUBLIC INTERFACE BELOW HERE ----------------------------------------------------------------------------------------- #
 """
     cluster(data::Array{<:Number,2}, algorithm::T; d = Euclidean(), verbose::Bool = false) where T <: MyAbstractUnsupervisedClusteringAlgorithm
 
@@ -73,10 +74,12 @@ Cluster the input data using the specified clustering algorithm.
 - `algorithm::T`: An instance of a clustering algorithm type `T` that is a subtype of `MyAbstractUnsupervisedClusteringAlgorithm`.
 - `d`: (Optional) A distance metric function. Default is `Euclidean()`.
 - `verbose::Bool`: (Optional) A boolean flag to enable verbose output. Default is `false`.
+- `tmpdir::String`: (Optional) A directory path for temporary files. Default is the current directory `"."`.
 
 # Returns
 - A tuple containing the clustering assignments, centroids, and the number of iterations taken to converge.
 """
-function cluster(data::Array{<:Number,2}, algorithm::T; d = Euclidean(), verbose::Bool = false) where T <: MyAbstractUnsupervisedClusteringAlgorithm
-    return _cluster(data, algorithm, d = d, verbose = verbose);
+function cluster(data::Array{<:Number,2}, algorithm::T; d = Euclidean(), verbose::Bool = false, tmpdir::String = ".") where T <: MyAbstractUnsupervisedClusteringAlgorithm
+    return _cluster(data, algorithm, d = d, verbose = verbose, tmpdir = tmpdir);
 end
+# -- PUBLIC INTERFACE ABOVE HERE ----------------------------------------------------------------------------------------- #
