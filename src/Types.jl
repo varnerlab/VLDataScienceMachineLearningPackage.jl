@@ -92,6 +92,29 @@ mutable struct MyLogisticRegressionClassificationModel <: AbstractClassification
     MyLogisticRegressionClassificationModel() = new();
 end
 
+"""
+    mutable struct MyKNNClassificationModel <: AbstractClassificationAlgorithm
+
+A mutable struct that represents a K-Nearest Neighbors (KNN) classification model.
+
+### Fields
+    - `K::Int64`: number of neighbours to look at
+    - `d::Function`: similarity function
+    - `X::Matrix{Float64}`: training data
+    - `y::Vector{Int64}`: training labels
+"""
+mutable struct MyKNNClassificationModel <: AbstractClassificationAlgorithm
+    
+    # data -
+    K::Int64; # number of neighbours to look at
+    d::Function; # similarity function
+    X::Matrix{Float64}; # training data
+    y::Vector{Int64}; # training labels
+
+    # empty constructor -
+    MyKNNClassificationModel() = new();
+end
+
 
 """
     MySMSSpamHamRecordModel <: AbstractTextRecordModel

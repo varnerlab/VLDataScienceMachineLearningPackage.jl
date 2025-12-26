@@ -133,6 +133,53 @@ function _classify(features::Array{<:Number,2}, algorithm::MyLogisticRegressionC
 
     return labels;
 end
+
+function _classify(test::Array{<:Number,1}, algorithm::MyKNNClassificationModel)
+
+    # initialize -
+    features = algorithm.X;
+    labels = algorithm.y;
+    number_of_examples = size(features,1); # number of rows
+    distances = zeros(number_of_examples);
+    K = algorithm.K;
+    neighbour_labels = zeros(Int64, K);
+    counts = Dict{Int,Int}()
+    invcounts = Dict{Int,Int}()
+    
+    # compute the distances for all training examples -
+    for i ∈ 1:number_of_examples
+        x = features[i,:];
+        distances[i] = algorithm.d(test,x);
+    end
+
+    # sort the distances 
+    sorted_indices = sortperm(distances, rev=true);
+
+    # get the K nearest neighbours -
+    for i ∈ 1:K
+        neighbour_labels[i] = labels[sorted_indices[i]];
+    end
+
+    # find the most common label -
+    for val in neighbour_labels
+        if (haskey(counts, val) == false)
+            counts[val] = 1
+        else
+            counts[val] += 1
+        end
+    end
+
+    # build inverse counts - keys: counts, values: labels
+    for (key, val) in counts
+        invcounts[val] = key
+    end
+
+    # compute the highest count -
+    class = maximum(keys(invcounts) |> collect) |> key -> invcounts[key]
+
+    # return the most common label -
+    return class
+end
 # --- PRIVATE API ABOVE HERE -------------------------------------------------------------------------------------- #
 
 # --- PUBLIC API BELOW HERE --------------------------------------------------------------------------------------- #

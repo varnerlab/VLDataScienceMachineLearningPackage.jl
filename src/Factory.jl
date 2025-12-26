@@ -257,6 +257,42 @@ function build(modeltype::Type{MyLogisticRegressionClassificationModel},
     return model;
 end
 
+"""
+    build(modeltype::Type{MyKNNClassificationModel}, 
+        data::NamedTuple) -> MyKNNClassificationModel
+
+The function builds a KNN classification model from the data provided.
+
+### Arguments
+- `modeltype::Type{MyKNNClassificationModel}`: the type of the model to build.
+- `data::NamedTuple`: the data to use to build the model.
+
+The `data::NamedTuple` must have the following fields:
+- `K::Int64`: the number of neighbours to look at.
+- `d::Function`: the similarity function.
+- `X::Matrix{Float64}`: the training features.
+- `y::Vector{Int64}`: the training labels.
+"""
+function build(modeltype::Type{MyKNNClassificationModel}, 
+    data::NamedTuple)::MyKNNClassificationModel
+
+    # build an empty model -
+    model = modeltype();
+    K = data.K;
+    d = data.d;
+    features = data.features;
+    labels = data.labels;
+    
+    # set the data -
+    model.K = K;
+    model.d = d;
+    model.X = features;
+    model.y = labels;
+
+    # return -
+    return model;
+end
+
 
 """
     function build(type::Type{MyAdjacencyRecombiningCommodityPriceTree}, data::NamedTuple) -> MyAdjacencyRecombiningCommodityPriceTree
