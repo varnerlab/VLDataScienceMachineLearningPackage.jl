@@ -483,11 +483,11 @@ function MyUncorreleatedBlackAndWhiteImageDataset()::Array{Gray{N0f8},3}
     image_digit_array = Array{Gray{N0f8},3}(undef, number_of_rows, number_of_cols, number_of_training_examples);
 
     # hard the path to the Simpsons images dataset -
-    pathtoimages = joinpath(_PATH_TO_DATA, "images-uncorrelated-bw");
-    files = readdir(pathtoimages);
+    path_to_images = joinpath(_PATH_TO_DATA, "images-uncorrelated-bw");
+    files = readdir(path_to_images);
     for i ∈ 1:(number_of_training_examples-1)    
         filename = files[i];
-        image_digit_array[:,:,i] = joinpath(pathtoimages, filename) |> x-> FileIO.load(x);
+        image_digit_array[:,:,i] = joinpath(path_to_images, filename) |> x-> FileIO.load(x);
     end
     return image_digit_array;
 end
@@ -533,6 +533,47 @@ function MyMNISTHandwrittenDigitImageDataset(; number_of_examples::Int64 = 1000)
 
     return training_image_dictionary;
 end
+
+"""
+    MyCornellMovieReviewDataset(; sentiment::String = "pos") -> Array{NamedTuple,1}
+
+This function loads the Cornell movie review dataset v2.0 as an array of NamedTuples. 
+The original dataset can be found at: [Cornell Movie Review Dataset](https://www.cs.cornell.edu/people/pabo/movie-review-data/).
+
+### Arguments
+- `sentiment::String = "pos"`: The sentiment of the reviews to load. Can be either "pos" for positive reviews or "neg" for negative reviews. Default is "pos".
+
+### Returns
+- `Array{NamedTuple,1}`: An array of NamedTuples, where each NamedTuple contains:
+    - `text::String`: The text of the movie review.
+    - `label::Int`: The sentiment label of the review (1 for positive, -1 for negative).
+"""
+function MyCornellMovieReviewDataset(;sentiment::String = "pos")::Array{NamedTuple,1}
+
+    # initialize -
+    records = Array{NamedTuple,1}();
+  
+    # setup the label -=
+    label = 1; # defulat label is positive
+    if (sentiment == "neg")
+        label = -1; # negative sentiment
+    end
+    
+    # path to the Cornell movie review dataset -
+    path_to_movie_reviews = joinpath(_PATH_TO_DATA, "cornell-movie-review-dataset", "$(sentiment)");
+    files = readdir(path_to_movie_reviews);
+    for file ∈ files
+        filepath = joinpath(path_to_movie_reviews, file);
+        reviewtext = read(filepath, String);
+       
+        datarecord = (text = reviewtext, label = label);
+        push!(records, datarecord);
+    end
+  
+    # return -
+    return records;
+end
+
 
 """
     MyUSPSHandwrittenDigitImageDataset() -> NamedTuple

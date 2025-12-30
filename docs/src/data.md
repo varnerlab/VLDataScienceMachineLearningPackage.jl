@@ -17,6 +17,7 @@ VLDataScienceMachineLearningPackage.MyGraphEdgeModels
 VLDataScienceMachineLearningPackage.MyConstrainedGraphEdgeModels
 VLDataScienceMachineLearningPackage.MyBanknoteAuthenticationDataset
 VLDataScienceMachineLearningPackage.MyEnglishLanguageVocabularyModel
+VLDataScienceMachineLearningPackage.MyCornellMovieReviewDataset
 ```
 
 ## Financial Data
