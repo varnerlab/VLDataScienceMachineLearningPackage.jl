@@ -574,6 +574,21 @@ function MyCornellMovieReviewDataset(;sentiment::String = "pos")::Array{NamedTup
     return records;
 end
 
+"""
+    MyHeartDiseaseClinicalDataset() -> DataFrame
+
+Load the heart disease clinical records dataset as a DataFrame. 
+
+This data was reproduced from:
+* [Davide Chicco, Giuseppe Jurman: "Machine learning can predict survival of patients with heart failure from serum creatinine and ejection fraction alone." BMC Medical Informatics and Decision Making 20, 16 (2020). https://doi.org/10.1186/s12911-020-1023-5](https://pubmed.ncbi.nlm.nih.gov/32013925/)
+
+### Returns
+- `DataFrame`: A DataFrame containing the heart disease clinical records dataset.
+"""
+function MyHeartDiseaseClinicalDataset()::DataFrame
+    return CSV.read(joinpath(_PATH_TO_DATA, "heart-failure-clinical-records-dataset.csv"), DataFrame)
+end
+
 
 """
     MyUSPSHandwrittenDigitImageDataset() -> NamedTuple

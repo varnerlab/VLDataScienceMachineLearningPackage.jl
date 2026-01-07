@@ -14,6 +14,7 @@ export MyTrainingMarketDataSet;
 export MyKaggleHousingPricesDataset;
 export MyBanknoteAuthenticationDataset;
 export MyCornellMovieReviewDataset;
+export MyHeartDiseaseClinicalDataset;
 
 
 # types -
