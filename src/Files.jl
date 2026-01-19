@@ -12,6 +12,31 @@ function _puzzleparse(filepath::String)::Vector{String}
     return result;
 end
 
+function _pagerank_parse_edge(line::String, delim::Char)::Tuple{String,String}
+    fields = split(line, delim);
+    source = fields[1];
+    target = fields[2];
+    return (source, target);
+end
+
+function _pagerank_parse_node_record(line::String, delim::Char)::NamedTuple
+    
+    fields = split(line, delim);
+    nodeid = fields[1];
+    label = fields[2];
+    community = fields[3];
+    type = fields[4];
+
+    data = (
+        nodeid = nodeid,
+        label = label,
+        community = community,
+        type = type
+    );
+
+    return data;
+end
+
 
 function _jld2(path::String)::Dict{String,Any}
     return load(path);
@@ -41,6 +66,65 @@ The original dataset can be found at: [Spending dataset](https://www.kaggle.com/
 """
 function MyKaggleCustomerSpendingDataset()::DataFrame
     return CSV.read(joinpath(_PATH_TO_DATA, "mall-customers-dataset.csv"), DataFrame)
+end
+
+"""
+    MySyntheticPageRankDataset() -> Tuple{Dict{Int,Tuple{String,String}}, Dict{String, NamedTuple}}
+
+Load the synthetic PageRank dataset as a tuple containing:
+- A dictionary of edges where keys are edge indices and values are tuples of source and target node IDs.
+- A dictionary of nodes where keys are node IDs and values are NamedTuples containing node information.
+
+### Returns
+- `Tuple{Dict{Int,Tuple{String,String}}, Dict{String, NamedTuple}}`: A tuple containing the edges dictionary and nodes dictionary. The key is the edge index, and the value is a tuple of source and target node IDs.
+The nodes dictionary has the node ID as the key and a NamedTuple with node details as the value (e.g., label, community, type).
+"""
+function MySyntheticPageRankDataset()::Tuple{Dict{Int,Tuple{String,String}}, Dict{String, NamedTuple}}
+
+    # initialize -
+    edgesfilepath = joinpath(_PATH_TO_DATA, "pagerank", "pagerank_edges.csv");
+    nodesfilepath = joinpath(_PATH_TO_DATA, "pagerank", "pagerank_nodes.csv");
+    edgesdictionary = Dict{Int,Tuple{String,String}}();
+    nodedictionary = Dict{String, NamedTuple}();
+
+    # parse the edges file -
+    linecounter = 1;
+    open(edgesfilepath, "r") do io
+        for line ∈ eachline(io)
+            
+            # Skip: we are going to skip the header line
+            if (linecounter == 1)
+                linecounter += 1;
+                continue; # skip the header line
+            end
+
+            # parse the edge -
+            (s,t) = _pagerank_parse_edge(line, ',');
+            edgesdictionary[linecounter - 1] = (s, t);  # capture the edge
+            linecounter += 1; # update the line counter
+        end
+    end
+
+    # parse the nodes file -
+    linecounter = 1;
+    open(nodesfilepath, "r") do io
+        for line ∈ eachline(io)
+            
+            # Skip: we are going to skip the header line
+            if (linecounter == 1)
+                linecounter += 1;
+                continue; # skip the header line
+            end
+
+            # parse the node record -
+            data = _pagerank_parse_node_record(line, ',');
+            nodedictionary[data.nodeid] = data;  # capture the node record
+            linecounter += 1; # update the line counter
+        end
+    end
+
+    # return -
+    return (edgesdictionary, nodedictionary);
 end
 
 """

@@ -19,6 +19,7 @@ VLDataScienceMachineLearningPackage.MyBanknoteAuthenticationDataset
 VLDataScienceMachineLearningPackage.MyEnglishLanguageVocabularyModel
 VLDataScienceMachineLearningPackage.MyCornellMovieReviewDataset
 VLDataScienceMachineLearningPackage.MyHeartDiseaseClinicalDataset
+VLDataScienceMachineLearningPackage.MySyntheticPageRankDataset
 ```
 
 ## Financial Data
