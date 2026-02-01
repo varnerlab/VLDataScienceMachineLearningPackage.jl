@@ -1,11 +1,11 @@
 # --- PRIVATE API BELOW HERE -------------------------------------------------------------------------------------- #
-function ∇f(f, x, y, θ, h)
+function ∇f(f, x, y, T,θ,h)
     
     diff = zeros(size(θ))
     for i ∈ eachindex(θ)
         θᵢ = copy(θ) # bad ...
         θᵢ[i] += h
-        diff[i] = (f(x, y, θᵢ) - f(x, y, θ)) / h
+        diff[i] = (f(x, y, T, θᵢ) - f(x, y, T, θ)) / h
     end
     
     return diff
@@ -68,6 +68,7 @@ function _learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorith
     α = algorithm.α; # learning rate
     ϵ = algorithm.ϵ; # stopping criterion
     L = algorithm.L; # loss function
+    T = algorithm.β; # inverse temperature parameter
     is_ok_to_continue = true;
     loop_counter = 1;
 
@@ -86,7 +87,7 @@ function _learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorith
             y = labels[i]; # classification -1,1
             
             # compute the gradient -
-            ∇L = ∇L .+ ∇f(L, x, y, βᵢ, 1e-6); # call forward diff approx of derivative
+            ∇L = ∇L .+ ∇f(L, x, y, T, βᵢ, 1e-6); # call forward diff approx of derivative
         end # end training loop for
         
         # update the coefficients -
