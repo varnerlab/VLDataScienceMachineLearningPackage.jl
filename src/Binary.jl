@@ -68,7 +68,7 @@ function _learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorith
     α = algorithm.α; # learning rate
     ϵ = algorithm.ϵ; # stopping criterion
     L = algorithm.L; # loss function
-    T = algorithm.β; # inverse temperature parameter
+    T = algorithm.T; # inverse temperature parameter
     is_ok_to_continue = true;
     loop_counter = 1;
 

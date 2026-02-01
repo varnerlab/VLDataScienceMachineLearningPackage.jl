@@ -246,14 +246,14 @@ function build(modeltype::Type{MyLogisticRegressionClassificationModel},
     α = data.learning_rate
     L = data.loss_function
     ϵ = data.ϵ
-    β = data.β; # inverse temperature parameter
+    T = data.T; # inverse temperature parameter
     
     # set the data -
     model.β = β;
     model.α = α;
     model.L = L;
     model.ϵ = ϵ;
-    model.β = β;
+    model.T = T;
 
     # return -
     return model;
