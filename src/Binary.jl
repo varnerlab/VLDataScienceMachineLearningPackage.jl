@@ -1,5 +1,5 @@
 # --- PRIVATE API BELOW HERE -------------------------------------------------------------------------------------- #
-function ∇f(f, x, y, T,θ,h)
+function ∇f(f, x, y,T,θ,h)
     
     diff = zeros(size(θ))
     for i ∈ eachindex(θ)
