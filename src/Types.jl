@@ -80,6 +80,8 @@ A mutable struct that represents a logistic regression classification model.
     - `ϵ::Float64`: convergence criterion
     - `L::Function`: loss function
     - `T::Float64`: inverse temperature parameter for the logistic function
+    - `λ::Float64`: regularization parameter
+    - `h::Float64`: finite difference step size
 """
 mutable struct MyLogisticRegressionClassificationModel <: AbstractClassificationAlgorithm
     
@@ -89,6 +91,8 @@ mutable struct MyLogisticRegressionClassificationModel <: AbstractClassification
     ϵ::Float64; # convergence criterion
     L::Function; # loss function
     T::Float64; # inverse temperature parameter for the logistic function
+    λ::Float64; # regularization parameter
+    h::Float64; # finite difference step size
 
     # empty constructor -
     MyLogisticRegressionClassificationModel() = new();

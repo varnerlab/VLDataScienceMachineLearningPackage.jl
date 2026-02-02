@@ -247,6 +247,8 @@ function build(modeltype::Type{MyLogisticRegressionClassificationModel},
     L = data.loss_function
     ϵ = data.ϵ
     T = data.T; # inverse temperature parameter
+    λ = data.λ; # regularization parameter
+    h = data.h; # finite difference step size
     
     # set the data -
     model.β = β;
@@ -254,6 +256,8 @@ function build(modeltype::Type{MyLogisticRegressionClassificationModel},
     model.L = L;
     model.ϵ = ϵ;
     model.T = T;
+    model.λ = λ;
+    model.h = h;
 
     # return -
     return model;
