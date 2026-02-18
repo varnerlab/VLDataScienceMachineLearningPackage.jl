@@ -128,6 +128,19 @@ function MySyntheticPageRankDataset()::Tuple{Dict{Int,Tuple{String,String}}, Dic
 end
 
 """
+    MyQSARBiodegradationDataset() -> DataFrame
+
+Load the QSAR biodegradation dataset as a DataFrame. This dataset contains a mixture of continuous and categorical features, along with a 
+binary class variable indicating whether a chemical compound is biodegradable or not. The original dataset can be found at: 
+* Mansouri, K., Ringsted, T., Ballabio, D., Todeschini, R., & Consonni, V. (2013). QSAR biodegradation [Dataset]. UCI Machine Learning Repository. https://doi.org/10.24432/C5H60M.
+
+The data is loaded from a CSV file and returned as a DataFrame for easy manipulation and analysis in Julia.
+"""
+function MyQSARBiodegradationDataset()::DataFrame
+    return CSV.read(joinpath(_PATH_TO_DATA, "qsar-biodegradation-dataset.csv"), DataFrame)
+end
+
+"""
     MyStringDecodeChallengeDataset() -> NamedTuple
 
 Load the String Decode Challenge testing and production datasets. 

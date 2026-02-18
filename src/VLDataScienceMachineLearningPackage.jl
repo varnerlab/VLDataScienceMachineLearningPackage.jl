@@ -16,6 +16,7 @@ export MyBanknoteAuthenticationDataset;
 export MyCornellMovieReviewDataset;
 export MyHeartDiseaseClinicalDataset;
 export MySyntheticPageRankDataset;
+export MyQSARBiodegradationDataset;
 
 
 # types -

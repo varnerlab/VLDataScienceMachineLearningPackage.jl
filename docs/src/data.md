@@ -20,6 +20,7 @@ VLDataScienceMachineLearningPackage.MyEnglishLanguageVocabularyModel
 VLDataScienceMachineLearningPackage.MyCornellMovieReviewDataset
 VLDataScienceMachineLearningPackage.MyHeartDiseaseClinicalDataset
 VLDataScienceMachineLearningPackage.MySyntheticPageRankDataset
+VLDataScienceMachineLearningPackage.MyQSARBiodegradationDataset
 ```
 
 ## Financial Data
