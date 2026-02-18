@@ -12,6 +12,7 @@ In addition to the perceptron and logistic regression models, we've also include
 
 ```@docs
 VLDataScienceMachineLearningPackage.MyKNNClassificationModel
+VLDataScienceMachineLearningPackage.MyWeightedKernelizedKNNClassificationModel
 ```
 
-You can call the `classify` function with a test data vector and a MyKNNClassificationModel instance to get the predicted class label.
+You can call the `classify` function with a test data vector and a MyKNNClassificationModel or MyWeightedKernelizedKNNClassificationModel instance to get the predicted class label.

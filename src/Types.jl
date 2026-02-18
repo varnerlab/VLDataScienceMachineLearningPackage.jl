@@ -104,21 +104,45 @@ end
 A mutable struct that represents a K-Nearest Neighbors (KNN) classification model.
 
 ### Fields
-    - `K::Int64`: number of neighbours to look at
-    - `d::Function`: similarity function
+    - `K::Int64`: number of neighbors to look at
+    - `d::Function`: distance (or similarity) function
     - `X::Matrix{Float64}`: training data
     - `y::Vector{Int64}`: training labels
 """
 mutable struct MyKNNClassificationModel <: AbstractClassificationAlgorithm
     
     # data -
-    K::Int64; # number of neighbours to look at
-    d::Function; # similarity function
+    K::Int64; # number of neighbors to look at
+    d::Function; # distance (or similarity) function
     X::Matrix{Float64}; # training data
     y::Vector{Int64}; # training labels
 
     # empty constructor -
     MyKNNClassificationModel() = new();
+end
+
+"""
+    mutable struct MyWeightedKernelizedKNNClassificationModel <: AbstractClassificationAlgorithm
+
+A mutable struct that represents a K-Nearest Neighbors (KNN) classification model. 
+This model is a weighted kernelized KNN model, which means that it uses a kernel-based weighting scheme to give more importance to similar neighbors when making predictions.
+
+### Fields
+    - `K::Int64`: number of neighbors to look at
+    - `k::Function`: kernel function
+    - `X::Matrix{Float64}`: training data
+    - `y::Vector{Int64}`: training labels
+"""
+mutable struct MyWeightedKernelizedKNNClassificationModel <: AbstractClassificationAlgorithm
+    
+    # data -
+    K::Int64; # number of neighbors to look at
+    k::Function; # kernel function
+    X::Matrix{Float64}; # training data
+    y::Vector{Int64}; # training labels
+
+    # empty constructor -
+    MyWeightedKernelizedKNNClassificationModel() = new();
 end
 
 

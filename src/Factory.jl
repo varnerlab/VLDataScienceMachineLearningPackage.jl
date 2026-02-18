@@ -301,6 +301,43 @@ end
 
 
 """
+    build(modeltype::Type{MyWeightedKernelizedKNNClassificationModel}, 
+        data::NamedTuple) -> MyWeightedKernelizedKNNClassificationModel
+
+The function builds a weighted kernelized KNN classification model from the data provided.
+
+### Arguments
+- `modeltype::Type{MyWeightedKernelizedKNNClassificationModel}`: the type of the model to build.
+- `data::NamedTuple`: the data to use to build the model.
+
+The `data::NamedTuple` must have the following fields:
+- `K::Int64`: the number of neighbors to look at.
+- `k::Function`: the kernel function.
+- `X::Matrix{Float64}`: the training features.
+- `y::Vector{Int64}`: the training labels.
+"""
+function build(modeltype::Type{MyWeightedKernelizedKNNClassificationModel}, 
+    data::NamedTuple)::MyWeightedKernelizedKNNClassificationModel
+
+    # build an empty model -
+    model = modeltype();
+    K = data.K;
+    k = data.k;
+    features = data.features;
+    labels = data.labels;
+    
+    # set the data -
+    model.K = K;
+    model.k = k;
+    model.X = features;
+    model.y = labels;
+
+    # return -
+    return model;
+end
+
+
+"""
     function build(type::Type{MyAdjacencyRecombiningCommodityPriceTree}, data::NamedTuple) -> MyAdjacencyRecombiningCommodityPriceTree
 
 Builds an `MyAdjacencyRecombiningCommodityPriceTree` model given the data in the `NamedTuple`. 

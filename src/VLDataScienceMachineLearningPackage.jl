@@ -48,7 +48,7 @@ export MyAbstractUnsupervisedClusteringAlgorithm;
 
 # Concrete types -
 export MyLinearProgrammingProblemModel;
-export MyPerceptronClassificationModel, MyLogisticRegressionClassificationModel, MyKNNClassificationModel;
+export MyPerceptronClassificationModel, MyLogisticRegressionClassificationModel, MyKNNClassificationModel, MyWeightedKernelizedKNNClassificationModel;
 export MySarcasmRecordModel;
 export MySarcasmRecordCorpusModel;
 export MyEnglishLanguageVocabularyModel;

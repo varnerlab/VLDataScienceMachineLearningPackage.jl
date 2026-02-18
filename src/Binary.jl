@@ -137,7 +137,7 @@ function _classify(features::Array{<:Number,2}, algorithm::MyLogisticRegressionC
     return labels;
 end
 
-function _classify(test::Array{<:Number,1}, algorithm::MyKNNClassificationModel)
+function _classify(test::Array{<:Number,1}, algorithm::MyKNNClassificationModel; reverse::Bool = false)
 
     # initialize -
     features = algorithm.X;
@@ -156,9 +156,9 @@ function _classify(test::Array{<:Number,1}, algorithm::MyKNNClassificationModel)
     end
 
     # sort the distances 
-    sorted_indices = sortperm(distances, rev=true);
+    sorted_indices = sortperm(distances, rev=reverse); # sort the distances, and get the sorted indices
 
-    # get the K nearest neighbours -
+    # get the K nearest neighbors -
     for i ∈ 1:K
         neighbour_labels[i] = labels[sorted_indices[i]];
     end
@@ -183,6 +183,56 @@ function _classify(test::Array{<:Number,1}, algorithm::MyKNNClassificationModel)
     # return the most common label -
     return class
 end
+
+function _classify(test::Array{<:Number,1}, algorithm::MyWeightedKernelizedKNNClassificationModel; reverse::Bool = true)
+
+    # initialize -
+    features = algorithm.X;
+    labels = algorithm.y;
+    number_of_examples = size(features,1); # number of rows
+    similarity = zeros(number_of_examples);
+    K = algorithm.K;
+    neighbour_labels = zeros(Int64, K);
+    counts = Dict{Int,Float64}()
+    invcounts = Dict{Float64,Int}()
+    
+    # compute the distances for all training examples -
+    for i ∈ 1:number_of_examples
+        x = features[i,:];
+        similarity[i] = algorithm.k(test,x);
+    end
+
+    # sort the similarities 
+    sorted_indices = sortperm(similarity, rev=reverse); # sort the similarities, and get the sorted indices
+
+    # get the K nearest neighbors -
+    for i ∈ 1:K
+        neighbour_labels[i] = labels[sorted_indices[i]];
+    end
+
+    # find the most common label -
+    for i ∈ 1:K
+        val = neighbour_labels[i];
+        weight = (similarity[sorted_indices[i]]); # weight by the similarity score
+        if (haskey(counts, val) == false)
+            counts[val] = weight
+        else
+            counts[val] += weight
+        end
+    end
+
+    # build inverse counts - keys: counts, values: labels
+    for (key, val) in counts
+        invcounts[val] = key
+    end
+
+    # compute the highest count -
+    class = maximum(keys(invcounts) |> collect) |> key -> invcounts[key]
+
+    # return the most common label -
+    return class
+end
+
 # --- PRIVATE API ABOVE HERE -------------------------------------------------------------------------------------- #
 
 # --- PUBLIC API BELOW HERE --------------------------------------------------------------------------------------- #
@@ -221,9 +271,17 @@ end
 
 """
     classify(test::Array{<:Number,1}, algorithm::AbstractClassificationAlgorithm)
+
+The function classifies the test example using the algorithm specified.
+This is a wrapper function that calls the internal function `_classify` whose implementation is algorithm-specific.
+
+### Arguments
+- `test::Array{<:Number,1}`: the test example to classify (feature vector).
+- `algorithm::AbstractClassificationAlgorithm`: the algorithm to use to classify the test example.
+- `reverse::Bool`: whether to reverse the order of the distances when classifying with KNN. Default is false (distances are sorted in ascending order). If true, distances are sorted in descending order. Use `reverse=true` when using a similarity function instead of a distance function.
 """
-function classify(test::Array{<:Number,1}, algorithm::AbstractClassificationAlgorithm)
-    return _classify(test, algorithm);
+function classify(test::Array{<:Number,1}, algorithm::AbstractClassificationAlgorithm; reverse::Bool = false)
+    return _classify(test, algorithm, reverse = reverse);
 end
 
 
