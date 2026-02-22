@@ -11,7 +11,7 @@ function _energy(s::Array{<: Number,1}, W::Array{<:Number,2}, b::Array{<:Number,
             tmp_energy_state += W[i,j]*s[i]*s[j];
         end
     end
-    energy_state = -(1/2)*tmp_energy_state + tmp;
+    energy_state = -(1/2)*tmp_energy_state - tmp;
 
     # return -
     return energy_state;

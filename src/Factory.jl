@@ -1178,7 +1178,7 @@ function build(modeltype::Type{MyClassicalHopfieldNetworkModel}, data::NamedTupl
     for i ∈ 1:number_of_rows
         W[i,i] = 0.0f0; # no self-coupling in a classical Hopfield network
     end
-    WN = (1/number_of_cols)*W; # Hebbian scaling by number of memories stored
+    WN = (1/number_of_rows)*W; # We are going to scale the weights by the number if features (number of rows) to ensure that the energy landscape is well-behaved, and to prevent numerical issues during the energy computation.
     
     # compute the energy dictionary -
     energy = Dict{Int64, Float32}();
