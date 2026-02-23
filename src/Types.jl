@@ -766,6 +766,7 @@ A mutable struct representing a classical Hopfield network model.
 ### Fields
 - `W::Array{<:Number, 2}`: weight matrix.
 - `b::Array{<:Number, 1}`: bias vector.
+- `memories::Array{<:Number, 2}`: stored memories (one memory per column).
 - `energy::Dict{Int64, Float32}`: energy of the states.
 """
 mutable struct MyClassicalHopfieldNetworkModel <: AbstractlHopfieldNetworkModel
@@ -773,6 +774,7 @@ mutable struct MyClassicalHopfieldNetworkModel <: AbstractlHopfieldNetworkModel
     # data -
     W::Array{<:Number, 2} # weight matrix
     b::Array{<:Number, 1} # bias vector
+    memories::Array{<:Number, 2} # stored memories
     energy::Dict{Int64, Float32} # energy of the states
 
     # empty constructor -

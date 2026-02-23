@@ -1157,6 +1157,7 @@ The named tuple should contain the following fields:
 - `model::MyClassicalHopfieldNetworkModel`: the built Hopfield network model with the following fields populated:
     - `W`: the weight matrix.
     - `b`: the bias vector.
+    - `memories`: the stored memories (columns).
     - `energy`: a dictionary of energies for each memory.
 """
 function build(modeltype::Type{MyClassicalHopfieldNetworkModel}, data::NamedTuple)::MyClassicalHopfieldNetworkModel
@@ -1189,6 +1190,7 @@ function build(modeltype::Type{MyClassicalHopfieldNetworkModel}, data::NamedTupl
     # add data to the model -
     model.W = WN;
     model.b = b;
+    model.memories = copy(linearimagecollection);
     model.energy = energy;
 
     # return -

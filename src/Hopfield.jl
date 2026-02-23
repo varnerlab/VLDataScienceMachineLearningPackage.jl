@@ -17,6 +17,20 @@ function _energy(s::Array{<: Number,1}, W::Array{<:Number,2}, b::Array{<:Number,
     return energy_state;
 end
 
+function _find_exact_memory_match(s::Array{Int32,1}, memories::Array{<:Number,2})::Union{Nothing,Int64}
+
+    # loop over stored memories and return the first exact match
+    number_of_memories = size(memories, 2);
+    for k ∈ 1:number_of_memories
+        if (hamming(s, @view(memories[:,k])) == 0)
+            return Int64(k);
+        end
+    end
+
+    # no exact match
+    return nothing;
+end
+
 # -- PUBLIC METHODS BELOW HERE -------------------------------------------------------------------------------------------------------- #
 
 """
@@ -25,7 +39,8 @@ end
         miniterations_before_convergence::Union{Int,Nothing} = nothing) -> Tuple{Dict{Int64, Array{Int32,1}}, Dict{Int64, Float32}}
 
 Run asynchronous Hopfield updates starting from `sₒ`, stopping on convergence, after `maxiterations`,
-or once the energy drops below `trueenergyvalue`. Tracks the state and energy trajectory.
+once the energy drops below `trueenergyvalue`, or immediately upon exact match with a stored memory.
+Tracks the state and energy trajectory.
 
 ### Arguments
 - `model::MyClassicalHopfieldNetworkModel`: Hopfield network parameters.
@@ -59,18 +74,34 @@ function recover(model::MyClassicalHopfieldNetworkModel, sₒ::Array{Int32,1}, t
 
     # setup -
     frames[0] = copy(sₒ); # copy the initial random state
-    energydictionary[0] = _energy(sₒ,W, b); # initial energy
+    initial_energy = _energy(sₒ,W, b);
+    energydictionary[0] = initial_energy; # initial energy
     s = copy(sₒ); # initial state
+
+    # early stop: input is already an exact stored memory
+    if isdefined(model, :memories)
+        matched_memory_index = _find_exact_memory_match(s, model.memories);
+        if !isnothing(matched_memory_index)
+            @info "Initial state exactly matches stored memory index = $(matched_memory_index). Stopping."
+            return frames, energydictionary
+        end
+    end
+
+    # early stop: input already satisfies the energy threshold
+    if (initial_energy ≤ trueenergyvalue)
+        @info "Initial state energy is already below threshold. Stopping."
+        return frames, energydictionary
+    end
+
     iteration_counter = 1;
     while (has_converged == false)
         
         j = rand(1:number_of_pixels); # select a random pixel
-        w = W[j,:]; # get the weights
-        h = dot(w,s) - b[j]; # state at node j
+        h = dot(@view(W[j,:]), s) - b[j]; # state at node j
         
-        # Edge case: if h == 0, we have a tie, so we randomly assign ±1
-        if h == 0
-            s[j] = rand() < 0.5 ? Int32(-1) : Int32(1); # random tie-break to avoid bias
+        # Edge case: if h == 0, keep current spin to avoid injecting randomness.
+        if iszero(h)
+            nothing;
         else
             s[j] = h > 0 ? Int32(1) : Int32(-1); # map sign to ±1 spins
         end
@@ -78,6 +109,15 @@ function recover(model::MyClassicalHopfieldNetworkModel, sₒ::Array{Int32,1}, t
         energydictionary[iteration_counter] = _energy(s, W, b);
         state_snapshot = copy(s); # single snapshot reused for storage and convergence checks
         frames[iteration_counter] = state_snapshot;
+
+        # stop as soon as we recover an exact stored memory
+        if isdefined(model, :memories)
+            matched_memory_index = _find_exact_memory_match(state_snapshot, model.memories);
+            if !isnothing(matched_memory_index)
+                has_converged = true;
+                @info "Recovered exact stored memory index = $(matched_memory_index). Stopping."
+            end
+        end
         
         # check for convergence -
         push!(S, state_snapshot); # push the current state to the buffer
