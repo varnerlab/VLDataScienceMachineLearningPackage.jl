@@ -71,6 +71,7 @@ function recover(model::MyClassicalHopfieldNetworkModel, sₒ::Array{Int32,1}, t
     frames = Dict{Int64, Array{Int32,1}}(); # dictionary to hold frames
     energydictionary = Dict{Int64, Float32}(); # dictionary to hold energies
     has_converged = false; # convergence flag
+    visited_since_last_change = falses(number_of_pixels); # track neuron visits on current plateau
 
     # setup -
     frames[0] = copy(sₒ); # copy the initial random state
@@ -97,6 +98,7 @@ function recover(model::MyClassicalHopfieldNetworkModel, sₒ::Array{Int32,1}, t
     while (has_converged == false)
         
         j = rand(1:number_of_pixels); # select a random pixel
+        old_spin = s[j];
         h = dot(@view(W[j,:]), s) - b[j]; # state at node j
         
         # Edge case: if h == 0, keep current spin to avoid injecting randomness.
@@ -105,6 +107,13 @@ function recover(model::MyClassicalHopfieldNetworkModel, sₒ::Array{Int32,1}, t
         else
             s[j] = h > 0 ? Int32(1) : Int32(-1); # map sign to ±1 spins
         end
+        did_state_change = (s[j] != old_spin);
+
+        # If the state changed, we start a new plateau window.
+        if did_state_change
+            fill!(visited_since_last_change, false);
+        end
+        visited_since_last_change[j] = true;
 
         energydictionary[iteration_counter] = _energy(s, W, b);
         state_snapshot = copy(s); # single snapshot reused for storage and convergence checks
@@ -130,8 +139,12 @@ function recover(model::MyClassicalHopfieldNetworkModel, sₒ::Array{Int32,1}, t
                     break;
                 end
             end
-            if (all_equal == true)
+            # Convergence requires:
+            # 1) no changes over the buffered window, and
+            # 2) every neuron was visited at least once since the last change.
+            if (all_equal == true) && all(visited_since_last_change)
                 has_converged = true; # we have converged
+                @info "Convergence detected: no state changes over the last $patience_val iterations and all neurons visited since last change. Stopping."
             end
         end
         
