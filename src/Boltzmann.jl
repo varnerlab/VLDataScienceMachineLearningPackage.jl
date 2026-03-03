@@ -108,15 +108,15 @@ Simulate asynchronous Gibbs updates for a simple Boltzmann machine starting from
 ### Returns
 - `S::Array{Int,2}`: matrix of spin states over time (neurons × time).
 """
-function sample(model::MySimpleBoltzmannMachineModel, sₒ::Vector{Int}; 
-    T::Int = 100, β::Float64 = 1.0)::Array{Int,2}
+function sample(model::MySimpleBoltzmannMachineModel, sₒ::Vector{Int64}; 
+    T::Int64 = 100, β::Float64 = 1.0)::Array{Int64,2}
     
     # initialize storage -
     W = model.W; # weight matrix
     b = model.b; # bias vector
 
     number_of_neurons = length(sₒ);
-    S = zeros(Int, number_of_neurons, T);
+    S = zeros(Int64, number_of_neurons, T);
     is_ok_to_stop = false; # flag to stop the simulation
     h = zeros(Float64, number_of_neurons); # input to the neurons
 
@@ -352,5 +352,7 @@ function learn(model::MyRestrictedBoltzmannMachineModel, data::Array{Int64,2}, p
     # return -
     return idmodel;
 end
+
+
 
 # -- PUBLIC METHODS ABOVE HERE -------------------------------------------------------------------------------------------- #
