@@ -205,16 +205,6 @@ function sample(model::MyRestrictedBoltzmannMachineModel, vₒ::Vector{Int};
     t = 2;
     while (is_ok_to_stop == false)
 
-        # Compute the input to each hidden neuron, sample h | v -
-        for k ∈ 1:number_of_hidden_neurons
-            IN_h[k] = dot(W[:, k], v) + b[k]; # compute the input for hidden node k -
-        end
-        for k ∈ 1:number_of_hidden_neurons
-            pᵢ = (1 / (1 + exp(-2 * β * IN_h[k])));  # compute the probability of flipping the k-th bit
-            flag = Bernoulli(pᵢ) |> rand # flip the k-th bit with probability pᵢ
-            h[k] = flag == 1 ? 1 : -1; # flip the k-th bit for the *next* state
-        end
-
         # Compute the input to each visible neuron, sample v | h -
         for j ∈ 1:number_of_visible_neurons
             IN_v[j] = dot(W[j, :], h) + a[j]; # compute the input for visible node j -
@@ -223,6 +213,16 @@ function sample(model::MyRestrictedBoltzmannMachineModel, vₒ::Vector{Int};
             pᵢ = (1 / (1 + exp(-2 * β * IN_v[j])));  # compute the probability of flipping the j-th bit
             flag = Bernoulli(pᵢ) |> rand # flip the j-th bit with probability pᵢ
             v[j] = flag == 1 ? 1 : -1; # flip the j-th bit for the *next* state
+        end
+
+        # Compute the input to each hidden neuron, sample h | v -
+        for k ∈ 1:number_of_hidden_neurons
+            IN_h[k] = dot(W[:, k], v) + b[k]; # compute the input for hidden node k -
+        end
+        for k ∈ 1:number_of_hidden_neurons
+            pᵢ = (1 / (1 + exp(-2 * β * IN_h[k])));  # compute the probability of flipping the k-th bit
+            flag = Bernoulli(pᵢ) |> rand # flip the k-th bit with probability pᵢ
+            h[k] = flag == 1 ? 1 : -1; # flip the k-th bit for the *next* state
         end
 
         V[:, t] .= copy(v); # store the current visible state
