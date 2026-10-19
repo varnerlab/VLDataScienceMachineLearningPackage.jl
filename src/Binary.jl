@@ -11,8 +11,11 @@ function ∇f(f,x,y,T,λ,θ,h)
     return diff
 end
 
+# number of training examples with y*(x'β) ≤ 0: on the wrong side of the boundary, or on it
+_count_mistakes(features::Array{<:Number,2}, labels::Array{<:Number,1}, β::AbstractVector{<:Number}) = count(labels .* (features*β) .≤ 0);
+
 function _learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorithm::MyPerceptronClassificationModel; 
-    maxiter::Int64 = 100, verbose::Bool = false)
+    maxiter::Int64 = 100, verbose::Bool = false, pocket::Bool = false)
 
     # get data from the algorithm -
     β = algorithm.β;
@@ -23,6 +26,8 @@ function _learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorith
     
     # main loop -
     β̂ = copy(β); # copy the coefficients
+    β_pocket = copy(β̂); # pocket: the coefficients with the fewest training mistakes so far
+    pocket_mistakes = _count_mistakes(features, labels, β_pocket); # pocket: training mistakes of β_pocket
     while (is_ok_to_continue == true) 
         
         error_counter = 0; # initialize the error counter
@@ -35,6 +40,15 @@ function _learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorith
             if (y*sum(β̂.*x)) ≤ 0
                 β̂ = β̂ .+ y*x;
                 error_counter+=1        
+
+                # pocket: score the updated coefficients on every training example, keep them if they are the best so far
+                if (pocket == true)
+                    mistakes_now = _count_mistakes(features, labels, β̂);
+                    if (mistakes_now < pocket_mistakes)
+                        β_pocket = copy(β̂);
+                        pocket_mistakes = mistakes_now;
+                    end
+                end
             end
         end # end training loop for
 
@@ -50,10 +64,13 @@ function _learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorith
     # print the results if verbose is true -
     if (verbose == true)
         println("Stopped after number of iterations: ", loop_counter, ". We have number of errors: ", error_counter);
+        if (pocket == true)
+            println("Pocket coefficients make number of training errors: ", pocket_mistakes);
+        end
     end
     
-    # update the model -
-    algorithm.β = β̂; # update the coefficients
+    # update the model: the pocket coefficients if requested, otherwise the last coefficients -
+    algorithm.β = (pocket == true) ? β_pocket : β̂; # update the coefficients
 
     # return -
     return algorithm;
@@ -240,7 +257,7 @@ end
 
 """
     learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorithm::AbstractClassificationAlgorithm; 
-        maxiter::Int64 = 100, verbose::Bool = false)
+        maxiter::Int64 = 100, verbose::Bool = false, kwargs...)
 
 The function learns a classification model from the data provided using the algorithm specified.
 This is a wrapper function that calls the internal function `_learn` whose implementation is algorithm-specific.
@@ -249,15 +266,18 @@ This is a wrapper function that calls the internal function `_learn` whose imple
 - `features::Array{<:Number,2}`: the features.
 - `labels::Array{<:Number,1}`: the labels.
 - `algorithm::AbstractClassificationAlgorithm`: the algorithm to use to learn the model.
+- `kwargs...`: algorithm-specific options. For `MyPerceptronClassificationModel`, `pocket::Bool = false`:
+  when `true`, the pocket algorithm scores the coefficients on every training example after each update and
+  returns the coefficients with the fewest training mistakes, instead of the coefficients from the last update.
 
 ### Returns
 - the updated algorithm model.
 """
 function learn(features::Array{<:Number,2}, labels::Array{<:Number,1}, algorithm::AbstractClassificationAlgorithm; 
-    maxiter::Int64 = 100, verbose::Bool = false)
+    maxiter::Int64 = 100, verbose::Bool = false, kwargs...)
     
     # call the internal function, and return the updated algorithm model
-    return _learn(features, labels, algorithm, maxiter = maxiter, verbose = verbose);
+    return _learn(features, labels, algorithm; maxiter = maxiter, verbose = verbose, kwargs...);
 end
 
 
